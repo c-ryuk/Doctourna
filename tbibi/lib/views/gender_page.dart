@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tbibi/widgets/gender.dart';
+import 'package:tbibi/views/specialities_page.dart';
+import 'package:tbibi/widgets/gender_widget.dart';
 
 import '../models/gender.dart';
 
@@ -12,7 +13,11 @@ class GenderPage extends StatelessWidget {
         elevation: 0,
         actions: [
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return SpecialitiesPage();
+              }));
+            },
             child: Text(
               "Skip",
               style: TextStyle(fontFamily: 'Poppins', fontSize: 18),
@@ -24,7 +29,7 @@ class GenderPage extends StatelessWidget {
       ),
       body: Container(
         child: Column(children: [
-          Expanded(
+          const Expanded(
               flex: 1,
               child: Column(
                 children: [
@@ -49,14 +54,23 @@ class GenderPage extends StatelessWidget {
                 child: Column(
                   children: [
                     GenderWidget(
-                      gender: Gender(icon: Icon(Icons.male), title: "Male"),
+                      gender: Gender(
+                          icon: Icon(
+                            Icons.male,
+                            size: 40,
+                          ),
+                          title: "Male"),
                     ),
                     SizedBox(
                       height: 15,
                     ),
                     GenderWidget(
-                        gender:
-                            Gender(icon: Icon(Icons.female), title: "Female"))
+                        gender: Gender(
+                            icon: Icon(
+                              Icons.female,
+                              size: 40,
+                            ),
+                            title: "Female")),
                   ],
                 ),
               )),
