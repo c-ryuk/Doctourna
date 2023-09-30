@@ -9,7 +9,10 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Profile Page'),
+        title: Text(
+          'Profile Page',
+          style: TextStyle(fontFamily: "Poppins"),
+        ),
       ),
       body: Center(
         child: Text('This is your profile page.'),

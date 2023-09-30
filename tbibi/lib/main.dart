@@ -1,10 +1,10 @@
-// ignore_for_file: sized_box_for_whitespace, prefer_const_constructors, sort_child_properties_last, library_private_types_in_public_api, avoid_print
-
 import 'package:flutter/material.dart';
-import 'package:tbibi/pages/Screen1.dart';
-import 'package:tbibi/pages/Screen2.dart';
-import 'package:tbibi/pages/Screen3.dart';
-import 'pages/ProfilePage.dart';
+import 'package:tbibi/views/Screen1.dart';
+import 'package:tbibi/views/Screen2.dart';
+import 'package:tbibi/views/Screen3.dart';
+import 'package:tbibi/views/login_page.dart';
+import 'package:tbibi/views/signup_page.dart';
+import 'views/ProfilePage.dart';
 
 void main() {
   runApp(MyApp());
@@ -31,12 +31,7 @@ class _MyAppState extends State<MyApp> {
     final themeData = _isDarkMode ? _darkTheme : _lightTheme;
 
     return MaterialApp(
-      theme: themeData,
-      home: MyTabBar(
-        toggleTheme: toggleTheme,
-        isDarkMode: _isDarkMode,
-      ),
-    );
+        debugShowCheckedModeBanner: false, theme: themeData, home: LoginPage());
   }
 }
 
@@ -94,12 +89,12 @@ class _MyTabBarState extends State<MyTabBar> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color.fromRGBO(31, 25, 152, 1),
+        elevation: 0,
         title: Text(
           'Doctourna',
           style: TextStyle(
-            color: Colors.white,
-            fontSize: 20.0,
-          ),
+              color: Colors.white, fontSize: 20.0, fontFamily: 'Poppins'),
         ),
         actions: [
           IconButton(
