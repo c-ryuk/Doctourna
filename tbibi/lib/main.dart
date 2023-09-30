@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tbibi/views/Screen1.dart';
 import 'package:tbibi/views/Screen2.dart';
 import 'package:tbibi/views/Screen3.dart';
+import 'package:tbibi/views/gender_page.dart';
 import 'package:tbibi/views/login_page.dart';
 import 'package:tbibi/views/signup_page.dart';
 import 'views/ProfilePage.dart';

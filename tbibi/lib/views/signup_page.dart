@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tbibi/views/gender_page.dart';
 
 import '../widgets/signbutton.dart';
 import '../widgets/textinput.dart';
@@ -81,7 +82,12 @@ class SignUpPage extends StatelessWidget {
                           height: 5,
                         ),
                         ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) {
+                                return GenderPage();
+                              }));
+                            },
                             child: Text(
                               "Join Now",
                               style: TextStyle(
