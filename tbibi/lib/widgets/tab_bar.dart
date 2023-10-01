@@ -1,7 +1,7 @@
 // ignore_for_file: library_private_types_in_public_api, prefer_const_constructors, sized_box_for_whitespace, sort_child_properties_last
 
 import 'package:flutter/material.dart';
-import 'package:tbibi/views/screen1.dart';
+import 'package:tbibi/views/postPage.dart';
 import 'package:tbibi/views/screen2.dart';
 import 'package:tbibi/views/screen3.dart';
 
@@ -24,11 +24,7 @@ class _MyTabBarState extends State<MyTabBar> {
   final PageController _pageController = PageController(initialPage: 0);
   bool _isSidebarOpen = false;
 
-  final List<Widget> _screens = [
-    Screen1(),
-    Screen2(),
-    Screen3(),
-  ];
+  
 
   @override
   void dispose() {
@@ -53,9 +49,14 @@ class _MyTabBarState extends State<MyTabBar> {
 
   @override
   Widget build(BuildContext context) {
+    final List<Widget> _screens = [
+    PostScreen(toggleTheme: widget.toggleTheme, isDarkMode: widget.isDarkMode),
+    Screen2(),
+    Screen3(),
+  ];
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromRGBO(31, 25, 152, 1),
+        backgroundColor: Colors.lightGreen,
         elevation: 0,
         title: Text(
           'Doctourna',
@@ -111,7 +112,7 @@ class _MyTabBarState extends State<MyTabBar> {
                       DrawerHeader(
                         child: Text('Sidebar Header'),
                         decoration: BoxDecoration(
-                          color: Colors.blue,
+                          color: Colors.lightGreen,
                         ),
                       ),
                       ListTile(
@@ -145,7 +146,7 @@ class _MyTabBarState extends State<MyTabBar> {
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            label: 'Screen 1',
+            label: 'Posts',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.search),
