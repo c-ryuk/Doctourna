@@ -14,7 +14,7 @@ class PostDetail extends StatelessWidget {
       appBar: AppBar(
         centerTitle: true,
         elevation: 0,
-        backgroundColor: Colors.lightGreen[400],
+        backgroundColor: isDarkMode ? Colors.green : Colors.lightGreen,
         title: Text(
           argument.title,
           style: const TextStyle(
@@ -40,29 +40,29 @@ class PostDetail extends StatelessWidget {
               padding: const EdgeInsets.all(10.0),
               child: Row(
                 children: [
-                  const Text(
+                  Text(
                     "Date_Creation : ",
                     style: TextStyle(
-                      color: Colors.lightGreen,
+                      color: isDarkMode ? Colors.green : Colors.lightGreen,
                       fontSize: 25,
                     ),
                   ),
                   Text(
                     argument.dateTime,
-                    style: const TextStyle(
-                      color: Colors.black,
+                    style: TextStyle(
+                      color: isDarkMode ? Colors.white : Colors.black,
                       fontSize: 20,
                     ),
                   ),
                 ],
               ),
             ),
-            const Padding(
+            Padding(
               padding: EdgeInsets.all(10.0),
               child: Text(
                 "Discription :",
                 style: TextStyle(
-                  color: Colors.lightGreen,
+                  color: isDarkMode ? Colors.green : Colors.lightGreen,
                   fontSize: 25,
                 ),
               ),
@@ -72,7 +72,7 @@ class PostDetail extends StatelessWidget {
               child: Text(
                 argument.description,
                 style: TextStyle(
-                  color: Colors.black,
+                  color: isDarkMode ? Colors.white : Colors.black,
                   fontSize: 20,
                 ),
               ),

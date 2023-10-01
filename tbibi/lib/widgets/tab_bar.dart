@@ -55,7 +55,7 @@ class _MyTabBarState extends State<MyTabBar> {
     ];
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.lightGreen,
+        backgroundColor: widget.isDarkMode ? Colors.green : Colors.lightGreen,
         elevation: 0,
         title: Text(
           'Doctourna',
@@ -111,7 +111,7 @@ class _MyTabBarState extends State<MyTabBar> {
                       DrawerHeader(
                         child: Text('Sidebar Header'),
                         decoration: BoxDecoration(
-                          color: Colors.lightGreen,
+                          color: widget.isDarkMode ? Colors.green : Colors.lightGreen,
                         ),
                       ),
                       ListTile(
