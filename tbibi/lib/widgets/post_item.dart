@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tbibi/models/post.dart';
 
 class PostBody extends StatelessWidget {
@@ -80,13 +81,14 @@ class PostBody extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Row(
+                   Row(
                     children: [
-                      Icon(
-                        Icons.person,
-                        color: Colors.lightGreen,
+                      FaIcon(
+                        FontAwesomeIcons.userDoctor,
+                        size: 27,
+                        color: isDarkMode ? Colors.green : Colors.lightGreen,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 2,
                       ),
                       Text("missa"),
@@ -94,9 +96,9 @@ class PostBody extends StatelessWidget {
                   ),
                   Row(
                     children: [
-                      const Icon(
+                      Icon(
                         Icons.today,
-                        color: Colors.lightGreen,
+                        color: isDarkMode ? Colors.green : Colors.lightGreen,
                       ),
                       const SizedBox(
                         width: 2,

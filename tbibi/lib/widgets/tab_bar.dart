@@ -24,8 +24,6 @@ class _MyTabBarState extends State<MyTabBar> {
   final PageController _pageController = PageController(initialPage: 0);
   bool _isSidebarOpen = false;
 
-  
-
   @override
   void dispose() {
     _pageController.dispose();
@@ -50,13 +48,14 @@ class _MyTabBarState extends State<MyTabBar> {
   @override
   Widget build(BuildContext context) {
     final List<Widget> _screens = [
-    PostScreen(toggleTheme: widget.toggleTheme, isDarkMode: widget.isDarkMode),
-    Screen2(),
-    Screen3(),
-  ];
+      PostScreen(
+          toggleTheme: widget.toggleTheme, isDarkMode: widget.isDarkMode),
+      Screen2(),
+      Screen3(),
+    ];
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.lightGreen,
+        backgroundColor: widget.isDarkMode ? Colors.green : Colors.lightGreen,
         elevation: 0,
         title: Text(
           'Doctourna',
@@ -112,7 +111,7 @@ class _MyTabBarState extends State<MyTabBar> {
                       DrawerHeader(
                         child: Text('Sidebar Header'),
                         decoration: BoxDecoration(
-                          color: Colors.lightGreen,
+                          color: widget.isDarkMode ? Colors.green : Colors.lightGreen,
                         ),
                       ),
                       ListTile(
