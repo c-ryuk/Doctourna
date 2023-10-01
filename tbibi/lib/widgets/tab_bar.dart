@@ -1,7 +1,7 @@
 // ignore_for_file: library_private_types_in_public_api, prefer_const_constructors, sized_box_for_whitespace, sort_child_properties_last
 
 import 'package:flutter/material.dart';
-import 'package:tbibi/views/postPage.dart';
+import 'package:tbibi/views/blog_page.dart';
 import 'package:tbibi/views/screen2.dart';
 import 'package:tbibi/views/screen3.dart';
 
@@ -23,8 +23,6 @@ class _MyTabBarState extends State<MyTabBar> {
   int _currentIndex = 0;
   final PageController _pageController = PageController(initialPage: 0);
   bool _isSidebarOpen = false;
-
-  
 
   @override
   void dispose() {
@@ -50,10 +48,11 @@ class _MyTabBarState extends State<MyTabBar> {
   @override
   Widget build(BuildContext context) {
     final List<Widget> _screens = [
-    PostScreen(toggleTheme: widget.toggleTheme, isDarkMode: widget.isDarkMode),
-    Screen2(),
-    Screen3(),
-  ];
+      PostScreen(
+          toggleTheme: widget.toggleTheme, isDarkMode: widget.isDarkMode),
+      Screen2(),
+      Screen3(),
+    ];
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.lightGreen,

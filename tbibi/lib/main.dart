@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:tbibi/views/detail_screen.dart';
 import 'package:tbibi/views/doctor_data_page.dart';
 import 'package:tbibi/views/login_page.dart';
-import 'package:tbibi/views/postPage.dart';
+import 'package:tbibi/views/blog_page.dart';
 import 'package:tbibi/widgets/tab_bar.dart';
 
 void main() {
@@ -40,16 +40,17 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: themeData,
-      initialRoute: '/',
-      routes: {
-        '/': (context) =>
-            MyTabBar(toggleTheme: toggleTheme, isDarkMode: _isDarkMode),
-        '/login': (context) => LoginPage(),
-        '/posts': (context) =>
-            PostScreen(toggleTheme: toggleTheme, isDarkMode: _isDarkMode),
-            '/post-detail': (context) =>
-            PostDetail(toggleTheme: toggleTheme, isDarkMode: _isDarkMode),
-      },
+      home: LoginPage(),
+      // initialRoute: '/',
+      // routes: {
+      //   '/': (context) =>
+      //       MyTabBar(toggleTheme: toggleTheme, isDarkMode: _isDarkMode),
+      //   '/login': (context) => LoginPage(),
+      //   '/posts': (context) =>
+      //       PostScreen(toggleTheme: toggleTheme, isDarkMode: _isDarkMode),
+      //   '/post-detail': (context) =>
+      //       PostDetail(toggleTheme: toggleTheme, isDarkMode: _isDarkMode),
+      // },
     );
   }
 }

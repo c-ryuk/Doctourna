@@ -16,10 +16,11 @@ class SpecialityWidget extends StatelessWidget {
             width: 80,
             height: 80,
             child: Card(
-                elevation: 4,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(25)),
-                child: speciality.icon),
+              elevation: 4,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(25)),
+              child: speciality.icon,
+            ),
           ),
           Text(
             speciality.title,

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tbibi/static_data/app_data.dart';
+import 'package:tbibi/static_data/posts_list.dart';
 import '../widgets/post_item.dart';
 
 class PostScreen extends StatefulWidget {
@@ -23,10 +23,9 @@ class _PostScreenState extends State<PostScreen> {
       ),
       itemCount: Posts_data.length,
       itemBuilder: (context, index) => PostBody(
-        post: Posts_data[index],
-        toggleTheme: widget.toggleTheme,
-        isDarkMode: widget.isDarkMode
-      ),
+          post: Posts_data[index],
+          toggleTheme: widget.toggleTheme,
+          isDarkMode: widget.isDarkMode),
     );
   }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:tbibi/models/speciality.dart';
+import 'package:tbibi/static_data/specialities_list.dart';
 import 'package:tbibi/views/doctor_data_page.dart';
 import 'package:tbibi/widgets/speciality_widget.dart';
 
@@ -34,11 +34,15 @@ class SpecialitiesPage extends StatelessWidget {
               child: FaIcon(
                 FontAwesomeIcons.userDoctor,
                 size: 27,
+                color: Color(0xFF4163CD),
               ),
             ),
             Text(
               " Specialities",
-              style: TextStyle(fontFamily: 'Poppins Medium', fontSize: 25),
+              style: TextStyle(
+                  fontFamily: 'Poppins Medium',
+                  fontSize: 25,
+                  color: Color(0xFF4163CD)),
             )
           ],
         ),
@@ -61,55 +65,10 @@ class SpecialitiesPage extends StatelessWidget {
               height: 10,
             ),
             Wrap(
-              direction: Axis.horizontal,
-              children: [
-                SpecialityWidget(
-                  speciality: Speciality(
-                    title: "Dentist",
-                    icon: Icon(
-                      Icons.mobile_friendly_outlined,
-                      size: 38,
-                    ),
-                  ),
-                ),
-                SpecialityWidget(
-                  speciality: Speciality(
-                    title: "Player",
-                    icon: Icon(
-                      Icons.play_circle,
-                      size: 38,
-                    ),
-                  ),
-                ),
-                SpecialityWidget(
-                  speciality: Speciality(
-                    title: "Dentist",
-                    icon: Icon(
-                      Icons.mobile_friendly_outlined,
-                      size: 38,
-                    ),
-                  ),
-                ),
-                SpecialityWidget(
-                  speciality: Speciality(
-                    title: "Dentist",
-                    icon: Icon(
-                      Icons.mobile_friendly_outlined,
-                      size: 38,
-                    ),
-                  ),
-                ),
-                SpecialityWidget(
-                  speciality: Speciality(
-                    title: "Dentist",
-                    icon: Icon(
-                      Icons.mobile_friendly_outlined,
-                      size: 38,
-                    ),
-                  ),
-                ),
-              ],
-            )
+                direction: Axis.horizontal,
+                children: specialities
+                    .map((e) => SpecialityWidget(speciality: e))
+                    .toList())
           ],
         ),
       ),
