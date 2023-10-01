@@ -1,10 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:tbibi/views/specialities_page.dart';
 import 'package:tbibi/widgets/gender_widget.dart';
-
 import '../models/gender.dart';
 
-class GenderPage extends StatelessWidget {
+class GenderPage extends StatefulWidget {
+  @override
+  GenderPageState createState() => GenderPageState();
+}
+
+@override
+void initState() {}
+
+class GenderPageState extends State<GenderPage> {
+  bool isMaleVisible = true;
+  bool isFemaleVisible = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,24 +63,47 @@ class GenderPage extends StatelessWidget {
               child: Center(
                 child: Column(
                   children: [
-                    GenderWidget(
-                      gender: Gender(
-                          icon: Icon(
-                            Icons.male,
-                            size: 40,
-                          ),
-                          title: "Male"),
+                    Container(
+                      height: 120,
+                      child: Visibility(
+                        visible: isMaleVisible,
+                        child: GenderWidget(
+                          toHide: () {
+                            setState(() {
+                              isFemaleVisible = !isFemaleVisible;
+                            });
+                          },
+                          gender: Gender(
+                              icon: Icon(
+                                Icons.male,
+                                size: 40,
+                              ),
+                              title: "Male"),
+                        ),
+                      ),
                     ),
                     SizedBox(
                       height: 15,
                     ),
-                    GenderWidget(
-                        gender: Gender(
-                            icon: Icon(
-                              Icons.female,
-                              size: 40,
-                            ),
-                            title: "Female")),
+                    Container(
+                      height: 120,
+                      child: Visibility(
+                        visible: isFemaleVisible,
+                        child: GenderWidget(
+                          toHide: () {
+                            setState(() {
+                              isMaleVisible = !isMaleVisible;
+                            });
+                          },
+                          gender: Gender(
+                              icon: Icon(
+                                Icons.female,
+                                size: 40,
+                              ),
+                              title: "Female"),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               )),
