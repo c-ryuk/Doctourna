@@ -40,7 +40,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   backgroundColor: Colors.transparent,
                   radius: 70,
                   backgroundImage: NetworkImage(
-                    'https://res.cloudinary.com/dhzlfojtv/image/upload/v1688486619/th-removebg-preview_uzovfh.png',
+                    'https://img.a.transfermarkt.technology/portrait/big/28003-1694590254.jpg?lm=1',
                   ),
                 ),
                 const SizedBox(height: 16),

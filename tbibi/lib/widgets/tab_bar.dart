@@ -5,7 +5,7 @@ import 'package:tbibi/views/screen1.dart';
 import 'package:tbibi/views/screen2.dart';
 import 'package:tbibi/views/screen3.dart';
 
-import '../views/ProfilePage.dart';
+import '../views/profile_page.dart';
 
 class MyTabBar extends StatefulWidget {
   final Function toggleTheme;

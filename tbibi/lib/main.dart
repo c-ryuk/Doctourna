@@ -1,6 +1,8 @@
 // ignore_for_file: library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
+import 'package:tbibi/views/doctor_data_page.dart';
+import 'package:tbibi/views/login_page.dart';
 import 'package:tbibi/widgets/tab_bar.dart';
 
 void main() {
@@ -34,12 +36,6 @@ class _MyAppState extends State<MyApp> {
     final themeData = _isDarkMode ? _darkTheme : _lightTheme;
 
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: themeData,
-      home: MyTabBar(
-        toggleTheme: toggleTheme,
-        isDarkMode: _isDarkMode,
-      ),
-    );
+        debugShowCheckedModeBanner: false, theme: themeData, home: LoginPage());
   }
 }

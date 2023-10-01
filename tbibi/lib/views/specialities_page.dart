@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tbibi/models/speciality.dart';
+import 'package:tbibi/views/doctor_data_page.dart';
 import 'package:tbibi/widgets/speciality_widget.dart';
 
 class SpecialitiesPage extends StatelessWidget {
@@ -10,6 +11,21 @@ class SpecialitiesPage extends StatelessWidget {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.transparent,
+        actions: [
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return DoctorDataPage();
+              }));
+            },
+            child: Text(
+              "Next",
+              style: TextStyle(fontFamily: 'Poppins', fontSize: 18),
+            ),
+            style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.transparent, elevation: 0),
+          )
+        ],
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
