@@ -24,12 +24,47 @@ class GenderPageState extends State<GenderPage> {
         actions: [
           ElevatedButton(
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return SpecialitiesPage();
-              }));
+              if (isFemaleVisible == true && isMaleVisible == true) {
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: const Center(
+                            child: Text(
+                          "Alert !",
+                          style: TextStyle(
+                              fontFamily: 'Poppins Medium', fontSize: 24),
+                        )),
+                        content: Text(
+                          "Please select your gender to continue",
+                          style: TextStyle(fontFamily: 'Poppins', fontSize: 16),
+                        ),
+                        actions: [
+                          Center(
+                              child: ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                      backgroundColor: Color(0xFF4163CD)),
+                                  child: Text(
+                                    "Okay",
+                                    style: TextStyle(
+                                        fontFamily: 'Poppins',
+                                        fontSize: 16,
+                                        color: Colors.white),
+                                  )))
+                        ],
+                      );
+                    });
+              } else {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return SpecialitiesPage();
+                }));
+              }
             },
             child: Text(
-              "Skip",
+              "Next",
               style: TextStyle(fontFamily: 'Poppins', fontSize: 18),
             ),
             style: ElevatedButton.styleFrom(
@@ -71,6 +106,8 @@ class GenderPageState extends State<GenderPage> {
                           toHide: () {
                             setState(() {
                               isFemaleVisible = !isFemaleVisible;
+                              print("fmale $isFemaleVisible");
+                              print("male $isMaleVisible");
                             });
                           },
                           gender: Gender(
@@ -93,6 +130,8 @@ class GenderPageState extends State<GenderPage> {
                           toHide: () {
                             setState(() {
                               isMaleVisible = !isMaleVisible;
+                              print("fmale $isFemaleVisible");
+                              print("male $isMaleVisible");
                             });
                           },
                           gender: Gender(

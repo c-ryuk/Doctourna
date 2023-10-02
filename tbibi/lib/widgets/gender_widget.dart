@@ -4,7 +4,7 @@ import 'package:tbibi/models/gender.dart';
 class GenderWidget extends StatefulWidget {
   GenderWidget({required this.gender, required this.toHide});
 
-  VoidCallback toHide;
+  final VoidCallback toHide;
   final Gender gender;
 
   @override
