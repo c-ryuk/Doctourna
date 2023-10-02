@@ -12,9 +12,10 @@ class DoctorDataPage extends StatefulWidget {
 }
 
 class DoctorFormPage extends State<DoctorDataPage> {
+  bool checkBoxValue = false;
   @override
   Widget build(BuildContext context) {
-    var selectedItemG;
+    var selectedGovernante;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -73,9 +74,9 @@ class DoctorFormPage extends State<DoctorDataPage> {
                         Icons.home,
                         color: Colors.black,
                       ),
-                      value: selectedItemG,
+                      value: selectedGovernante,
                       onChanged: (item) => setState(() {
-                        selectedItemG = item;
+                        selectedGovernante = item;
                       }),
                       items: governorates.map((String gouvernorat) {
                         return DropdownMenuItem<String>(
@@ -142,14 +143,27 @@ class DoctorFormPage extends State<DoctorDataPage> {
                             borderSide: BorderSide(color: Colors.black)),
                       ),
                     ),
+                    CheckboxListTile(
+                      activeColor: Color(0xFF4163CD),
+                      value: checkBoxValue,
+                      onChanged: (val) {
+                        setState(() {
+                          checkBoxValue = val!;
+                        });
+                      },
+                      title: Text(
+                        "I accept all terms of use",
+                        style: TextStyle(fontFamily: 'Poppins'),
+                      ),
+                    ),
                     SizedBox(
-                      height: 70,
+                      height: 30,
                     ),
                     SignButton(
                         text: "Submit",
                         textColor: Colors.white,
                         backgroundColor: Color(0xFF4163CD),
-                        function: () {})
+                        function: () {}),
                   ],
                 )),
           ],
