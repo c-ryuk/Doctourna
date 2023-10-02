@@ -10,13 +10,15 @@ class Post {
   final String dateTime;
 
   final bool isLike;
+  final String userId;
 
-  const Post(
-      {required this.id,
-      required this.title,
-      required this.description,
-      required this.imageUrl,
-      required this.dateTime,
-      required this.isLike
-      });
+  const Post({
+    required this.id,
+    required this.title,
+    required this.description,
+    required this.imageUrl,
+    required this.dateTime,
+    required this.isLike,
+    required this.userId,
+  });
 }

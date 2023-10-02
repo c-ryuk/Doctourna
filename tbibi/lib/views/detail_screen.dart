@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tbibi/models/post.dart';
+import 'package:tbibi/models/user.dart'; // Import the User model
+import 'package:tbibi/static_data/users_list.dart';
 
 class PostDetail extends StatelessWidget {
   final Function toggleTheme;
@@ -10,71 +12,135 @@ class PostDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final argument = ModalRoute.of(context)!.settings.arguments as Post;
+
+    // Create a function to get a user by ID
+    User? getUserById(String id) {
+      for (User user in Users_data) {
+        if (user.id == id) {
+          return user;
+        }
+      }
+      return null; // Return null if no match is found
+    }
+
+    User? u = getUserById(argument.userId);
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         elevation: 0,
-        backgroundColor: isDarkMode ? Colors.green : Colors.lightGreen,
-        title: Text(
-          argument.title,
-          style: const TextStyle(
-            fontWeight: FontWeight.w400,
-            fontSize: 22,
-          ),
-          maxLines:
-              null, // Allow the text to wrap to the next line if necessary
+        backgroundColor: isDarkMode ? Colors.black12 : Colors.white,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () => Navigator.of(context).pop(),
         ),
       ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            FractionallySizedBox(
-              widthFactor: 1.0, // Make the image take full width
-              child: Image.network(
-                argument.imageUrl,
-                fit: BoxFit.cover,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 30),
+              child: Text(
+                argument.title,
+                style: TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Row(
+            if (u != null) // Check if the user is not null
+              Row(
                 children: [
-                  Text(
-                    "Date_Creation : ",
-                    style: TextStyle(
-                      color: isDarkMode ? Colors.green : Colors.lightGreen,
-                      fontSize: 25,
-                    ),
+                  SizedBox(width: 8),
+                  CircleAvatar(
+                    backgroundImage: NetworkImage(u.imageUrl),
                   ),
-                  Text(
-                    argument.dateTime,
-                    style: TextStyle(
-                      color: isDarkMode ? Colors.white : Colors.black,
-                      fontSize: 20,
-                    ),
+                  SizedBox(width: 8),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '${u.name} ${u.surname}',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        u.specialty,
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.lightGreen,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(10.0),
-              child: Text(
-                "Discription :",
-                style: TextStyle(
-                  color: isDarkMode ? Colors.green : Colors.lightGreen,
-                  fontSize: 25,
+            SizedBox(height: 10),
+            Hero(
+              tag:
+                  'post_image_${argument.id}', // Unique tag for the hero animation
+              child: FractionallySizedBox(
+                widthFactor: 1.0,
+                child: Image.network(
+                  argument.imageUrl,
+                  fit: BoxFit.cover,
                 ),
               ),
             ),
             Padding(
-              padding: EdgeInsets.all(10.0),
-              child: Text(
-                argument.description,
-                style: TextStyle(
-                  color: isDarkMode ? Colors.white : Colors.black,
-                  fontSize: 20,
-                ),
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Text(
+                            "Date_Creation : ${argument.dateTime}",
+                            style: TextStyle(
+                              fontSize: 20,
+                            ),
+                          ),
+                          SizedBox(width: 5),
+                          Icon(Icons.calendar_month, color: Colors.lightGreen),
+                        ],
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 16),
+                  Card(
+                    elevation: 4,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Description :",
+                            style: TextStyle(
+                              fontSize: 25,
+                            ),
+                          ),
+                          SizedBox(height: 16),
+                          Text(
+                            argument.description,
+                            style: TextStyle(
+                              fontSize: 20,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ],
