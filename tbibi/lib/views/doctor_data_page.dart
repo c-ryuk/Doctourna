@@ -152,8 +152,8 @@ class DoctorFormPage extends State<DoctorDataPage> {
                         });
                       },
                       title: Text(
-                        "I accept all terms of use",
-                        style: TextStyle(fontFamily: 'Poppins'),
+                        "I agree to all terms and conditions of use",
+                        style: TextStyle(fontFamily: 'Poppins', fontSize: 13),
                       ),
                     ),
                     SizedBox(

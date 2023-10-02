@@ -1,10 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:tbibi/models/speciality.dart';
 
 import 'package:tbibi/static_data/specialities_list.dart';
 import 'package:tbibi/views/doctor_data_page.dart';
 import 'package:tbibi/widgets/speciality_widget.dart';
 
-class SpecialitiesPage extends StatelessWidget {
+class SpecialitiesPage extends StatefulWidget {
+  @override
+  SpecialitiesPageState createState() => SpecialitiesPageState();
+}
+
+class SpecialitiesPageState extends State<SpecialitiesPage> {
+  int selectedIndex = -1;
+  String selectedSpeciality = "";
+
+  void handleSpecialityTap(int index, Speciality value) {
+    setState(() {
+      selectedIndex = index;
+      selectedSpeciality = value.title;
+      print(value.title);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,7 +73,15 @@ class SpecialitiesPage extends StatelessWidget {
                 Wrap(
                     direction: Axis.horizontal,
                     children: spec
-                        .map((e) => SpecialityWidget(speciality: e))
+                        .asMap()
+                        .entries
+                        .map((entries) => SpecialityWidget(
+                              onTap: () {
+                                handleSpecialityTap(entries.key, entries.value);
+                              },
+                              isSelected: entries.key == selectedIndex,
+                              speciality: entries.value,
+                            ))
                         .toList(),
                     alignment: WrapAlignment.center),
               ]),
