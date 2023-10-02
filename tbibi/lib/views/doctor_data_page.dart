@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tbibi/models/country.dart';
 import 'package:tbibi/static_data/countries_list.dart';
 import 'package:tbibi/static_data/governorate_list.dart';
 import 'package:tbibi/widgets/country_widget.dart';
@@ -13,6 +14,19 @@ class DoctorDataPage extends StatefulWidget {
 
 class DoctorFormPage extends State<DoctorDataPage> {
   bool checkBoxValue = false;
+  int selectedIndex = -1;
+  bool isSelected = false;
+  String selectedCountry = "";
+
+  void handleSpecialityTap(int index, Country value) {
+    setState(() {
+      selectedIndex = index;
+      selectedCountry = value.title;
+      isSelected = true;
+      print(value.title);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     var selectedGovernante;
@@ -49,8 +63,16 @@ class DoctorFormPage extends State<DoctorDataPage> {
               height: 85,
               child: ListView(
                 scrollDirection: Axis.horizontal,
-                children:
-                    countries.map((e) => CountryWidget(country: e)).toList(),
+                children: countries
+                    .asMap()
+                    .entries
+                    .map((entries) => CountryWidget(
+                        onTap: () {
+                          handleSpecialityTap(entries.key, entries.value);
+                        },
+                        isSelected: entries.key == selectedIndex,
+                        country: entries.value))
+                    .toList(),
               ),
             ),
             SizedBox(

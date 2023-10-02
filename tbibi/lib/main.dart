@@ -42,18 +42,19 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: themeData,
-      initialRoute: '/',
-      routes: {
-        '/': (context) =>
-            MyTabBar(toggleTheme: toggleTheme, isDarkMode: _isDarkMode),
-        '/login': (context) => LoginPage(),
-        '/posts': (context) =>
-            PostScreen(toggleTheme: toggleTheme, isDarkMode: _isDarkMode),
-        '/post-detail': (context) =>
-            PostDetail(toggleTheme: toggleTheme, isDarkMode: _isDarkMode),
-        '/appoinment-page': (context) => const AppointmentBookingPage(),
-        '/profile-page': (context) => const ProfilePage(),
-      },
+      home: LoginPage(),
+      // initialRoute: '/',
+      // routes: {
+      //   '/': (context) =>
+      //       MyTabBar(toggleTheme: toggleTheme, isDarkMode: _isDarkMode),
+      //   '/login': (context) => LoginPage(),
+      //   '/posts': (context) =>
+      //       PostScreen(toggleTheme: toggleTheme, isDarkMode: _isDarkMode),
+      //   '/post-detail': (context) =>
+      //       PostDetail(toggleTheme: toggleTheme, isDarkMode: _isDarkMode),
+      //   '/appoinment-page': (context) => const AppointmentBookingPage(),
+      //   '/profile-page': (context) => const ProfilePage(),
+      // },
     );
   }
 }

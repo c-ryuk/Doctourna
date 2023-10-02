@@ -12,12 +12,14 @@ class SpecialitiesPage extends StatefulWidget {
 
 class SpecialitiesPageState extends State<SpecialitiesPage> {
   int selectedIndex = -1;
+  bool isSelected = false;
   String selectedSpeciality = "";
 
   void handleSpecialityTap(int index, Speciality value) {
     setState(() {
       selectedIndex = index;
       selectedSpeciality = value.title;
+      isSelected = true;
       print(value.title);
     });
   }
@@ -32,9 +34,45 @@ class SpecialitiesPageState extends State<SpecialitiesPage> {
           actions: [
             ElevatedButton(
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return DoctorDataPage();
-                }));
+                if (isSelected == false) {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: const Center(
+                              child: Text(
+                            "Alert !",
+                            style: TextStyle(
+                                fontFamily: 'Poppins Medium', fontSize: 24),
+                          )),
+                          content: Text(
+                            "You must select your gender to continue",
+                            style:
+                                TextStyle(fontFamily: 'Poppins', fontSize: 16),
+                          ),
+                          actions: [
+                            Center(
+                                child: ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                        backgroundColor: Color(0xFF4163CD)),
+                                    child: Text(
+                                      "Okay",
+                                      style: TextStyle(
+                                          fontFamily: 'Poppins',
+                                          fontSize: 16,
+                                          color: Colors.white),
+                                    )))
+                          ],
+                        );
+                      });
+                } else {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return DoctorDataPage();
+                  }));
+                }
               },
               child: Text(
                 "Next",

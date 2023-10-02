@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:icons_flutter/icons_flutter.dart';
 import 'package:tbibi/views/appoinment_page.dart';
 import 'package:tbibi/views/edit_profile_page.dart';
-import 'package:tbibi/widgets/Button.dart';
+import 'package:tbibi/widgets/button.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ProfilePage extends StatefulWidget {
