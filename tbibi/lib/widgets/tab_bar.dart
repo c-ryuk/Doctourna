@@ -2,8 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:tbibi/views/blog_page.dart';
-import 'package:tbibi/views/screen2.dart';
-import 'package:tbibi/views/screen3.dart';
+import 'package:tbibi/views/login_page.dart';
 
 import '../views/profile_page.dart';
 
@@ -45,13 +44,20 @@ class _MyTabBarState extends State<MyTabBar> {
     );
   }
 
+  void _navigateToLoginPage() {
+    // Navigate to the LoginPage
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => LoginPage(),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final List<Widget> _screens = [
       PostScreen(
           toggleTheme: widget.toggleTheme, isDarkMode: widget.isDarkMode),
-      Screen2(),
-      Screen3(),
     ];
     return Scaffold(
       appBar: AppBar(
@@ -111,13 +117,15 @@ class _MyTabBarState extends State<MyTabBar> {
                       DrawerHeader(
                         child: Text('Sidebar Header'),
                         decoration: BoxDecoration(
-                          color: widget.isDarkMode ? Colors.green : Colors.lightGreen,
+                          color: widget.isDarkMode
+                              ? Colors.green
+                              : Colors.lightGreen,
                         ),
                       ),
                       ListTile(
-                        title: Text('Item 1'),
+                        title: Text('Login'),
                         onTap: () {
-                          // Handle sidebar item 1 tap
+                          _navigateToLoginPage();
                         },
                       ),
                       ListTile(
