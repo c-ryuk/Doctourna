@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:icons_flutter/icons_flutter.dart';
 import 'package:tbibi/views/appoinment_page.dart';
 import 'package:tbibi/views/edit_profile_page.dart';
+import 'package:tbibi/widgets/Button.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -54,13 +55,13 @@ class _ProfilePageState extends State<ProfilePage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              buildSocialIcon(FontAwesome.slack),
+              buildSocialIcon(FontAwesome.phone, () {
+                _launchPhoneCall('22 555 888');
+              }),
               SizedBox(width: 12),
               buildSocialIcon(FontAwesome.facebook),
               SizedBox(width: 12),
-              buildSocialIcon(FontAwesome.linkedin),
-              SizedBox(width: 12),
-              buildSocialIcon(FontAwesome.github),
+              buildSocialIcon(FontAwesome.location_arrow),
             ],
           ),
           SizedBox(height: 36),
@@ -73,41 +74,6 @@ class _ProfilePageState extends State<ProfilePage> {
             ],
           ),
           SizedBox(height: 36),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.phone,
-                size: 30,
-                color: Colors.lightGreen,
-              ),
-              SizedBox(width: 8),
-              Text(
-                '22 555 888',
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.lightGreen,
-                ),
-              ),
-              SizedBox(width: 16),
-              ElevatedButton(
-                onPressed: () async {
-                  final Uri url = Uri(scheme: 'tel', path: '22 555 888');
-                  if (await canLaunchUrl(url)) {
-                    await launchUrl(url);
-                  } else {
-                    print('cannot lunch this api');
-                  }
-                },
-                style: ElevatedButton.styleFrom(
-                  primary: Colors.lightGreen,
-                  onPrimary: Colors.white,
-                ),
-                child: Text('Call Me'),
-              ),
-            ],
-          ),
-          SizedBox(height: 26),
           Container(
             padding: EdgeInsets.all(16),
             child: Column(
@@ -119,28 +85,20 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 SizedBox(height: 8),
                 Text(
-                  'I am a passionate developer who loves Flutter and creating amazing apps.',
+                  'Relieves pain and reduces inflammation, providing fast relief from headaches and muscle aches.',
                   style: TextStyle(fontSize: 16, color: Colors.black),
                 ),
               ],
             ),
           ),
-          SizedBox(width: 16),
-          buildAddressSection(),
           SizedBox(width: 36),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => AppointmentBookingPage(),
-                ),
-              );
-            },
-            style: ElevatedButton.styleFrom(
-              primary: Colors.lightGreen,
-              onPrimary: Colors.white,
-            ),
-            child: Text('Take Appointment'),
+          Button(
+              text: 'Take Appoinment',
+              function: () {
+                _navigateToAppoinmentPage();
+              }),
+          SizedBox(
+            height: 36,
           ),
         ],
       );
@@ -216,22 +174,39 @@ class _ProfilePageState extends State<ProfilePage> {
           'https://img.a.transfermarkt.technology/portrait/big/28003-1694590254.jpg?lm=1',
         ),
       );
+  Widget buildSocialIcon(IconData icon, [VoidCallback? onTapFunction]) =>
+      CircleAvatar(
+          radius: 25,
+          child: Material(
+            shape: CircleBorder(),
+            clipBehavior: Clip.hardEdge,
+            color: Colors.transparent,
+            child: Tooltip(
+              message: getTooltipMessage(icon),
+              child: InkWell(
+                onTap: icon == FontAwesome.location_arrow
+                    ? _showAddressDialog
+                    : onTapFunction ?? () {},
+                child: Center(
+                    child: Icon(
+                  icon,
+                  size: 32,
+                )),
+              ),
+            ),
+          ));
 
-  Widget buildSocialIcon(IconData icon) => CircleAvatar(
-      radius: 25,
-      child: Material(
-        shape: CircleBorder(),
-        clipBehavior: Clip.hardEdge,
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: () {},
-          child: Center(
-              child: Icon(
-            icon,
-            size: 32,
-          )),
-        ),
-      ));
+  String getTooltipMessage(IconData icon) {
+    if (icon == FontAwesome.phone) {
+      return 'Phone';
+    } else if (icon == FontAwesome.facebook) {
+      return 'Facebook';
+    } else if (icon == FontAwesome.location_arrow) {
+      return 'Location';
+    } else {
+      return '';
+    }
+  }
 
   Widget buildCountWidget(String label, String count) {
     return Container(
@@ -265,41 +240,74 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Widget buildAddressSection() {
-    return Container(
-      padding: EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: const [
-          Text(
-            'Address',
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-          ),
-          SizedBox(height: 8),
-          Row(
-            children: [
-              Icon(
-                Icons.location_on,
-                color: Colors.black,
-                size: 24,
-              ),
-              SizedBox(width: 8),
-              Text(
-                '123 Main Street, City, Country',
-                style: TextStyle(fontSize: 16, color: Colors.black),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
   void _navigateToEditProfilePage() {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => const EditProfilePage(),
       ),
+    );
+  }
+
+  void _navigateToAppoinmentPage() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const AppointmentBookingPage(),
+      ),
+    );
+  }
+
+  Future<void> _launchPhoneCall(String phoneNumber) async {
+    final Uri url = Uri(scheme: 'tel', path: phoneNumber);
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url);
+    } else {
+      print('Cannot launch this API');
+    }
+  }
+
+  Future<void> _showAddressDialog() async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Row(
+            children: [
+              Icon(
+                Icons.location_on,
+                color: Colors.blue,
+              ),
+              SizedBox(width: 8),
+              Text('Address'),
+            ],
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ListTile(
+                leading: Icon(Icons.home),
+                title: Text('33070 Chera3 el nig'),
+              ),
+              ListTile(
+                leading: Icon(Icons.location_city),
+                title: Text('Burkina Sfaxou'),
+              ),
+              ListTile(
+                leading: Icon(Icons.flag),
+                title: Text('Tunisia'),
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Close'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }
