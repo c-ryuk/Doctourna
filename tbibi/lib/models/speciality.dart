@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Speciality {
-  Icon icon;
+  FaIcon icon;
   String title;
   Speciality({required this.icon, required this.title});
 }
