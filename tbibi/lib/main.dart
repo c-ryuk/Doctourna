@@ -51,8 +51,10 @@ class _MyAppState extends State<MyApp> {
             PostScreen(toggleTheme: toggleTheme, isDarkMode: _isDarkMode),
         '/post-detail': (context) =>
             PostDetail(toggleTheme: toggleTheme, isDarkMode: _isDarkMode),
-        '/appoinment-page': (context) => const AppointmentBookingPage(),
-        '/profile-page': (context) => const ProfilePage(),
+        '/appoinment-page': (context) => AppointmentBookingPage(
+            toggleTheme: toggleTheme, isDarkMode: _isDarkMode),
+        '/profile-page': (context) =>
+            ProfilePage(toggleTheme: toggleTheme, isDarkMode: _isDarkMode),
       },
     );
   }

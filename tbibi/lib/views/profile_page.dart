@@ -8,7 +8,10 @@ import 'package:tbibi/widgets/button.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({Key? key}) : super(key: key);
+  final Function toggleTheme;
+  final bool isDarkMode;
+  const ProfilePage(
+      {super.key, required this.toggleTheme, required this.isDarkMode});
 
   @override
   _ProfilePageState createState() => _ProfilePageState();
@@ -19,7 +22,6 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        color: Colors.white,
         child: ListView(padding: EdgeInsets.zero, children: <Widget>[
           buildTop(),
           buildContent(),
@@ -38,16 +40,18 @@ class _ProfilePageState extends State<ProfilePage> {
           SizedBox(height: 8),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
+            children: [
               Icon(
                 Icons.healing_outlined,
-                color: Colors.lightGreen,
+                color: widget.isDarkMode ? Colors.green : Colors.lightGreen,
                 size: 25,
               ),
               SizedBox(width: 8),
               Text(
                 'something',
-                style: TextStyle(fontSize: 20, color: Colors.black),
+                style: TextStyle(
+                    fontSize: 20,
+                    color: widget.isDarkMode ? Colors.white : Colors.black),
               ),
             ],
           ),
@@ -78,7 +82,7 @@ class _ProfilePageState extends State<ProfilePage> {
             padding: EdgeInsets.all(16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
+              children: [
                 Text(
                   'About Me',
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
@@ -86,17 +90,29 @@ class _ProfilePageState extends State<ProfilePage> {
                 SizedBox(height: 8),
                 Text(
                   'Relieves pain and reduces inflammation, providing fast relief from headaches and muscle aches.',
-                  style: TextStyle(fontSize: 16, color: Colors.black),
+                  style: TextStyle(
+                      fontSize: 16,
+                      color: widget.isDarkMode ? Colors.white : Colors.black),
                 ),
               ],
             ),
           ),
           SizedBox(width: 36),
-          Button(
-              text: 'Take Appoinment',
-              function: () {
-                _navigateToAppoinmentPage();
-              }),
+          ElevatedButton(
+            onPressed: () {
+              _navigateToAppoinmentPage();
+            },
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all<Color>(
+                widget.isDarkMode ? Colors.green : Colors.lightGreen,
+              ),
+            ),
+            child: Text(
+              'Take Appointment',
+              style: TextStyle(
+                  color: widget.isDarkMode ? Colors.white : Colors.black),
+            ),
+          ),
           SizedBox(
             height: 36,
           ),
@@ -109,11 +125,11 @@ class _ProfilePageState extends State<ProfilePage> {
       alignment: Alignment.center,
       children: [
         Container(
-          margin: EdgeInsets.only(bottom: 144 / 2),
+          margin: EdgeInsets.only(bottom: 174 / 2),
           child: buildCoverImage(),
         ),
         Positioned(
-          top: 280 - 144 / 2,
+          top: 280 - 194 / 2,
           child: Stack(
             alignment: Alignment.bottomLeft,
             children: [
@@ -128,7 +144,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   child: Container(
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: Colors.lightGreen,
+                      color:
+                          widget.isDarkMode ? Colors.green : Colors.lightGreen,
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -158,11 +175,11 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Widget buildCoverImage() => Container(
-        color: Colors.lightGreen,
+        color: widget.isDarkMode ? Colors.green : Colors.lightGreen,
         child: Image.network(
           'https://res.cloudinary.com/dhzlfojtv/image/upload/v1696246033/istockphoto-831557666-612x612-removebg-preview_zs3zjc.png',
           width: double.infinity,
-          height: 280,
+          height: 250,
           fit: BoxFit.cover,
         ),
       );
@@ -180,7 +197,7 @@ class _ProfilePageState extends State<ProfilePage> {
           child: Material(
             shape: CircleBorder(),
             clipBehavior: Clip.hardEdge,
-            color: Colors.transparent,
+            color: widget.isDarkMode ? Colors.green : Colors.transparent,
             child: Tooltip(
               message: getTooltipMessage(icon),
               child: InkWell(
@@ -191,6 +208,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: Icon(
                   icon,
                   size: 32,
+                  color: widget.isDarkMode ? Colors.white : Colors.black,
                 )),
               ),
             ),
@@ -228,12 +246,15 @@ class _ProfilePageState extends State<ProfilePage> {
         children: [
           Text(
             count,
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            style: TextStyle(
+                fontSize: 24, fontWeight: FontWeight.bold, color: Colors.black),
           ),
           SizedBox(height: 4),
           Text(
             label,
-            style: TextStyle(fontSize: 16, color: Colors.grey),
+            style: TextStyle(
+                fontSize: 16,
+                color: widget.isDarkMode ? Colors.black : Colors.grey),
           ),
         ],
       ),
@@ -251,7 +272,8 @@ class _ProfilePageState extends State<ProfilePage> {
   void _navigateToAppoinmentPage() {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => const AppointmentBookingPage(),
+        builder: (context) => AppointmentBookingPage(
+            toggleTheme: widget.toggleTheme, isDarkMode: widget.isDarkMode),
       ),
     );
   }
@@ -274,7 +296,7 @@ class _ProfilePageState extends State<ProfilePage> {
             children: [
               Icon(
                 Icons.location_on,
-                color: Colors.blue,
+                color: widget.isDarkMode ? Colors.green : Colors.lightGreen,
               ),
               SizedBox(width: 8),
               Text('Address'),
@@ -300,7 +322,11 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
           actions: <Widget>[
             TextButton(
-              child: Text('Close'),
+              child: Text(
+                'Close',
+                selectionColor:
+                    widget.isDarkMode ? Colors.green : Colors.lightGreen,
+              ),
               onPressed: () {
                 Navigator.of(context).pop();
               },

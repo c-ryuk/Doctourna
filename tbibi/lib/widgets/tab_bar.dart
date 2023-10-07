@@ -39,7 +39,8 @@ class _MyTabBarState extends State<MyTabBar> {
     // Navigate to the ProfilePage when the user icon is pressed
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => const ProfilePage(),
+        builder: (context) => ProfilePage(
+            toggleTheme: widget.toggleTheme, isDarkMode: widget.isDarkMode),
       ),
     );
   }
