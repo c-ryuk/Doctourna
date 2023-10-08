@@ -24,7 +24,7 @@ class _DoctorsListPageState extends State<DoctorsListPage> {
         rating: '4.7'),
     Doctor(
         name: 'Dr. Mohamed MISSAMOUI',
-        imageUrl: 'assets/mohamed.png',
+        imageUrl: 'assets/missa.jpg',
         speciality: 'Generalist',
         rating: '4.7'),
     Doctor(

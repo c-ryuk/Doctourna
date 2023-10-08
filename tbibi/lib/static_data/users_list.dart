@@ -3,26 +3,32 @@ import 'package:tbibi/models/user.dart';
 List<User> Users_data = [
   User(
     id: 'u1',
-    name: 'Med',
+    name: 'Dr. Med MISSA',
     surname: 'Missa',
     specialty: 'Dentiste',
-    imageUrl:
-        'https://th.bing.com/th/id/OIP.tjUOUBGnthmW762mbRAFdQHaE8?w=274&h=183&c=7&r=0&o=5&dpr=1.4&pid=1.7',
+    imageUrl: 'assets/missa.jpg',
   ),
   User(
     id: 'u2',
-    name: 'Hamed',
+    name: 'Dr. Hamed TRIKI',
     surname: 'Triki',
     specialty: 'Généraliste',
-    imageUrl:
-        'https://th.bing.com/th/id/OIP.tjUOUBGnthmW762mbRAFdQHaE8?w=274&h=183&c=7&r=0&o=5&dpr=1.4&pid=1.7',
+    imageUrl: 'assets/hamed.jpg',
   ),
   User(
     id: 'u3',
-    name: 'Hamza',
+    name: 'Dr. Hamza REKIK',
     surname: 'rkik',
     specialty: 'Cardiologue',
-    imageUrl:
-        'https://th.bing.com/th/id/OIP.tjUOUBGnthmW762mbRAFdQHaE8?w=274&h=183&c=7&r=0&o=5&dpr=1.4&pid=1.7',
+    imageUrl: 'assets/hamza.png',
   ),
 ];
+
+User? getUserById(String id) {
+  for (User user in Users_data) {
+    if (user.id == id) {
+      return user;
+    }
+  }
+  return null;
+}
