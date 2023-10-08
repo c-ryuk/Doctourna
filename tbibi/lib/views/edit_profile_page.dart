@@ -35,7 +35,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
             padding: const EdgeInsets.all(16.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
+              children: [
                 const CircleAvatar(
                   backgroundColor: Colors.transparent,
                   radius: 70,

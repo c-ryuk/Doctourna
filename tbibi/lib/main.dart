@@ -10,17 +10,17 @@ import 'package:tbibi/views/profile_page.dart';
 import 'package:tbibi/widgets/tab_bar.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const Doctourna());
 }
 
-class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+class Doctourna extends StatefulWidget {
+  const Doctourna({super.key});
 
   @override
-  _MyAppState createState() => _MyAppState();
+  _DoctournaState createState() => _DoctournaState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _DoctournaState extends State<Doctourna> {
   bool _isDarkMode = false;
 
   void toggleTheme() {
@@ -42,19 +42,19 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: themeData,
-      home: LoginPage(),
-      // initialRoute: '/',
-      // routes: {
-      //   '/': (context) =>
-      //       MyTabBar(toggleTheme: toggleTheme, isDarkMode: _isDarkMode),
-      //   '/login': (context) => LoginPage(),
-      //   '/posts': (context) =>
-      //       PostScreen(toggleTheme: toggleTheme, isDarkMode: _isDarkMode),
-      //   '/post-detail': (context) =>
-      //       PostDetail(toggleTheme: toggleTheme, isDarkMode: _isDarkMode),
-      //   '/appoinment-page': (context) => const AppointmentBookingPage(),
-      //   '/profile-page': (context) => const ProfilePage(),
-      // },
+      // home: LoginPage(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) =>
+            MyTabBar(toggleTheme: toggleTheme, isDarkMode: _isDarkMode),
+        '/login': (context) => LoginPage(),
+        '/posts': (context) =>
+            PostScreen(toggleTheme: toggleTheme, isDarkMode: _isDarkMode),
+        '/post-detail': (context) =>
+            PostDetail(toggleTheme: toggleTheme, isDarkMode: _isDarkMode),
+        '/appoinment-page': (context) => const AppointmentBookingPage(),
+        '/profile-page': (context) => const ProfilePage(),
+      },
     );
   }
 }

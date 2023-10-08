@@ -20,7 +20,7 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
       body: Container(
         color: Colors.white,
-        child: ListView(padding: EdgeInsets.zero, children: <Widget>[
+        child: ListView(padding: EdgeInsets.zero, children: [
           buildTop(),
           buildContent(),
         ]),
