@@ -28,6 +28,7 @@ class SpecialitiesPageState extends State<SpecialitiesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+          iconTheme: IconThemeData(color: Colors.red, size: 30),
           centerTitle: true,
           elevation: 0,
           backgroundColor: Colors.transparent,
@@ -57,7 +58,7 @@ class SpecialitiesPageState extends State<SpecialitiesPage> {
                                       Navigator.pop(context);
                                     },
                                     style: ElevatedButton.styleFrom(
-                                        backgroundColor: Color(0xFF4163CD)),
+                                        backgroundColor: Colors.red),
                                     child: Text(
                                       "Okay",
                                       style: TextStyle(
@@ -76,7 +77,8 @@ class SpecialitiesPageState extends State<SpecialitiesPage> {
               },
               child: Text(
                 "Next",
-                style: TextStyle(fontFamily: 'Poppins', fontSize: 18),
+                style: TextStyle(
+                    fontFamily: 'Poppins', fontSize: 18, color: Colors.red),
               ),
               style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.transparent, elevation: 0),
@@ -85,9 +87,7 @@ class SpecialitiesPageState extends State<SpecialitiesPage> {
           title: Text(
             " Specialities",
             style: TextStyle(
-                fontFamily: 'Poppins Medium',
-                fontSize: 25,
-                color: Color(0xFF4163CD)),
+                fontFamily: 'Poppins Medium', fontSize: 25, color: Colors.red),
           )),
       body: Container(
         alignment: Alignment.center,

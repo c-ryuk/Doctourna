@@ -32,6 +32,7 @@ class PostDetail extends StatelessWidget {
         backgroundColor: isDarkMode ? Colors.black12 : Colors.white,
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
+          color: Colors.red,
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
@@ -71,7 +72,7 @@ class PostDetail extends StatelessWidget {
                         u.specialty,
                         style: TextStyle(
                           fontSize: 14,
-                          color: Colors.lightGreen,
+                          color: Colors.red,
                         ),
                       ),
                     ],
@@ -107,7 +108,7 @@ class PostDetail extends StatelessWidget {
                             ),
                           ),
                           SizedBox(width: 5),
-                          Icon(Icons.calendar_month, color: Colors.lightGreen),
+                          Icon(Icons.calendar_month, color: Colors.red),
                         ],
                       ),
                     ],

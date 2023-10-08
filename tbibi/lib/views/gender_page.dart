@@ -19,6 +19,7 @@ class GenderPageState extends State<GenderPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.red, size: 30),
         backgroundColor: Colors.transparent,
         elevation: 0,
         actions: [
@@ -46,7 +47,7 @@ class GenderPageState extends State<GenderPage> {
                                     Navigator.pop(context);
                                   },
                                   style: ElevatedButton.styleFrom(
-                                      backgroundColor: Color(0xFF4163CD)),
+                                      backgroundColor: Colors.red),
                                   child: Text(
                                     "Okay",
                                     style: TextStyle(
@@ -65,7 +66,8 @@ class GenderPageState extends State<GenderPage> {
             },
             child: Text(
               "Next",
-              style: TextStyle(fontFamily: 'Poppins', fontSize: 18),
+              style: TextStyle(
+                  fontFamily: 'Poppins', fontSize: 18, color: Colors.red),
             ),
             style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.transparent, elevation: 0),

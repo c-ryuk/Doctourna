@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tbibi/views/signup_page.dart';
 import 'package:tbibi/widgets/signbutton.dart';
-import 'package:tbibi/widgets/textinput.dart';
 
 class LoginPage extends StatelessWidget {
   @override
@@ -13,37 +12,55 @@ class LoginPage extends StatelessWidget {
           child: Stack(
             children: [
               Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Expanded(
-                    flex: 2,
+                    flex: 1,
                     child: Container(
+                      margin: EdgeInsets.only(top: 50),
                       width: double.infinity,
                       child: Image.asset(
-                        "assets/login_image.jpg",
-                        fit: BoxFit.cover,
+                        "assets/login_doctor.png",
                       ),
                     ),
                   ),
                   Expanded(
-                    flex: 3,
+                    flex: 2,
                     child: Container(
                       width: double.infinity,
-                      color: Color(0xFF4163CD),
+                      padding: EdgeInsets.all(16.0),
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          InputText(hint: "Email"),
-                          InputText(hint: "Password"),
+                          // Email Input
+                          TextFormField(
+                            decoration: InputDecoration(
+                              labelText: "Email",
+                              prefixIcon: Icon(Icons.email),
+                              border: OutlineInputBorder(),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 16,
+                          ),
+                          // Password Input
+                          TextFormField(
+                            decoration: InputDecoration(
+                              labelText: "Password",
+                              prefixIcon: Icon(Icons.lock), // Password icon
+                              border: OutlineInputBorder(),
+                            ),
+                            obscureText: true,
+                          ),
                           SizedBox(
                             height: 26,
                           ),
-                          Padding(
-                            padding: EdgeInsets.only(left: 125),
+                          Align(
+                            alignment: Alignment.centerLeft,
                             child: Text(
                               "Forgot your password ?",
                               style: TextStyle(
-                                color: Colors.white,
+                                color: Colors.black38,
                                 fontFamily: 'Poppins',
                                 fontSize: 17,
                               ),
@@ -55,20 +72,23 @@ class LoginPage extends StatelessWidget {
                           SignButton(
                             text: "LOGIN",
                             textColor: Colors.white,
-                            backgroundColor: Color(0xFF4CE3B1),
+                            backgroundColor: Colors.red,
                             function: () {},
                           ),
                           SizedBox(
                             height: 20,
                           ),
                           Text(
-                            "New Member ?",
+                            "Or",
                             style: TextStyle(
                               fontFamily: "Poppins",
-                              fontSize: 24,
+                              fontSize: 20,
                               fontWeight: FontWeight.bold,
-                              color: Colors.white,
+                              color: Colors.black38,
                             ),
+                          ),
+                          SizedBox(
+                            height: 20,
                           ),
                           ElevatedButton(
                             onPressed: () {
@@ -88,7 +108,7 @@ class LoginPage extends StatelessWidget {
                             ),
                             style: ElevatedButton.styleFrom(
                               fixedSize: Size(310, 40),
-                              backgroundColor: Color(0xFF4163CD),
+                              backgroundColor: Colors.red.withOpacity(0.8),
                               shape: RoundedRectangleBorder(
                                 side: BorderSide(
                                   color: Colors.white,
@@ -106,11 +126,12 @@ class LoginPage extends StatelessWidget {
               ),
               Positioned(
                 top: 30,
-                left: 20,
+                left: 0,
                 child: IconButton(
                   icon: Icon(
                     Icons.arrow_back,
-                    color: Colors.white,
+                    color: Colors.red,
+                    size: 30,
                   ),
                   onPressed: () {
                     Navigator.pop(context);

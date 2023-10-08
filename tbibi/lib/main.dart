@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:tbibi/views/appoinment_page.dart';
 import 'package:tbibi/views/detail_screen.dart';
-import 'package:tbibi/views/doctor_data_page.dart';
 import 'package:tbibi/views/login_page.dart';
 import 'package:tbibi/views/blog_page.dart';
 import 'package:tbibi/views/profile_page.dart';
@@ -30,10 +29,10 @@ class _MyAppState extends State<MyApp> {
   }
 
   final ThemeData _lightTheme =
-      ThemeData(primarySwatch: Colors.lightGreen, brightness: Brightness.light);
+      ThemeData(primarySwatch: Colors.red, brightness: Brightness.light);
 
   final ThemeData _darkTheme =
-      ThemeData(primarySwatch: Colors.lightGreen, brightness: Brightness.dark);
+      ThemeData(primarySwatch: Colors.red, brightness: Brightness.dark);
 
   @override
   Widget build(BuildContext context) {

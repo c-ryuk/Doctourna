@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tbibi/views/gender_page.dart';
-
 import '../widgets/signbutton.dart';
-import '../widgets/textinput.dart';
 
 class SignUpPage extends StatelessWidget {
   @override
@@ -15,95 +13,131 @@ class SignUpPage extends StatelessWidget {
         title: Text(
           "Sign Up",
           style: TextStyle(
-              fontSize: 30,
-              color: Colors.black,
-              fontFamily: 'Poppins Medium',
-              fontWeight: FontWeight.w500),
+            fontSize: 30,
+            color: Colors.red,
+            fontFamily: 'Poppins Medium',
+            fontWeight: FontWeight.w500,
+          ),
         ),
+        iconTheme: IconThemeData(color: Colors.red, size: 30),
       ),
       body: SingleChildScrollView(
         child: Container(
-            height: 728,
-            child: Column(
-              children: [
-                Expanded(
-                    flex: 3,
-                    child: Container(
-                      color: Colors.white38,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          InputText(hint: "First Name"),
-                          InputText(
-                            hint: "Last Name",
+          height: 728,
+          child: Column(
+            children: [
+              Expanded(
+                flex: 3,
+                child: Container(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Container(
+                        width: 300, // Set the desired width here
+                        child: TextFormField(
+                          decoration: InputDecoration(
+                            labelText: "Full Name",
+                            prefixIcon: Icon(Icons.person),
                           ),
-                          InputText(
-                            hint: "Email",
-                          ),
-                          InputText(
-                            hint: "Password",
-                          ),
-                          InputText(
-                            hint: "Confirm Password",
-                          ),
-                          SignButton(
-                              text: "SIGN UP",
-                              textColor: Colors.white,
-                              backgroundColor: Color(0xFF4CE3B1),
-                              function: () {})
-                        ],
+                        ),
                       ),
-                    )),
-                Expanded(
-                    child: Container(
+                      Container(
+                        width: 300, // Set the desired width here
+                        child: TextFormField(
+                          decoration: InputDecoration(
+                            labelText: "Email",
+                            prefixIcon: Icon(Icons.email),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        width: 300, // Set the desired width here
+                        child: TextFormField(
+                          decoration: InputDecoration(
+                            labelText: "Password",
+                            prefixIcon: Icon(Icons.lock),
+                          ),
+                          obscureText: true,
+                        ),
+                      ),
+                      Container(
+                        width: 300, // Set the desired width here
+                        child: TextFormField(
+                          decoration: InputDecoration(
+                            labelText: "Confirm Password",
+                            prefixIcon: Icon(Icons.lock),
+                          ),
+                          obscureText: true,
+                        ),
+                      ),
+                      SignButton(
+                        text: "SIGN UP",
+                        textColor: Colors.white,
+                        backgroundColor: Colors.red,
+                        function: () {},
+                      )
+                    ],
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 10),
                   width: double.infinity,
-                  color: Color(0xFF4163CD),
+                  color: Colors.red.withOpacity(0.8),
                   child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "Are you a doctor ?",
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Are you a doctor ?",
+                        style: TextStyle(
+                          fontFamily: "Poppins",
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        "More than 100 patients search and find the right doctor for us each month.",
+                        style: TextStyle(color: Colors.white, fontSize: 18),
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            return GenderPage();
+                          }));
+                        },
+                        child: Text(
+                          "Join Now",
                           style: TextStyle(
-                              fontFamily: "Poppins",
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white),
+                            fontSize: 22,
+                            color: Colors.red,
+                            fontFamily: 'Poppins Medium',
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
-                        SizedBox(
-                          height: 5,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
                         ),
-                        Text(
-                          "More than 100 patients search and find the right doctor for us each month.",
-                          style: TextStyle(color: Colors.white, fontSize: 18),
-                          textAlign: TextAlign.center,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        ElevatedButton(
-                            onPressed: () {
-                              Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) {
-                                return GenderPage();
-                              }));
-                            },
-                            child: Text(
-                              "Join Now",
-                              style: TextStyle(
-                                  fontSize: 22,
-                                  color: Color(0xFF4163CD),
-                                  fontFamily: 'Poppins Medium',
-                                  fontWeight: FontWeight.w500),
-                            ),
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.white,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20))))
-                      ]),
-                ))
-              ],
-            )),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

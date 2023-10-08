@@ -27,6 +27,69 @@ class _ProfilePageState extends State<ProfilePage> {
           buildContent(),
         ]),
       ),
+      bottomNavigationBar: Container(
+        padding: EdgeInsets.all(15),
+        height: 130,
+        decoration: BoxDecoration(
+          color:
+              widget.isDarkMode ? Colors.black.withOpacity(0.3) : Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black12,
+              blurRadius: 4,
+              spreadRadius: 2,
+            ),
+          ],
+        ),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Consultation price",
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: widget.isDarkMode ? Colors.white : Colors.black,
+                  ),
+                ),
+                Text(
+                  "\$30",
+                  style: TextStyle(
+                    color: widget.isDarkMode ? Colors.white : Colors.black,
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 15),
+            InkWell(
+              onTap: () {
+                _navigateToAppoinmentPage();
+              },
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                padding: EdgeInsets.symmetric(vertical: 18),
+                decoration: BoxDecoration(
+                  color: Colors.red.withOpacity(0.8),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Center(
+                  child: Text(
+                    "Book Appointment",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
@@ -43,7 +106,9 @@ class _ProfilePageState extends State<ProfilePage> {
             children: [
               Icon(
                 Icons.healing_outlined,
-                color: widget.isDarkMode ? Colors.green : Colors.lightGreen,
+                color: widget.isDarkMode
+                    ? Colors.red.withOpacity(0.8)
+                    : Colors.red.withOpacity(0.8),
                 size: 25,
               ),
               SizedBox(width: 8),
@@ -98,21 +163,6 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
           ),
           SizedBox(width: 36),
-          ElevatedButton(
-            onPressed: () {
-              _navigateToAppoinmentPage();
-            },
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all<Color>(
-                widget.isDarkMode ? Colors.green : Colors.lightGreen,
-              ),
-            ),
-            child: Text(
-              'Take Appointment',
-              style: TextStyle(
-                  color: widget.isDarkMode ? Colors.white : Colors.black),
-            ),
-          ),
           SizedBox(
             height: 36,
           ),
@@ -125,11 +175,11 @@ class _ProfilePageState extends State<ProfilePage> {
       alignment: Alignment.center,
       children: [
         Container(
-          margin: EdgeInsets.only(bottom: 174 / 2),
+          margin: EdgeInsets.only(bottom: 140 / 2),
           child: buildCoverImage(),
         ),
         Positioned(
-          top: 280 - 194 / 2,
+          top: 210 - 194 / 2,
           child: Stack(
             alignment: Alignment.bottomLeft,
             children: [
@@ -144,8 +194,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   child: Container(
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color:
-                          widget.isDarkMode ? Colors.green : Colors.lightGreen,
+                      color: widget.isDarkMode ? Colors.red : Colors.red,
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -161,10 +210,12 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ),
         Positioned(
-          top: 30,
-          left: 16,
+          top: 20,
+          left: 0,
           child: IconButton(
             icon: Icon(Icons.arrow_back),
+            iconSize: 40,
+            color: Colors.white,
             onPressed: () {
               Navigator.of(context).pop();
             },
@@ -175,11 +226,13 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Widget buildCoverImage() => Container(
-        color: widget.isDarkMode ? Colors.green : Colors.lightGreen,
+        color: widget.isDarkMode
+            ? Colors.red.withOpacity(0.8)
+            : Colors.red.withOpacity(0.8),
         child: Image.network(
           'https://res.cloudinary.com/dhzlfojtv/image/upload/v1696246033/istockphoto-831557666-612x612-removebg-preview_zs3zjc.png',
           width: double.infinity,
-          height: 250,
+          height: 200,
           fit: BoxFit.cover,
         ),
       );
@@ -197,7 +250,9 @@ class _ProfilePageState extends State<ProfilePage> {
           child: Material(
             shape: CircleBorder(),
             clipBehavior: Clip.hardEdge,
-            color: widget.isDarkMode ? Colors.green : Colors.transparent,
+            color: widget.isDarkMode
+                ? Colors.red.withOpacity(0.8)
+                : Colors.red.withOpacity(0.8),
             child: Tooltip(
               message: getTooltipMessage(icon),
               child: InkWell(
@@ -296,7 +351,9 @@ class _ProfilePageState extends State<ProfilePage> {
             children: [
               Icon(
                 Icons.location_on,
-                color: widget.isDarkMode ? Colors.green : Colors.lightGreen,
+                color: widget.isDarkMode
+                    ? Colors.red.withOpacity(0.8)
+                    : Colors.red.withOpacity(0.8),
               ),
               SizedBox(width: 8),
               Text('Address'),
@@ -324,8 +381,9 @@ class _ProfilePageState extends State<ProfilePage> {
             TextButton(
               child: Text(
                 'Close',
-                selectionColor:
-                    widget.isDarkMode ? Colors.green : Colors.lightGreen,
+                selectionColor: widget.isDarkMode
+                    ? Colors.red.withOpacity(0.8)
+                    : Colors.red.withOpacity(0.8),
               ),
               onPressed: () {
                 Navigator.of(context).pop();

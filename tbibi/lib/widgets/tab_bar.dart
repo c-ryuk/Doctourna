@@ -1,8 +1,11 @@
 // ignore_for_file: library_private_types_in_public_api, prefer_const_constructors, sized_box_for_whitespace, sort_child_properties_last
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:tbibi/views/blog_page.dart';
+import 'package:tbibi/views/home.dart';
 import 'package:tbibi/views/login_page.dart';
+import 'package:tbibi/views/settings.dart';
 
 import '../views/profile_page.dart';
 
@@ -57,34 +60,24 @@ class _MyTabBarState extends State<MyTabBar> {
   @override
   Widget build(BuildContext context) {
     final List<Widget> _screens = [
+      DoctorsListPage(),
       PostScreen(
           toggleTheme: widget.toggleTheme, isDarkMode: widget.isDarkMode),
+      Settings(toggleTheme: widget.toggleTheme, isDarkMode: widget.isDarkMode),
     ];
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: widget.isDarkMode ? Colors.green : Colors.lightGreen,
+        backgroundColor: widget.isDarkMode ? Colors.black : Colors.white12,
         elevation: 0,
-        title: Text(
-          'Doctourna',
-          style: TextStyle(
-              color: Colors.white, fontSize: 20.0, fontFamily: 'Poppins'),
-        ),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.person),
-            onPressed: _navigateToProfilePage, // Navigate to ProfilePage
-          ),
-          IconButton(
-            onPressed: () {
-              widget.toggleTheme(); // Toggle the theme
-              print("Theme changed: ${widget.isDarkMode}");
-            },
-            icon: Icon(widget.isDarkMode ? Icons.dark_mode : Icons.light_mode),
-          ),
-        ],
         leading: IconButton(
+          iconSize: 30,
           icon: Icon(Icons.menu),
-          onPressed: _toggleSidebar, // Toggle SideBar
+          color: Colors.red,
+          onPressed: _toggleSidebar,
+        ),
+        systemOverlayStyle: SystemUiOverlayStyle(
+          systemNavigationBarColor: Colors.red,
+          statusBarColor: Colors.red,
         ),
       ),
       body: GestureDetector(
@@ -115,14 +108,6 @@ class _MyTabBarState extends State<MyTabBar> {
                 child: Drawer(
                   child: ListView(
                     children: [
-                      DrawerHeader(
-                        child: Text('Sidebar Header'),
-                        decoration: BoxDecoration(
-                          color: widget.isDarkMode
-                              ? Colors.green
-                              : Colors.lightGreen,
-                        ),
-                      ),
                       ListTile(
                         title: Text('Login'),
                         onTap: () {
@@ -154,15 +139,15 @@ class _MyTabBarState extends State<MyTabBar> {
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.book),
             label: 'Posts',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Screen 2',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Screen 3',
+            icon: Icon(Icons.settings),
+            label: 'Settings',
           ),
         ],
       ),
