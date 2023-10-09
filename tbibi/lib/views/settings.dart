@@ -64,12 +64,12 @@ class _SettingsState extends State<Settings> {
               leading: Container(
                 padding: EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: Colors.blue.shade100,
+                  color: Colors.lightBlue.shade100,
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
                   Icons.person,
-                  color: Colors.blue,
+                  color: Colors.lightBlue,
                   size: 35,
                 ),
               ),
@@ -171,7 +171,7 @@ class _SettingsState extends State<Settings> {
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
-                  Icons.info_outline_rounded,
+                  Icons.output_outlined,
                   color: Colors.redAccent,
                   size: 35,
                 ),

@@ -99,7 +99,7 @@ class PostBody extends StatelessWidget {
                     children: [
                       Icon(
                         Icons.today,
-                        color: Colors.red,
+                        color: Color(0xFF4163CD),
                       ),
                       const SizedBox(
                         width: 2,

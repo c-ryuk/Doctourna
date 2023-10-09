@@ -32,14 +32,16 @@ class DoctorFormPage extends State<DoctorDataPage> {
     var selectedGovernante;
     return Scaffold(
       appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.red, size: 30),
+        iconTheme: IconThemeData(color: Color(0xFF4163CD), size: 30),
         centerTitle: true,
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: Text(
           " Validation",
           style: TextStyle(
-              fontFamily: 'Poppins Medium', fontSize: 27, color: Colors.red),
+              fontFamily: 'Poppins Medium',
+              fontSize: 27,
+              color: Color(0xFF4163CD)),
         ),
       ),
       body: SingleChildScrollView(
@@ -144,7 +146,7 @@ class DoctorFormPage extends State<DoctorDataPage> {
                       ),
                     ),
                     CheckboxListTile(
-                      activeColor: Colors.red,
+                      activeColor: Color(0xFF4163CD),
                       value: checkBoxValue,
                       onChanged: (val) {
                         setState(() {
@@ -162,7 +164,7 @@ class DoctorFormPage extends State<DoctorDataPage> {
                     SignButton(
                         text: "Submit",
                         textColor: Colors.white,
-                        backgroundColor: Colors.red,
+                        backgroundColor: Color(0xFF4163CD),
                         function: () {}),
                     SizedBox(
                       height: 30,

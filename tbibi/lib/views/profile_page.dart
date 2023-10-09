@@ -72,7 +72,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 width: MediaQuery.of(context).size.width,
                 padding: EdgeInsets.symmetric(vertical: 18),
                 decoration: BoxDecoration(
-                  color: Colors.red.withOpacity(0.8),
+                  color: Color(0xFF4163CD).withOpacity(0.8),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Center(
@@ -107,8 +107,8 @@ class _ProfilePageState extends State<ProfilePage> {
               Icon(
                 Icons.healing_outlined,
                 color: widget.isDarkMode
-                    ? Colors.red.withOpacity(0.8)
-                    : Colors.red.withOpacity(0.8),
+                    ? Color(0xFF4163CD).withOpacity(0.8)
+                    : Color(0xFF4163CD).withOpacity(0.8),
                 size: 25,
               ),
               SizedBox(width: 8),
@@ -194,7 +194,9 @@ class _ProfilePageState extends State<ProfilePage> {
                   child: Container(
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: widget.isDarkMode ? Colors.red : Colors.red,
+                      color: widget.isDarkMode
+                          ? Color(0xFF4163CD)
+                          : Color(0xFF4163CD),
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -227,8 +229,8 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Widget buildCoverImage() => Container(
         color: widget.isDarkMode
-            ? Colors.red.withOpacity(0.8)
-            : Colors.red.withOpacity(0.8),
+            ? Color(0xFF4163CD).withOpacity(0.8)
+            : Color(0xFF4163CD).withOpacity(0.8),
         child: Image.network(
           'https://res.cloudinary.com/dhzlfojtv/image/upload/v1696246033/istockphoto-831557666-612x612-removebg-preview_zs3zjc.png',
           width: double.infinity,
@@ -251,8 +253,8 @@ class _ProfilePageState extends State<ProfilePage> {
             shape: CircleBorder(),
             clipBehavior: Clip.hardEdge,
             color: widget.isDarkMode
-                ? Colors.red.withOpacity(0.8)
-                : Colors.red.withOpacity(0.8),
+                ? Color(0xFF4163CD).withOpacity(0.8)
+                : Color(0xFF4163CD).withOpacity(0.8),
             child: Tooltip(
               message: getTooltipMessage(icon),
               child: InkWell(
@@ -352,8 +354,8 @@ class _ProfilePageState extends State<ProfilePage> {
               Icon(
                 Icons.location_on,
                 color: widget.isDarkMode
-                    ? Colors.red.withOpacity(0.8)
-                    : Colors.red.withOpacity(0.8),
+                    ? Color(0xFF4163CD).withOpacity(0.8)
+                    : Color(0xFF4163CD).withOpacity(0.8),
               ),
               SizedBox(width: 8),
               Text('Address'),
@@ -382,8 +384,8 @@ class _ProfilePageState extends State<ProfilePage> {
               child: Text(
                 'Close',
                 selectionColor: widget.isDarkMode
-                    ? Colors.red.withOpacity(0.8)
-                    : Colors.red.withOpacity(0.8),
+                    ? Color(0xFF4163CD).withOpacity(0.8)
+                    : Color(0xFF4163CD).withOpacity(0.8),
               ),
               onPressed: () {
                 Navigator.of(context).pop();

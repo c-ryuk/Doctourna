@@ -14,12 +14,12 @@ class SignUpPage extends StatelessWidget {
           "Sign Up",
           style: TextStyle(
             fontSize: 30,
-            color: Colors.red,
+            color: Color(0xFF4163CD),
             fontFamily: 'Poppins Medium',
             fontWeight: FontWeight.w500,
           ),
         ),
-        iconTheme: IconThemeData(color: Colors.red, size: 30),
+        iconTheme: IconThemeData(color: Color(0xFF4163CD), size: 30),
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -73,7 +73,7 @@ class SignUpPage extends StatelessWidget {
                       SignButton(
                         text: "SIGN UP",
                         textColor: Colors.white,
-                        backgroundColor: Colors.red,
+                        backgroundColor: Color(0xFF4163CD),
                         function: () {},
                       )
                     ],
@@ -84,7 +84,7 @@ class SignUpPage extends StatelessWidget {
                 child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 10),
                   width: double.infinity,
-                  color: Colors.red.withOpacity(0.8),
+                  color: Color(0xFF4163CD).withOpacity(0.8),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -119,7 +119,7 @@ class SignUpPage extends StatelessWidget {
                           "Join Now",
                           style: TextStyle(
                             fontSize: 22,
-                            color: Colors.red,
+                            color: Color(0xFF4163CD),
                             fontFamily: 'Poppins Medium',
                             fontWeight: FontWeight.w500,
                           ),
