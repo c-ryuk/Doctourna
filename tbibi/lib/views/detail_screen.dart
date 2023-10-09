@@ -13,16 +13,6 @@ class PostDetail extends StatelessWidget {
   Widget build(BuildContext context) {
     final argument = ModalRoute.of(context)!.settings.arguments as Post;
 
-    // Create a function to get a user by ID
-    User? getUserById(String id) {
-      for (User user in Users_data) {
-        if (user.id == id) {
-          return user;
-        }
-      }
-      return null; // Return null if no match is found
-    }
-
     User? u = getUserById(argument.userId);
 
     return Scaffold(
@@ -32,7 +22,7 @@ class PostDetail extends StatelessWidget {
         backgroundColor: isDarkMode ? Colors.black12 : Colors.white,
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
-          color: Colors.red,
+          color: Color(0xFF4163CD),
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
@@ -55,14 +45,14 @@ class PostDetail extends StatelessWidget {
                 children: [
                   SizedBox(width: 8),
                   CircleAvatar(
-                    backgroundImage: NetworkImage(u.imageUrl),
+                    backgroundImage: Image.asset(u.imageUrl).image,
                   ),
                   SizedBox(width: 8),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '${u.name} ${u.surname}',
+                        '${u.name}',
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -72,7 +62,7 @@ class PostDetail extends StatelessWidget {
                         u.specialty,
                         style: TextStyle(
                           fontSize: 14,
-                          color: Colors.red,
+                          color: Color(0xFF4163CD),
                         ),
                       ),
                     ],
@@ -108,7 +98,7 @@ class PostDetail extends StatelessWidget {
                             ),
                           ),
                           SizedBox(width: 5),
-                          Icon(Icons.calendar_month, color: Colors.red),
+                          Icon(Icons.calendar_month, color: Color(0xFF4163CD)),
                         ],
                       ),
                     ],

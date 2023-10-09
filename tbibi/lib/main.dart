@@ -29,10 +29,10 @@ class _DoctournaState extends State<Doctourna> {
   }
 
   final ThemeData _lightTheme =
-      ThemeData(primarySwatch: Colors.red, brightness: Brightness.light);
+      ThemeData(primarySwatch: Colors.blue, brightness: Brightness.light);
 
   final ThemeData _darkTheme =
-      ThemeData(primarySwatch: Colors.red, brightness: Brightness.dark);
+      ThemeData(primarySwatch: Colors.blue, brightness: Brightness.dark);
 
   @override
   Widget build(BuildContext context) {

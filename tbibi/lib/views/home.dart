@@ -24,7 +24,7 @@ class _DoctorsListPageState extends State<DoctorsListPage> {
         rating: '4.7'),
     Doctor(
         name: 'Dr. Mohamed MISSAMOUI',
-        imageUrl: 'assets/mohamed.png',
+        imageUrl: 'assets/missa.jpg',
         speciality: 'Generalist',
         rating: '4.7'),
     Doctor(
@@ -70,7 +70,7 @@ class _DoctorsListPageState extends State<DoctorsListPage> {
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10.0),
                   borderSide: BorderSide(
-                    color: Colors.red,
+                    color: Color(0xFF4163CD),
                     width: 2.0,
                   ),
                 ),
@@ -119,7 +119,7 @@ class _DoctorsListPageState extends State<DoctorsListPage> {
                     margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                     padding: EdgeInsets.symmetric(horizontal: 25),
                     decoration: BoxDecoration(
-                      color: isSelected ? Colors.red : Color(0xFFF4F6FA),
+                      color: isSelected ? Color(0xFF4163CD) : Color(0xFFF4F6FA),
                       borderRadius: BorderRadius.circular(10),
                       boxShadow: [
                         BoxShadow(

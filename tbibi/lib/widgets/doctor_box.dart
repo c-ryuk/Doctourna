@@ -23,7 +23,7 @@ class DoctorBox extends StatelessWidget {
             Image.asset(
               doctor.imageUrl,
               width: 120,
-              height: 120,
+              height: 150,
               fit: BoxFit.cover,
             ),
             SizedBox(height: 8),

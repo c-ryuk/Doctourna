@@ -72,12 +72,12 @@ class _MyTabBarState extends State<MyTabBar> {
         leading: IconButton(
           iconSize: 30,
           icon: Icon(Icons.menu),
-          color: Colors.red,
+          color: Color(0xFF4163CD),
           onPressed: _toggleSidebar,
         ),
         systemOverlayStyle: SystemUiOverlayStyle(
-          systemNavigationBarColor: Colors.red,
-          statusBarColor: Colors.red,
+          systemNavigationBarColor: Color(0xFF4163CD),
+          statusBarColor: Color(0xFF4163CD),
         ),
       ),
       body: GestureDetector(

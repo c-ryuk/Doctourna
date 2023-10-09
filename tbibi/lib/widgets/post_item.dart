@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tbibi/models/post.dart';
+import 'package:tbibi/static_data/users_list.dart';
 
 class PostBody extends StatelessWidget {
   final Function toggleTheme;
@@ -83,22 +84,22 @@ class PostBody extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      FaIcon(
-                        FontAwesomeIcons.userDoctor,
-                        size: 27,
-                        color: Colors.red,
+                      CircleAvatar(
+                        backgroundImage:
+                            Image.asset(getUserById(post.userId)!.imageUrl)
+                                .image,
                       ),
                       const SizedBox(
-                        width: 2,
+                        width: 5,
                       ),
-                      Text("missa"),
+                      Text(getUserById(post.userId)!.name),
                     ],
                   ),
                   Row(
                     children: [
                       Icon(
                         Icons.today,
-                        color: Colors.red,
+                        color: Color(0xFF4163CD),
                       ),
                       const SizedBox(
                         width: 2,

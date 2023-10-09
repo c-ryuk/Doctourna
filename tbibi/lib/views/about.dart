@@ -68,7 +68,7 @@ class AboutUsPage extends StatelessWidget {
             ),
             ListTile(
               leading: CircleAvatar(
-                backgroundImage: AssetImage('assets/mohamed.png'),
+                backgroundImage: AssetImage('assets/missa.jpg'),
               ),
               title: Text('Mohamed Missaoui'),
               subtitle: Text('Developper'),
