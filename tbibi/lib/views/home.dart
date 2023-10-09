@@ -56,6 +56,7 @@ class _DoctorsListPageState extends State<DoctorsListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: CustomScrollView(
+        physics: BouncingScrollPhysics(),
         slivers: [
           SliverToBoxAdapter(
             child: Padding(

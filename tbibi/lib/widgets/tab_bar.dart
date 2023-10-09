@@ -67,6 +67,14 @@ class _MyTabBarState extends State<MyTabBar> {
     ];
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
+        title: Text(
+          'Doctourna',
+          style: TextStyle(
+              fontFamily: 'Poppins Medium',
+              color: Color(0xFF4163CD),
+              fontSize: 24),
+        ),
         backgroundColor: widget.isDarkMode ? Colors.black : Colors.white12,
         elevation: 0,
         leading: IconButton(
