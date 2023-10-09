@@ -38,6 +38,8 @@ dependencies:
   icons_flutter: ^0.0.4
   country_flags: ^2.1.1
   url_launcher: ^6.1.7
+  flutter_staggered_animations: ^1.1.1
+  fancy_bottom_navigation: ^0.3.3
 
 dev_dependencies:
   flutter_test:

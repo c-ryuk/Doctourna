@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tbibi/models/post.dart';
 import 'package:tbibi/static_data/users_list.dart';
 
