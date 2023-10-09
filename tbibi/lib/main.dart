@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:tbibi/views/appoinment_page.dart';
 import 'package:tbibi/views/detail_screen.dart';
-import 'package:tbibi/views/doctor_data_page.dart';
 import 'package:tbibi/views/login_page.dart';
 import 'package:tbibi/views/blog_page.dart';
 import 'package:tbibi/views/profile_page.dart';
@@ -30,10 +29,10 @@ class _DoctournaState extends State<Doctourna> {
   }
 
   final ThemeData _lightTheme =
-      ThemeData(primarySwatch: Colors.lightGreen, brightness: Brightness.light);
+      ThemeData(primarySwatch: Colors.red, brightness: Brightness.light);
 
   final ThemeData _darkTheme =
-      ThemeData(primarySwatch: Colors.lightGreen, brightness: Brightness.dark);
+      ThemeData(primarySwatch: Colors.red, brightness: Brightness.dark);
 
   @override
   Widget build(BuildContext context) {
@@ -52,8 +51,10 @@ class _DoctournaState extends State<Doctourna> {
             PostScreen(toggleTheme: toggleTheme, isDarkMode: _isDarkMode),
         '/post-detail': (context) =>
             PostDetail(toggleTheme: toggleTheme, isDarkMode: _isDarkMode),
-        '/appoinment-page': (context) => const AppointmentBookingPage(),
-        '/profile-page': (context) => const ProfilePage(),
+        '/appoinment-page': (context) => AppointmentBookingPage(
+            toggleTheme: toggleTheme, isDarkMode: _isDarkMode),
+        '/profile-page': (context) =>
+            ProfilePage(toggleTheme: toggleTheme, isDarkMode: _isDarkMode),
       },
     );
   }

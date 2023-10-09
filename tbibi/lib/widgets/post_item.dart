@@ -81,12 +81,12 @@ class PostBody extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                   Row(
+                  Row(
                     children: [
                       FaIcon(
                         FontAwesomeIcons.userDoctor,
                         size: 27,
-                        color: isDarkMode ? Colors.green : Colors.lightGreen,
+                        color: Colors.red,
                       ),
                       const SizedBox(
                         width: 2,
@@ -98,7 +98,7 @@ class PostBody extends StatelessWidget {
                     children: [
                       Icon(
                         Icons.today,
-                        color: isDarkMode ? Colors.green : Colors.lightGreen,
+                        color: Colors.red,
                       ),
                       const SizedBox(
                         width: 2,

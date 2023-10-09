@@ -34,9 +34,7 @@ class SpecialityWidgetState extends State<SpecialityWidget> {
                 });
               },
               child: Card(
-                color: widget.isSelected
-                    ? Color.fromARGB(255, 73, 181, 100)
-                    : Colors.white,
+                color: widget.isSelected ? Colors.red : Colors.white,
                 elevation: 4,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(25)),

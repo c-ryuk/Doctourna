@@ -32,15 +32,14 @@ class DoctorFormPage extends State<DoctorDataPage> {
     var selectedGovernante;
     return Scaffold(
       appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.red, size: 30),
         centerTitle: true,
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: Text(
           " Validation",
           style: TextStyle(
-              fontFamily: 'Poppins Medium',
-              fontSize: 27,
-              color: Color(0xFF4163CD)),
+              fontFamily: 'Poppins Medium', fontSize: 27, color: Colors.red),
         ),
       ),
       body: SingleChildScrollView(
@@ -94,7 +93,6 @@ class DoctorFormPage extends State<DoctorDataPage> {
                       ),
                       icon: const Icon(
                         Icons.home,
-                        color: Colors.black,
                       ),
                       value: selectedGovernante,
                       onChanged: (item) => setState(() {
@@ -114,27 +112,11 @@ class DoctorFormPage extends State<DoctorDataPage> {
                     Divider(),
                     TextField(
                       decoration: const InputDecoration(
-                        hintText: "Name",
+                        hintText: "Full Name",
                         hintStyle:
                             TextStyle(fontSize: 18, fontFamily: 'Poppins'),
-                        border: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.black)),
-                        focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.black)),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    TextField(
-                      decoration: const InputDecoration(
-                        hintText: "ForeName",
-                        hintStyle:
-                            TextStyle(fontSize: 18, fontFamily: 'Poppins'),
-                        border: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.black)),
-                        focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.black)),
+                        border: OutlineInputBorder(),
+                        prefixIcon: Icon(Icons.person),
                       ),
                     ),
                     SizedBox(
@@ -145,10 +127,8 @@ class DoctorFormPage extends State<DoctorDataPage> {
                         hintText: "Email",
                         hintStyle:
                             TextStyle(fontSize: 18, fontFamily: 'Poppins'),
-                        border: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.black)),
-                        focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.black)),
+                        border: OutlineInputBorder(),
+                        prefixIcon: Icon(Icons.email),
                       ),
                     ),
                     SizedBox(
@@ -159,14 +139,12 @@ class DoctorFormPage extends State<DoctorDataPage> {
                         hintText: "Mobile Phone",
                         hintStyle:
                             TextStyle(fontSize: 18, fontFamily: 'Poppins'),
-                        border: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.black)),
-                        focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.black)),
+                        border: OutlineInputBorder(),
+                        prefixIcon: Icon(Icons.phone),
                       ),
                     ),
                     CheckboxListTile(
-                      activeColor: Color(0xFF4163CD),
+                      activeColor: Colors.red,
                       value: checkBoxValue,
                       onChanged: (val) {
                         setState(() {
@@ -184,8 +162,11 @@ class DoctorFormPage extends State<DoctorDataPage> {
                     SignButton(
                         text: "Submit",
                         textColor: Colors.white,
-                        backgroundColor: Color(0xFF4163CD),
+                        backgroundColor: Colors.red,
                         function: () {}),
+                    SizedBox(
+                      height: 30,
+                    ),
                   ],
                 )),
           ],

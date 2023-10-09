@@ -3,7 +3,10 @@
 import 'package:flutter/material.dart';
 
 class AppointmentBookingPage extends StatefulWidget {
-  const AppointmentBookingPage({super.key});
+  final Function toggleTheme;
+  final bool isDarkMode;
+  const AppointmentBookingPage(
+      {super.key, required this.toggleTheme, required this.isDarkMode});
 
   @override
   _AppointmentBookingPageState createState() => _AppointmentBookingPageState();
@@ -119,7 +122,7 @@ class _AppointmentBookingPageState extends State<AppointmentBookingPage> {
                 // Handle appointment booking
               },
               style: ElevatedButton.styleFrom(
-                primary: Colors.lightGreen,
+                primary: widget.isDarkMode ? Colors.green : Colors.lightGreen,
                 onPrimary: Colors.white,
               ),
               child: Text('Book Appointment'),

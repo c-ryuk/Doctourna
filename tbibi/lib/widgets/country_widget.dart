@@ -21,9 +21,7 @@ class CountryWidgetState extends State<CountryWidget> {
       width: 90,
       height: 100,
       decoration: BoxDecoration(
-          color: widget.isSelected
-              ? Color.fromARGB(255, 73, 181, 100)
-              : Colors.transparent,
+          color: widget.isSelected ? Colors.red : Colors.transparent,
           borderRadius: BorderRadius.circular(10)),
       child: Column(
         children: [
