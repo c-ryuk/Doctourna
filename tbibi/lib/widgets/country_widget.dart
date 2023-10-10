@@ -8,8 +8,6 @@ class CountryWidget extends StatefulWidget {
   final bool isSelected;
   final VoidCallback onTap;
 
-  Color color = Colors.transparent;
-
   @override
   CountryWidgetState createState() => CountryWidgetState();
 }
