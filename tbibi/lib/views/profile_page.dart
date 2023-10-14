@@ -248,7 +248,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget buildProfilImage() => CircleAvatar(
         radius: 144 / 2,
         backgroundColor: Colors.white,
-        backgroundImage: NetworkImage(widget.doctor.imageUrl),
+        backgroundImage: AssetImage(widget.doctor.imageUrl),
       );
   Widget buildSocialIcon(IconData icon, [VoidCallback? onTapFunction]) =>
       CircleAvatar(
@@ -325,7 +325,7 @@ class _ProfilePageState extends State<ProfilePage> {
   void _navigateToEditProfilePage() {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => const EditProfilePage(),
+        builder: (context) => EditProfilePage(doctor: widget.doctor,),
       ),
     );
   }

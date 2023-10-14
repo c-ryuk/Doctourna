@@ -1,9 +1,9 @@
-// ignore_for_file: library_private_types_in_public_api, prefer_const_constructors
-
 import 'package:flutter/material.dart';
+import 'package:tbibi/models/user.dart';
 
 class EditProfilePage extends StatefulWidget {
-  const EditProfilePage({Key? key}) : super(key: key);
+  final User doctor;
+  const EditProfilePage({Key? key, required this.doctor}) : super(key: key);
 
   @override
   _EditProfilePageState createState() => _EditProfilePageState();
@@ -11,17 +11,23 @@ class EditProfilePage extends StatefulWidget {
 
 class _EditProfilePageState extends State<EditProfilePage> {
   bool isEditing = false;
-  TextEditingController nameController =
-      TextEditingController(text: 'Hamed TRIKI');
-  TextEditingController jobController = TextEditingController(text: 'Surgeon');
-  TextEditingController emailController =
-      TextEditingController(text: 'hamedtriki@example.com');
-  TextEditingController locationController =
-      TextEditingController(text: 'Burkina Sfaxou, Tun');
+  TextEditingController nameController = TextEditingController();
+  TextEditingController jobController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController locationController = TextEditingController();
 
-  List<TextEditingController> phoneControllers = [
-    TextEditingController(text: '+216 33070')
-  ];
+  List<TextEditingController> phoneControllers = [TextEditingController()];
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize the controllers with the doctor's information when the widget is created.
+    nameController.text = widget.doctor.fullName;
+    jobController.text = widget.doctor.specialty;
+    emailController.text = widget.doctor.email;
+    locationController.text = widget.doctor.adress;
+    phoneControllers[0].text = widget.doctor.phone.toString();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,11 +42,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const CircleAvatar(
+                CircleAvatar(
                   backgroundColor: Colors.transparent,
                   radius: 70,
-                  backgroundImage: NetworkImage(
-                    'https://img.a.transfermarkt.technology/portrait/big/28003-1694590254.jpg?lm=1',
+                  backgroundImage: AssetImage(
+                    widget.doctor.imageUrl,
                   ),
                 ),
                 const SizedBox(height: 16),
@@ -59,7 +65,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 TextFormField(
                   controller: jobController,
                   decoration: InputDecoration(
-                    labelText: 'speciality',
+                    labelText: 'Speciality',
                     enabled: isEditing,
                   ),
                   style: const TextStyle(
@@ -126,7 +132,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     ),
                   ),
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 ElevatedButton(
                   onPressed: () {
                     setState(() {
@@ -145,6 +151,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   @override
   void dispose() {
+    // Dispose of the controllers when the widget is removed.
     nameController.dispose();
     jobController.dispose();
     emailController.dispose();

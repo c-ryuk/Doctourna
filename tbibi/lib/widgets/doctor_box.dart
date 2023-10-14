@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tbibi/models/doctor.dart';
 import 'package:tbibi/models/user.dart';
 import 'package:tbibi/views/profile_page.dart';
 
