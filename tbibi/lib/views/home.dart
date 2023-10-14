@@ -1,55 +1,64 @@
 import 'package:flutter/material.dart';
-import 'package:tbibi/models/doctor.dart';
+import 'package:tbibi/models/user.dart';
+import 'package:tbibi/static_data/users_list.dart';
 import 'package:tbibi/widgets/doctor_box.dart';
 
 class DoctorsListPage extends StatefulWidget {
+  final Function toggleTheme;
+  final bool isDarkMode;
+
+  DoctorsListPage({required this.toggleTheme, required this.isDarkMode});
+
   @override
   _DoctorsListPageState createState() => _DoctorsListPageState();
 }
 
 class _DoctorsListPageState extends State<DoctorsListPage> {
-  List symptoms = [
-    "Heart",
-    "Sexologist",
-    "Radiologist",
-    "Oncologist",
-    "Surgeon",
-  ];
+  List<User> filteredDoctors = [];
+  String selectedSpecialty = 'All';
+  String nameFilter = '';
 
-  final List<Doctor> allDoctors = [
-    Doctor(
-        name: 'Dr. Hamed TRIKI',
-        imageUrl: 'assets/hamed.jpg',
-        speciality: 'Generalist',
-        rating: '4.7'),
-    Doctor(
-        name: 'Dr. Mohamed MISSAMOUI',
-        imageUrl: 'assets/missa.jpg',
-        speciality: 'Generalist',
-        rating: '4.7'),
-    Doctor(
-        name: 'Dr. Hamza REKIK',
-        imageUrl: 'assets/hamza.png',
-        speciality: 'Generalist',
-        rating: '4.7'),
+  List<String> specialties = [
+    'All',
+    'Dentiste',
+    'Généraliste',
+    'Cardiologue',
+    'Specialty4',
+    'Specialty5'
   ];
-
-  List<Doctor> filteredDoctors = [];
-  String selectedSymptom = "";
 
   @override
   void initState() {
     super.initState();
-    filteredDoctors.addAll(allDoctors);
+    filteredDoctors = Users_data.where((user) => user.isDoctor).toList();
+  }
+
+  void _filterDoctorsBySpecialty(String specialty) {
+    setState(() {
+      selectedSpecialty = specialty;
+      _applyFilters();
+    });
   }
 
   void _filterDoctors(String query) {
     setState(() {
-      filteredDoctors = allDoctors.where((doctor) {
-        final doctorName = doctor.name.toLowerCase();
-        return doctorName.contains(query.toLowerCase());
-      }).toList();
+      nameFilter = query;
+      _applyFilters();
     });
+  }
+
+  void _applyFilters() {
+    filteredDoctors = Users_data.where((user) {
+      final specialtyMatch = selectedSpecialty == 'All' ||
+          user.specialty
+              .toLowerCase()
+              .contains(selectedSpecialty.toLowerCase());
+
+      final nameMatch = nameFilter.isEmpty ||
+          user.fullName.toLowerCase().contains(nameFilter.toLowerCase());
+
+      return user.isDoctor && specialtyMatch && nameMatch;
+    }).toList();
   }
 
   @override
@@ -92,7 +101,7 @@ class _DoctorsListPageState extends State<DoctorsListPage> {
             child: Padding(
               padding: const EdgeInsets.only(left: 15),
               child: Text(
-                "What are your issue?",
+                "What did you want?",
                 style: TextStyle(
                   fontSize: 23,
                   fontWeight: FontWeight.w500,
@@ -100,56 +109,43 @@ class _DoctorsListPageState extends State<DoctorsListPage> {
               ),
             ),
           ),
+          SliverToBoxAdapter(child: SizedBox(height: 25)),
           SliverToBoxAdapter(
-            child: SizedBox(
-              height: 70,
-              child: ListView.builder(
-                shrinkWrap: true,
-                scrollDirection: Axis.horizontal,
-                itemCount: symptoms.length,
-                itemBuilder: (context, index) {
-                  final currentSymptom = symptoms[index];
-                  final isSelected = currentSymptom == selectedSymptom;
-
-                  return GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        if (currentSymptom == selectedSymptom) {
-                          selectedSymptom = "";
-                        } else {
-                          selectedSymptom = currentSymptom;
-                        }
-                      });
-                    },
-                    child: Container(
-                      margin:
-                          EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                      padding: EdgeInsets.symmetric(horizontal: 25),
-                      decoration: BoxDecoration(
-                        color:
-                            isSelected ? Color(0xFF4163CD) : Color(0xFFF4F6FA),
-                        borderRadius: BorderRadius.circular(10),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black12,
-                            blurRadius: 4,
-                            spreadRadius: 2,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Container(
+                height: 50,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: specialties.length,
+                  itemBuilder: (context, index) {
+                    final specialty = specialties[index];
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: GestureDetector(
+                        onTap: () {
+                          _filterDoctorsBySpecialty(specialty);
+                        },
+                        child: Container(
+                          padding: EdgeInsets.symmetric(horizontal: 20),
+                          decoration: BoxDecoration(
+                            color: specialty == selectedSpecialty
+                                ? Color(0xFF4163CD)
+                                : Colors.grey,
+                            borderRadius: BorderRadius.circular(30),
                           ),
-                        ],
-                      ),
-                      child: Center(
-                        child: Text(
-                          currentSymptom,
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            color: isSelected ? Colors.white : Colors.black54,
+                          child: Center(
+                            child: Text(
+                              specialty,
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 20),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               ),
             ),
           ),
@@ -177,9 +173,37 @@ class _DoctorsListPageState extends State<DoctorsListPage> {
             ),
             delegate: SliverChildBuilderDelegate((context, index) {
               final doctor = filteredDoctors[index];
-              return DoctorBox(doctor: doctor);
+              return DoctorBox(
+                doctor: doctor,
+                toggleTheme: widget.toggleTheme,
+                isDarkMode: widget.isDarkMode,
+              );
             }, childCount: filteredDoctors.length),
           ),
+          if (filteredDoctors.isEmpty)
+            SliverToBoxAdapter(
+              child: Center(
+                child: Card(
+                  elevation: 4,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  margin: EdgeInsets.all(16),
+                  child: Container(
+                    padding: EdgeInsets.all(16),
+                    child: Text(
+                      "NO DOCTORS FOUND RELATED TO YOUR SEARCH",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF4163CD),
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+              ),
+            ),
         ],
       ),
     );

@@ -91,7 +91,7 @@ class PostBody extends StatelessWidget {
                       const SizedBox(
                         width: 5,
                       ),
-                      Text(getUserById(post.userId)!.name),
+                      Text(getUserById(post.userId)!.fullName),
                     ],
                   ),
                   Row(

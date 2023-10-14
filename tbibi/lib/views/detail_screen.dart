@@ -52,7 +52,7 @@ class PostDetail extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '${u.name}',
+                        '${u.fullName}',
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,

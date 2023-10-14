@@ -52,8 +52,8 @@ class _DoctournaState extends State<Doctourna> {
             PostDetail(toggleTheme: toggleTheme, isDarkMode: _isDarkMode),
         '/appoinment-page': (context) => AppointmentBookingPage(
             toggleTheme: toggleTheme, isDarkMode: _isDarkMode),
-        '/profile-page': (context) =>
-            ProfilePage(toggleTheme: toggleTheme, isDarkMode: _isDarkMode),
+        // '/profile-page': (context) =>
+        //     ProfilePage(toggleTheme: toggleTheme, isDarkMode: _isDarkMode),
       },
     );
   }

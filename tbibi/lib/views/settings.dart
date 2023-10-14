@@ -17,12 +17,12 @@ class Settings extends StatefulWidget {
 
 class _SettingsState extends State<Settings> {
   void _navigateToProfilePage() {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => ProfilePage(
-            toggleTheme: widget.toggleTheme, isDarkMode: widget.isDarkMode),
-      ),
-    );
+    // Navigator.of(context).push(
+    //   MaterialPageRoute(
+    //     builder: (context) => ProfilePage(
+    //         toggleTheme: widget.toggleTheme, isDarkMode: widget.isDarkMode),
+    //   ),
+    // );
   }
 
   void _navigateToPrivacy() {

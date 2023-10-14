@@ -40,12 +40,12 @@ class _MyTabBarState extends State<MyTabBar> {
 
   void _navigateToProfilePage() {
     // Navigate to the ProfilePage when the user icon is pressed
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => ProfilePage(
-            toggleTheme: widget.toggleTheme, isDarkMode: widget.isDarkMode),
-      ),
-    );
+    // Navigator.of(context).push(
+    //   MaterialPageRoute(
+    //     builder: (context) => ProfilePage(
+    //         toggleTheme: widget.toggleTheme, isDarkMode: widget.isDarkMode),
+    //   ),
+    // );
   }
 
   void _navigateToLoginPage() {
@@ -60,7 +60,8 @@ class _MyTabBarState extends State<MyTabBar> {
   @override
   Widget build(BuildContext context) {
     final List<Widget> _screens = [
-      DoctorsListPage(),
+      DoctorsListPage(
+          toggleTheme: widget.toggleTheme, isDarkMode: widget.isDarkMode),
       PostScreen(
           toggleTheme: widget.toggleTheme, isDarkMode: widget.isDarkMode),
       Settings(toggleTheme: widget.toggleTheme, isDarkMode: widget.isDarkMode),

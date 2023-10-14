@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:icons_flutter/icons_flutter.dart';
+import 'package:tbibi/models/user.dart';
 import 'package:tbibi/views/appoinment_page.dart';
 import 'package:tbibi/views/edit_profile_page.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -9,8 +10,13 @@ import 'package:url_launcher/url_launcher.dart';
 class ProfilePage extends StatefulWidget {
   final Function toggleTheme;
   final bool isDarkMode;
+  final User doctor;
+
   const ProfilePage(
-      {super.key, required this.toggleTheme, required this.isDarkMode});
+      {super.key,
+      required this.toggleTheme,
+      required this.isDarkMode,
+      required this.doctor});
 
   @override
   _ProfilePageState createState() => _ProfilePageState();
@@ -54,7 +60,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
                 Text(
-                  "\$30",
+                  '\$${widget.doctor.consultationPrice.toString()}',
                   style: TextStyle(
                     color: widget.isDarkMode ? Colors.white : Colors.black,
                     fontSize: 22,
@@ -97,7 +103,7 @@ class _ProfilePageState extends State<ProfilePage> {
         children: [
           SizedBox(height: 8),
           Text(
-            'Hamed TRIKI',
+            widget.doctor.fullName,
             style: TextStyle(fontSize: 28),
           ),
           SizedBox(height: 8),
@@ -113,7 +119,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               SizedBox(width: 8),
               Text(
-                'something',
+                widget.doctor.specialty,
                 style: TextStyle(
                     fontSize: 20,
                     color: widget.isDarkMode ? Colors.white : Colors.black),
@@ -125,7 +131,7 @@ class _ProfilePageState extends State<ProfilePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               buildSocialIcon(FontAwesome.phone, () {
-                _launchPhoneCall('22 555 888');
+                _launchPhoneCall(widget.doctor.phone.toString());
               }),
               SizedBox(width: 12),
               buildSocialIcon(FontAwesome.facebook),
@@ -137,9 +143,9 @@ class _ProfilePageState extends State<ProfilePage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              buildCountWidget("Patients", "1230"),
-              buildCountWidget("Experience", "15y"),
-              buildCountWidget("Rating", "4.4"),
+              buildCountWidget("Patients", widget.doctor?.patient ?? 0),
+              buildCountWidget("Experience", widget.doctor?.experience ?? 0),
+              buildCountWidget("Rating", widget.doctor?.rating ?? 0),
             ],
           ),
           SizedBox(height: 36),
@@ -154,7 +160,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 SizedBox(height: 8),
                 Text(
-                  'Relieves pain and reduces inflammation, providing fast relief from headaches and muscle aches.',
+                  widget.doctor?.aboutMe ?? '',
                   style: TextStyle(
                       fontSize: 16,
                       color: widget.isDarkMode ? Colors.white : Colors.black),
@@ -212,7 +218,7 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ),
         Positioned(
-          top: 20,
+          top: 40,
           left: 0,
           child: IconButton(
             icon: Icon(Icons.arrow_back),
@@ -242,9 +248,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget buildProfilImage() => CircleAvatar(
         radius: 144 / 2,
         backgroundColor: Colors.white,
-        backgroundImage: NetworkImage(
-          'https://img.a.transfermarkt.technology/portrait/big/28003-1694590254.jpg?lm=1',
-        ),
+        backgroundImage: NetworkImage(widget.doctor.imageUrl),
       );
   Widget buildSocialIcon(IconData icon, [VoidCallback? onTapFunction]) =>
       CircleAvatar(
@@ -283,7 +287,7 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
-  Widget buildCountWidget(String label, String count) {
+  Widget buildCountWidget(String label, int count) {
     return Container(
       padding: EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -302,7 +306,7 @@ class _ProfilePageState extends State<ProfilePage> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            count,
+            count.toString(),
             style: TextStyle(
                 fontSize: 24, fontWeight: FontWeight.bold, color: Colors.black),
           ),
@@ -367,11 +371,11 @@ class _ProfilePageState extends State<ProfilePage> {
             children: [
               ListTile(
                 leading: Icon(Icons.home),
-                title: Text('33070 Chera3 el nig'),
+                title: Text(widget.doctor.adress),
               ),
               ListTile(
                 leading: Icon(Icons.location_city),
-                title: Text('Burkina Sfaxou'),
+                title: Text(widget.doctor.gouvernment),
               ),
               ListTile(
                 leading: Icon(Icons.flag),

@@ -1,13 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:tbibi/models/doctor.dart';
+import 'package:tbibi/models/user.dart';
+import 'package:tbibi/views/profile_page.dart';
 
 class DoctorBox extends StatelessWidget {
-  final Doctor doctor;
+  final User doctor;
+  final Function toggleTheme;
+  final bool isDarkMode;
 
-  DoctorBox({required this.doctor});
+  DoctorBox(
+      {required this.doctor,
+      required this.toggleTheme,
+      required this.isDarkMode});
 
   void _navigateToProfilePage(BuildContext context) {
-    Navigator.pushNamed(context, '/profile-page');
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ProfilePage(
+            doctor: doctor, toggleTheme: toggleTheme, isDarkMode: isDarkMode),
+      ),
+    );
   }
 
   @override
@@ -28,7 +41,7 @@ class DoctorBox extends StatelessWidget {
             ),
             SizedBox(height: 8),
             Text(
-              doctor.name,
+              doctor.fullName,
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
@@ -36,7 +49,7 @@ class DoctorBox extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
             Text(
-              doctor.speciality,
+              doctor.specialty,
               style: TextStyle(),
             ),
             Row(
@@ -48,7 +61,7 @@ class DoctorBox extends StatelessWidget {
                   color: Colors.amber,
                 ),
                 Text(
-                  doctor.rating as String,
+                  doctor.rating.toString(),
                   style: TextStyle(),
                 ),
               ],
