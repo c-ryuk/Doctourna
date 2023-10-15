@@ -23,56 +23,24 @@ class GenderPageState extends State<GenderPage> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         actions: [
-          ElevatedButton(
-            onPressed: () {
-              if (isFemaleVisible == true && isMaleVisible == true) {
-                showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        title: const Center(
-                            child: Text(
-                          "Alert !",
-                          style: TextStyle(
-                              fontFamily: 'Poppins Medium', fontSize: 24),
-                        )),
-                        content: Text(
-                          "Please select your gender to continue",
-                          style: TextStyle(fontFamily: 'Poppins', fontSize: 16),
-                        ),
-                        actions: [
-                          Center(
-                              child: ElevatedButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                      backgroundColor: Color(0xFF4163CD)),
-                                  child: Text(
-                                    "Okay",
-                                    style: TextStyle(
-                                        fontFamily: 'Poppins',
-                                        fontSize: 16,
-                                        color: Colors.white),
-                                  )))
-                        ],
-                      );
-                    });
-              } else {
+          Visibility(
+            visible: !(isFemaleVisible == true && isMaleVisible == true),
+            child: ElevatedButton(
+              onPressed: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
                   return SpecialitiesPage();
                 }));
-              }
-            },
-            child: Text(
-              "Next",
-              style: TextStyle(
-                  fontFamily: 'Poppins',
-                  fontSize: 18,
-                  color: Color(0xFF4163CD)),
+              },
+              child: Text(
+                "Next",
+                style: TextStyle(
+                    fontFamily: 'Poppins',
+                    fontSize: 18,
+                    color: Color(0xFF4163CD)),
+              ),
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.transparent, elevation: 0),
             ),
-            style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.transparent, elevation: 0),
           )
         ],
       ),

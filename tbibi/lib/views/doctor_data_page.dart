@@ -36,7 +36,7 @@ class DoctorFormPage extends State<DoctorDataPage> {
         centerTitle: true,
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: Text(
+        title: const Text(
           " Validation",
           style: TextStyle(
               fontFamily: 'Poppins Medium',
@@ -47,17 +47,17 @@ class DoctorFormPage extends State<DoctorDataPage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
-            Text(
+            const Text(
               "Where are you from ?",
               style: TextStyle(
                 fontFamily: 'Poppins',
                 fontSize: 22,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Container(
@@ -76,44 +76,66 @@ class DoctorFormPage extends State<DoctorDataPage> {
                     .toList(),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 15,
             ),
             Container(
-                padding: EdgeInsets.symmetric(horizontal: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: Column(
                   children: [
-                    DropdownButtonFormField<String>(
-                      decoration: const InputDecoration(
-                        hintText: "Governorate",
-                        hintStyle:
-                            TextStyle(fontSize: 18, fontFamily: 'Poppins'),
-                        border: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.black)),
-                        focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.black)),
-                      ),
-                      icon: const Icon(
-                        Icons.home,
-                      ),
-                      value: selectedGovernante,
-                      onChanged: (item) => setState(() {
-                        selectedGovernante = item;
-                      }),
-                      items: governorates.map((String gouvernorat) {
-                        return DropdownMenuItem<String>(
-                          value: gouvernorat,
-                          child: Text(
-                            gouvernorat,
-                            style: const TextStyle(
-                                fontSize: 18, fontFamily: 'Poppins'),
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 5,
+                          child: DropdownButtonFormField<String>(
+                            decoration: const InputDecoration(
+                              hintText: "Governorate",
+                              hintStyle: TextStyle(
+                                  fontSize: 18, fontFamily: 'Poppins'),
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.black)),
+                              focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.black)),
+                            ),
+                            icon: const Icon(
+                              Icons.home,
+                            ),
+                            value: selectedGovernante,
+                            onChanged: (item) => setState(() {
+                              selectedGovernante = item;
+                            }),
+                            items: governorates.map((String gouvernorat) {
+                              return DropdownMenuItem<String>(
+                                value: gouvernorat,
+                                child: Text(
+                                  gouvernorat,
+                                  style: const TextStyle(
+                                      fontSize: 18, fontFamily: 'Poppins'),
+                                ),
+                              );
+                            }).toList(),
                           ),
-                        );
-                      }).toList(),
+                        ),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        Expanded(
+                            child: Container(
+                                decoration: BoxDecoration(
+                                    color: Color(0xFF4163CD),
+                                    borderRadius: BorderRadius.circular(10)),
+                                height: 60,
+                                width: 60,
+                                child: const Icon(
+                                  Icons.location_searching,
+                                  size: 30,
+                                  color: Colors.white,
+                                )))
+                      ],
                     ),
-                    Divider(),
+                    const Divider(),
                     TextField(
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         hintText: "Full Name",
                         hintStyle:
                             TextStyle(fontSize: 18, fontFamily: 'Poppins'),
@@ -121,7 +143,7 @@ class DoctorFormPage extends State<DoctorDataPage> {
                         prefixIcon: Icon(Icons.person),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 15,
                     ),
                     TextField(
@@ -133,7 +155,7 @@ class DoctorFormPage extends State<DoctorDataPage> {
                         prefixIcon: Icon(Icons.email),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 15,
                     ),
                     TextField(
@@ -153,12 +175,12 @@ class DoctorFormPage extends State<DoctorDataPage> {
                           checkBoxValue = val!;
                         });
                       },
-                      title: Text(
+                      title: const Text(
                         "I agree to all terms and conditions of use",
                         style: TextStyle(fontFamily: 'Poppins', fontSize: 13),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 30,
                     ),
                     SignButton(
@@ -166,7 +188,7 @@ class DoctorFormPage extends State<DoctorDataPage> {
                         textColor: Colors.white,
                         backgroundColor: Color(0xFF4163CD),
                         function: () {}),
-                    SizedBox(
+                    const SizedBox(
                       height: 30,
                     ),
                   ],
