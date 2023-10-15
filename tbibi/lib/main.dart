@@ -4,7 +4,7 @@ import 'package:tbibi/views/detail_screen.dart';
 import 'package:tbibi/views/login_page.dart';
 import 'package:tbibi/views/blog_page.dart';
 import 'package:tbibi/views/profile_page.dart';
-import 'package:tbibi/widgets/splash_screen.dart';
+import 'package:tbibi/views/splash_screen.dart';
 import 'package:tbibi/widgets/tab_bar.dart';
 
 void main() {

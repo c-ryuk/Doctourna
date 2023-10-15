@@ -10,11 +10,11 @@ class SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    delayedPage(); // Démarre la temporisation et la transition
+    delayedPage();
   }
 
   delayedPage() async {
-    return await Future.delayed(Duration(seconds: 8), () {
+    return await Future.delayed(Duration(seconds: 4), () {
       return Navigator.of(context).pushReplacementNamed('/home');
     });
   }
