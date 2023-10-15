@@ -7,8 +7,6 @@ import 'package:tbibi/views/home.dart';
 import 'package:tbibi/views/login_page.dart';
 import 'package:tbibi/views/settings.dart';
 
-import '../views/profile_page.dart';
-
 class MyTabBar extends StatefulWidget {
   final Function toggleTheme;
   final bool isDarkMode;

@@ -143,9 +143,9 @@ class _ProfilePageState extends State<ProfilePage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              buildCountWidget("Patients", widget.doctor?.patient ?? 0),
-              buildCountWidget("Experience", widget.doctor?.experience ?? 0),
-              buildCountWidget("Rating", widget.doctor?.rating ?? 0),
+              buildCountWidget("Patients", widget.doctor.patient ?? 0),
+              buildCountWidget("Experience", widget.doctor.experience ?? 0),
+              buildCountWidget("Rating", widget.doctor.rating ?? 0),
             ],
           ),
           SizedBox(height: 36),
@@ -160,7 +160,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 SizedBox(height: 8),
                 Text(
-                  widget.doctor?.aboutMe ?? '',
+                  widget.doctor.aboutMe ?? '',
                   style: TextStyle(
                       fontSize: 16,
                       color: widget.isDarkMode ? Colors.white : Colors.black),
@@ -325,7 +325,9 @@ class _ProfilePageState extends State<ProfilePage> {
   void _navigateToEditProfilePage() {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => EditProfilePage(doctor: widget.doctor,),
+        builder: (context) => EditProfilePage(
+          doctor: widget.doctor,
+        ),
       ),
     );
   }

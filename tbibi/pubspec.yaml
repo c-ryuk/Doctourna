@@ -40,6 +40,8 @@ dependencies:
   url_launcher: ^6.1.7
   flutter_staggered_animations: ^1.1.1
   fancy_bottom_navigation: ^0.3.3
+  geolocator: ^10.1.0
+  geocoding: ^2.1.1
 
 dev_dependencies:
   flutter_test:

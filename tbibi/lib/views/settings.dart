@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tbibi/views/about.dart';
 import 'package:tbibi/views/privacy.dart';
-import 'package:tbibi/views/profile_page.dart';
 
 class Settings extends StatefulWidget {
   final Function toggleTheme;

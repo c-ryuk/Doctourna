@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:tbibi/models/country.dart';
 import 'package:tbibi/static_data/countries_list.dart';
-import 'package:tbibi/static_data/governorate_list.dart';
+
 import 'package:tbibi/widgets/country_widget.dart';
+import 'package:tbibi/widgets/location_builder.dart';
 import 'package:tbibi/widgets/signbutton.dart';
+
+import '../widgets/governorats_dropdown.dart';
 
 class DoctorDataPage extends StatefulWidget {
   @override
@@ -17,6 +20,7 @@ class DoctorFormPage extends State<DoctorDataPage> {
   int selectedIndex = -1;
   bool isSelected = false;
   String selectedCountry = "";
+  bool isTapedLocation = false;
 
   void handleSpecialityTap(int index, Country value) {
     setState(() {
@@ -29,7 +33,6 @@ class DoctorFormPage extends State<DoctorDataPage> {
 
   @override
   Widget build(BuildContext context) {
-    var selectedGovernante;
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: Color(0xFF4163CD), size: 30),
@@ -85,40 +88,10 @@ class DoctorFormPage extends State<DoctorDataPage> {
                   children: [
                     Row(
                       children: [
-                        Expanded(
-                          flex: 5,
-                          child: DropdownButtonFormField<String>(
-                            decoration: const InputDecoration(
-                              hintText: "Governorate",
-                              hintStyle: TextStyle(
-                                  fontSize: 18, fontFamily: 'Poppins'),
-                              border: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.black)),
-                              focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.black)),
-                            ),
-                            icon: const Icon(
-                              Icons.home,
-                            ),
-                            value: selectedGovernante,
-                            onChanged: (item) => setState(() {
-                              selectedGovernante = item;
-                            }),
-                            items: governorates.map((String gouvernorat) {
-                              return DropdownMenuItem<String>(
-                                value: gouvernorat,
-                                child: Text(
-                                  gouvernorat,
-                                  style: const TextStyle(
-                                      fontSize: 18, fontFamily: 'Poppins'),
-                                ),
-                              );
-                            }).toList(),
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 5,
-                        ),
+                        isTapedLocation
+                            ? LocationBuilder()
+                            : GovernoratsDropdown(),
+                        SizedBox(width: 5),
                         Expanded(
                             child: Container(
                                 decoration: BoxDecoration(
@@ -126,10 +99,19 @@ class DoctorFormPage extends State<DoctorDataPage> {
                                     borderRadius: BorderRadius.circular(10)),
                                 height: 60,
                                 width: 60,
-                                child: const Icon(
-                                  Icons.location_searching,
-                                  size: 30,
-                                  color: Colors.white,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      isTapedLocation = !isTapedLocation;
+                                    });
+                                  },
+                                  child: Icon(
+                                    isTapedLocation
+                                        ? Icons.location_disabled_rounded
+                                        : Icons.location_searching_rounded,
+                                    size: 30,
+                                    color: Colors.white,
+                                  ),
                                 )))
                       ],
                     ),

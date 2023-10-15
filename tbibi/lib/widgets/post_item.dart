@@ -85,13 +85,13 @@ class PostBody extends StatelessWidget {
                     children: [
                       CircleAvatar(
                         backgroundImage:
-                            Image.asset(getUserById(post.userId)!.imageUrl)
+                            Image.asset(getUserById(post.userId).imageUrl)
                                 .image,
                       ),
                       const SizedBox(
                         width: 5,
                       ),
-                      Text(getUserById(post.userId)!.fullName),
+                      Text(getUserById(post.userId).fullName),
                     ],
                   ),
                   Row(
