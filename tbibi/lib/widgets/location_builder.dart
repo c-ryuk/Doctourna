@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tbibi/models/location.dart';
 import 'package:tbibi/services/location_service.dart';
 import 'package:tbibi/widgets/location_widget.dart';
 
@@ -11,19 +12,21 @@ class LocationBuilder extends StatefulWidget {
 
 class _LocationBuilderState extends State<LocationBuilder> {
   LocationService serv = LocationService();
+  var future;
   @override
   void initState() {
     super.initState();
-    serv.getPermession();
+    future = serv.getPermession();
   }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: serv.getPermession(),
+        future: future,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return LocationWidget(location: snapshot.data);
+            LocationModel locationModel = snapshot.data as LocationModel;
+            return LocationWidget(location: locationModel);
           } else {
             return LocationLoader();
           }
