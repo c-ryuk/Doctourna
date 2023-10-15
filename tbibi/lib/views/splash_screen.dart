@@ -14,7 +14,7 @@ class SplashScreenState extends State<SplashScreen> {
   }
 
   delayedPage() async {
-    return await Future.delayed(Duration(seconds: 4), () {
+    return await Future.delayed(Duration(seconds: 3), () {
       return Navigator.of(context).pushReplacementNamed('/home');
     });
   }

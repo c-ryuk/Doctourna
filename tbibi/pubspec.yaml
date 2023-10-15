@@ -42,6 +42,7 @@ dependencies:
   fancy_bottom_navigation: ^0.3.3
   geolocator: ^10.1.0
   geocoding: ^2.1.1
+  liquid_pull_to_refresh: ^3.0.1
 
 dev_dependencies:
   flutter_test:
