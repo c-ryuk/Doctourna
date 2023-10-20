@@ -84,7 +84,7 @@ class SignUpPage extends StatelessWidget {
                 child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 10),
                   width: double.infinity,
-                  color: Color(0xFF4163CD).withOpacity(0.8),
+                  color: Color(0xFF4163CD),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

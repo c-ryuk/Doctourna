@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tbibi/views/signup_page.dart';
 import 'package:tbibi/widgets/signbutton.dart';
-import 'package:tbibi/widgets/textinput.dart';
+
+import '../widgets/textinput.dart';
 
 class LoginPage extends StatelessWidget {
   @override
@@ -9,39 +10,47 @@ class LoginPage extends StatelessWidget {
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
-          height: 820,
+          height: 800,
           child: Column(
             children: [
+              SizedBox(
+                height: 40,
+              ),
               Expanded(
                 flex: 2,
                 child: Image.asset(
-                  "assets/login_image.jpg",
-                  fit: BoxFit.cover,
+                  "assets/female-doctor.png",
+                  width: 340,
+                  height: 340,
                 ),
               ),
               Expanded(
                 flex: 2,
                 child: Container(
                   width: double.infinity,
-                  color: Color(0xFF4163CD),
                   padding: EdgeInsets.all(16.0),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      InputText(hint: "Email"),
-                      InputText(hint: "Password"),
+                      TextInput(label: "Email", icon: Icon(Icons.mail)),
                       SizedBox(
-                        height: 26,
+                        height: 10,
+                      ),
+                      TextInput(
+                          label: "Password",
+                          icon: Icon(Icons.password_rounded)),
+                      SizedBox(
+                        height: 10,
                       ),
                       Padding(
-                        padding: EdgeInsets.only(left: 125),
+                        padding: EdgeInsets.only(left: 180),
                         child: Text(
                           "Forgot your password ?",
                           style: TextStyle(
-                            color: Colors.white,
+                            color: Color(0xFF4163CD),
                             fontFamily: 'Poppins',
-                            fontSize: 17,
+                            fontSize: 14,
                           ),
                         ),
                       ),
@@ -51,52 +60,63 @@ class LoginPage extends StatelessWidget {
                       SignButton(
                         text: "LOGIN",
                         textColor: Colors.white,
-                        backgroundColor: Color(0xFF4CE3B1),
+                        backgroundColor: Color(0xFF4163CD),
                         function: () {},
                       ),
                       SizedBox(
-                        height: 20,
-                      ),
-                      Text(
-                        "New Member ?",
-                        style: TextStyle(
-                          fontFamily: "Poppins",
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 20,
+                        height: 10,
                       ),
                       ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
-                            return SignUpPage();
-                          }));
-                        },
-                        child: Text(
-                          "SIGN IN",
-                          style: TextStyle(
-                            fontSize: 22,
-                            color: Colors.white,
-                            fontFamily: 'Poppins',
-                            fontWeight: FontWeight.w500,
-                          ),
+                        onPressed: () {},
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image(
+                              image: AssetImage("assets/google.png"),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              "Google",
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontFamily: "Poppins",
+                                  fontSize: 20),
+                            ),
+                          ],
                         ),
                         style: ElevatedButton.styleFrom(
-                          fixedSize: Size(310, 40),
-                          backgroundColor: Color(0xFF4163CD),
+                          backgroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
-                            side: BorderSide(
-                              color: Colors.white,
-                              width: 1.0,
-                            ),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
+                              borderRadius: BorderRadius.circular(32),
+                              side: BorderSide(color: Colors.black)),
+                          fixedSize: Size(310, 40),
                         ),
                       ),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Don't have an account ?",
+                              style: TextStyle(fontFamily: 'Poppins'),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.of(context)
+                                    .push(MaterialPageRoute(builder: (context) {
+                                  return SignUpPage();
+                                }));
+                              },
+                              child: Text(
+                                " Register",
+                                style: TextStyle(
+                                    color: Color(0xFF4163CD),
+                                    fontWeight: FontWeight.w600,
+                                    fontFamily: 'Poppins'),
+                              ),
+                            )
+                          ])
                     ],
                   ),
                 ),
