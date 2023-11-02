@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "579894618136",
+    "project_id": "doctourna-97636",
+    "storage_bucket": "doctourna-97636.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:579894618136:android:2e7bf1c4143a3d7c0fbb6d",
+        "android_client_info": {
+          "package_name": "com.example.tbibi"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCh8gR6tlQcopsv3c6366p0vxo1as31hMw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

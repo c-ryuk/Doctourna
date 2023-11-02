@@ -11,7 +11,7 @@ class SignUpPage extends StatelessWidget {
         elevation: 0,
         centerTitle: true,
         title: Text(
-          "Sign Up",
+          "Register",
           style: TextStyle(
             fontSize: 30,
             color: Color(0xFF4163CD),
@@ -71,7 +71,7 @@ class SignUpPage extends StatelessWidget {
                         ),
                       ),
                       SignButton(
-                        text: "SIGN UP",
+                        text: "Register",
                         textColor: Colors.white,
                         backgroundColor: Color(0xFF4163CD),
                         function: () {},
