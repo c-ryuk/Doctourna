@@ -114,6 +114,11 @@ class _MyTabBarState extends State<MyTabBar> {
                 child: Drawer(
                   child: ListView(
                     children: [
+                      Container(
+                        child: Text("hello"),
+                        height: 150,
+                        color: Colors.amber,
+                      ),
                       AuthenticationService().userStatus()
                           ? ListTile(
                               title: Text('Login'),

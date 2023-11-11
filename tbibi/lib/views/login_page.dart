@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:tbibi/services/authentication_service.dart';
 import 'package:tbibi/views/signup_page.dart';
 import 'package:tbibi/widgets/signbutton.dart';
 
+import '../widgets/login_google_button.dart';
 import '../widgets/textinput.dart';
 
 class LoginPage extends StatelessWidget {
+  TextEditingController email = TextEditingController();
+
+  TextEditingController password = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,13 +39,20 @@ class LoginPage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      TextInput(label: "Email", icon: Icon(Icons.mail)),
+                      TextInput(
+                        label: "Email",
+                        icon: Icon(Icons.mail),
+                        ctrl: email,
+                      ),
                       SizedBox(
                         height: 10,
                       ),
                       TextInput(
-                          label: "Password",
-                          icon: Icon(Icons.password_rounded)),
+                        label: "Password",
+                        icon: Icon(Icons.password_rounded),
+                        ctrl: password,
+                        obscText: true,
+                      ),
                       SizedBox(
                         height: 10,
                       ),
@@ -61,39 +74,17 @@ class LoginPage extends StatelessWidget {
                         text: "LOGIN",
                         textColor: Colors.white,
                         backgroundColor: Color(0xFF4163CD),
-                        function: () {},
+                        function: () {
+                          AuthenticationService().login(
+                              emailAddress: email.text,
+                              password: password.text,
+                              context: context);
+                        },
                       ),
                       SizedBox(
                         height: 10,
                       ),
-                      ElevatedButton(
-                        onPressed: () {},
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Image(
-                              image: AssetImage("assets/google.png"),
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              "Google",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontFamily: "Poppins",
-                                  fontSize: 20),
-                            ),
-                          ],
-                        ),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(32),
-                              side: BorderSide(color: Colors.black)),
-                          fixedSize: Size(310, 40),
-                        ),
-                      ),
+                      const LoginWithGoogleButton(),
                       Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [

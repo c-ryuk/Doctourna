@@ -1,18 +1,23 @@
 import 'package:flutter/material.dart';
 
 class TextInput extends StatelessWidget {
-  const TextInput({
-    super.key,
-    required this.label,
-    required this.icon,
-  });
+  const TextInput(
+      {super.key,
+      required this.label,
+      required this.icon,
+      required this.ctrl,
+      this.obscText});
 
   final String label;
   final Icon icon;
+  final TextEditingController ctrl;
+  final bool? obscText;
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+        obscureText: obscText ?? false,
+        controller: ctrl,
         decoration: InputDecoration(
             contentPadding: EdgeInsets.symmetric(horizontal: 32, vertical: 20),
             hintText: label,
