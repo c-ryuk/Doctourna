@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:tbibi/services/authentication_service.dart';
 import 'package:tbibi/views/blog_page.dart';
 import 'package:tbibi/views/home.dart';
 import 'package:tbibi/views/login_page.dart';
@@ -47,7 +48,6 @@ class _MyTabBarState extends State<MyTabBar> {
   }
 
   void _navigateToLoginPage() {
-    // Navigate to the LoginPage
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => LoginPage(),
@@ -104,7 +104,6 @@ class _MyTabBarState extends State<MyTabBar> {
                 });
               },
             ),
-            // Side Bar content
             if (_isSidebarOpen)
               Container(
                 color: Colors.black.withOpacity(0.5),
@@ -115,18 +114,22 @@ class _MyTabBarState extends State<MyTabBar> {
                 child: Drawer(
                   child: ListView(
                     children: [
-                      ListTile(
-                        title: Text('Login'),
-                        onTap: () {
-                          _navigateToLoginPage();
-                        },
-                      ),
-                      ListTile(
-                        title: Text('Item 2'),
-                        onTap: () {
-                          // Handle sidebar item 2 tap
-                        },
-                      ),
+                      AuthenticationService().userStatus()
+                          ? ListTile(
+                              title: Text('Login'),
+                              onTap: () {
+                                _navigateToLoginPage();
+                              },
+                            )
+                          : ListTile(
+                              title: Text('Logout'),
+                              onTap: () {
+                                setState(() {
+                                  _isSidebarOpen = false;
+                                  AuthenticationService().logout();
+                                });
+                              },
+                            ),
                     ],
                   ),
                 ),

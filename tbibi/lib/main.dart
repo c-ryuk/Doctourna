@@ -1,4 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:tbibi/services/authentication_service.dart';
 import 'package:tbibi/views/appoinment_page.dart';
 import 'package:tbibi/views/detail_screen.dart';
 import 'package:tbibi/views/login_page.dart';
@@ -6,7 +9,9 @@ import 'package:tbibi/views/blog_page.dart';
 import 'package:tbibi/views/splash_screen.dart';
 import 'package:tbibi/widgets/tab_bar.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const Doctourna());
 }
 
@@ -18,6 +23,12 @@ class Doctourna extends StatefulWidget {
 }
 
 class _DoctournaState extends State<Doctourna> {
+  @override
+  void initState() {
+    AuthenticationService().checkUserStatus();
+    super.initState();
+  }
+
   bool _isDarkMode = false;
 
   void toggleTheme() {
