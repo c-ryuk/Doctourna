@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tbibi/services/authentication_service.dart';
 import 'package:tbibi/views/signup_page.dart';
@@ -99,13 +100,22 @@ class ResetPasswordPage extends StatelessWidget {
                         height: 10,
                       ),
                       SignButton(
-                        text: "Reset Password",
-                        textColor: Colors.white,
-                        backgroundColor: Color(0xFF4163CD),
-                        function: () {
-                          if (formKey.currentState!.validate()) {}
-                        },
-                      ),
+                          text: "Reset Password",
+                          textColor: Colors.white,
+                          backgroundColor: Color(0xFF4163CD),
+                          function: () async {
+                            if (formKey.currentState!.validate()) {
+                              await FirebaseAuth.instance
+                                  .sendPasswordResetEmail(email: email.text);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                      'Password reset email sent successfully!'),
+                                  duration: Duration(seconds: 2),
+                                ),
+                              );
+                            }
+                          }),
                       SizedBox(
                         height: 40,
                       ),
