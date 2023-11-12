@@ -42,148 +42,151 @@ class _SettingsState extends State<Settings> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "Settings",
-              style: TextStyle(
-                fontSize: 30,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            SizedBox(height: 30),
-            ListTile(
-              onTap: () {
-                _navigateToProfilePage();
-              },
-              leading: Container(
-                padding: EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: Colors.lightBlue.shade100,
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(
-                  Icons.person,
-                  color: Colors.lightBlue,
-                  size: 35,
-                ),
-              ),
-              title: Text(
-                "Profile",
+    return Scaffold(
+      body: Padding(
+        padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Settings",
                 style: TextStyle(
+                  fontSize: 30,
                   fontWeight: FontWeight.w500,
-                  fontSize: 20,
                 ),
               ),
-              trailing: Icon(Icons.arrow_forward_ios_rounded),
-            ),
-            SizedBox(height: 20),
-            ListTile(
-              onTap: () {
-                widget.toggleTheme(); // Toggle the theme
-              },
-              leading: Container(
-                padding: EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color:
-                      widget.isDarkMode ? Colors.black : Colors.amber.shade100,
-                  shape: BoxShape.circle,
+              SizedBox(height: 30),
+              ListTile(
+                onTap: () {
+                  _navigateToProfilePage();
+                },
+                leading: Container(
+                  padding: EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: Colors.lightBlue.shade100,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    Icons.person,
+                    color: Colors.lightBlue,
+                    size: 35,
+                  ),
                 ),
-                child: Icon(
-                  widget.isDarkMode ? Icons.dark_mode : Icons.light_mode,
-                  color: widget.isDarkMode ? Colors.white : Colors.amber,
-                  size: 35,
+                title: Text(
+                  "Profile",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 20,
+                  ),
+                ),
+                trailing: Icon(Icons.arrow_forward_ios_rounded),
+              ),
+              SizedBox(height: 20),
+              ListTile(
+                onTap: () {
+                  widget.toggleTheme(); // Toggle the theme
+                },
+                leading: Container(
+                  padding: EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: widget.isDarkMode
+                        ? Colors.black
+                        : Colors.amber.shade100,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    widget.isDarkMode ? Icons.dark_mode : Icons.light_mode,
+                    color: widget.isDarkMode ? Colors.white : Colors.amber,
+                    size: 35,
+                  ),
+                ),
+                title: Text(
+                  "${widget.isDarkMode ? 'Dark Mode' : 'Light Mode'}",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 20,
+                  ),
+                ),
+                trailing: Icon(Icons.arrow_forward_ios_rounded),
+              ),
+              SizedBox(height: 20),
+              ListTile(
+                onTap: () {
+                  _navigateToPrivacy();
+                },
+                leading: Container(
+                  padding: EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: Colors.indigo.shade100,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    Icons.privacy_tip_outlined,
+                    color: Colors.indigo,
+                    size: 35,
+                  ),
+                ),
+                title: Text(
+                  "Privacy",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 20,
+                  ),
+                ),
+                trailing: Icon(Icons.arrow_forward_ios_rounded),
+              ),
+              SizedBox(height: 20),
+              ListTile(
+                onTap: () {
+                  _navigateToAbout();
+                },
+                leading: Container(
+                  padding: EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: Colors.orange.shade100,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    Icons.info_outline_rounded,
+                    color: Colors.orange,
+                    size: 35,
+                  ),
+                ),
+                title: Text(
+                  "About Us",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 20,
+                  ),
+                ),
+                trailing: Icon(Icons.arrow_forward_ios_rounded),
+              ),
+              Divider(height: 40),
+              ListTile(
+                onTap: () {},
+                leading: Container(
+                  padding: EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: Colors.redAccent.shade100,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    Icons.output_outlined,
+                    color: Colors.redAccent,
+                    size: 35,
+                  ),
+                ),
+                title: Text(
+                  "Log Out",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 20,
+                  ),
                 ),
               ),
-              title: Text(
-                "${widget.isDarkMode ? 'Dark Mode' : 'Light Mode'}",
-                style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 20,
-                ),
-              ),
-              trailing: Icon(Icons.arrow_forward_ios_rounded),
-            ),
-            SizedBox(height: 20),
-            ListTile(
-              onTap: () {
-                _navigateToPrivacy();
-              },
-              leading: Container(
-                padding: EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: Colors.indigo.shade100,
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(
-                  Icons.privacy_tip_outlined,
-                  color: Colors.indigo,
-                  size: 35,
-                ),
-              ),
-              title: Text(
-                "Privacy",
-                style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 20,
-                ),
-              ),
-              trailing: Icon(Icons.arrow_forward_ios_rounded),
-            ),
-            SizedBox(height: 20),
-            ListTile(
-              onTap: () {
-                _navigateToAbout();
-              },
-              leading: Container(
-                padding: EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: Colors.orange.shade100,
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(
-                  Icons.info_outline_rounded,
-                  color: Colors.orange,
-                  size: 35,
-                ),
-              ),
-              title: Text(
-                "About Us",
-                style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 20,
-                ),
-              ),
-              trailing: Icon(Icons.arrow_forward_ios_rounded),
-            ),
-            Divider(height: 40),
-            ListTile(
-              onTap: () {},
-              leading: Container(
-                padding: EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: Colors.redAccent.shade100,
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(
-                  Icons.output_outlined,
-                  color: Colors.redAccent,
-                  size: 35,
-                ),
-              ),
-              title: Text(
-                "Log Out",
-                style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 20,
-                ),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

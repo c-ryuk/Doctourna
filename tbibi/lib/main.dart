@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:tbibi/services/authentication_service.dart';
@@ -62,6 +61,7 @@ class _DoctournaState extends State<Doctourna> {
             PostDetail(toggleTheme: toggleTheme, isDarkMode: _isDarkMode),
         '/appoinment-page': (context) => AppointmentBookingPage(
             toggleTheme: toggleTheme, isDarkMode: _isDarkMode),
+
         // '/profile-page': (context) =>
         //     ProfilePage(toggleTheme: toggleTheme, isDarkMode: _isDarkMode),
       },

@@ -17,12 +17,7 @@ class _SignUpPageState extends State<SignUpPage> {
   TextEditingController password = TextEditingController();
 
   TextEditingController cpassword = TextEditingController();
-
-  vrify() {
-    if (cpassword.text != password.text) {
-      return null;
-    }
-  }
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   bool isEuqal = false;
 
@@ -52,75 +47,119 @@ class _SignUpPageState extends State<SignUpPage> {
               Expanded(
                 flex: 3,
                 child: Container(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Container(
-                        width: 300, // Set the desired width here
-                        child: TextFormField(
-                          controller: fullName,
-                          decoration: InputDecoration(
-                            labelText: "Full Name",
-                            prefixIcon: Icon(Icons.person),
+                  child: Form(
+                    key: formKey,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Container(
+                          width: 300, // Set the desired width here
+                          child: TextFormField(
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Name should not be empty.';
+                              }
+                              return null;
+                            },
+                            controller: fullName,
+                            decoration: InputDecoration(
+                              labelText: "Full Name",
+                              prefixIcon: Icon(Icons.person),
+                            ),
                           ),
                         ),
-                      ),
-                      Container(
-                        width: 300, // Set the desired width here
-                        child: TextFormField(
-                          controller: email,
-                          decoration: InputDecoration(
-                            labelText: "Email",
-                            prefixIcon: Icon(Icons.email),
+                        Container(
+                          width: 300, // Set the desired width here
+                          child: TextFormField(
+                            validator: (value) {
+                              String pattern =
+                                  r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$';
+                              RegExp regExp = RegExp(pattern);
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter an email address.';
+                              }
+
+                              if (!regExp.hasMatch(value)) {
+                                return 'Invalid email address';
+                              }
+
+                              return null;
+                            },
+                            controller: email,
+                            decoration: InputDecoration(
+                              labelText: "Email",
+                              prefixIcon: Icon(Icons.email),
+                            ),
                           ),
                         ),
-                      ),
-                      Container(
-                        width: 300, // Set the desired width here
-                        child: TextFormField(
-                          controller: password,
-                          decoration: InputDecoration(
-                            labelText: "Password",
-                            prefixIcon: Icon(Icons.lock),
+                        Container(
+                          width: 300, // Set the desired width here
+                          child: TextFormField(
+                            validator: (value) {
+                              String pattern =
+                                  r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$';
+                              RegExp regExp = RegExp(pattern);
+
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter a password.';
+                              }
+
+                              if (!regExp.hasMatch(value)) {
+                                return 'Password must contain at least one uppercase letter,\none lowercase letter, and one digit.';
+                              }
+
+                              return null;
+                            },
+                            controller: password,
+                            decoration: InputDecoration(
+                              labelText: "Password",
+                              prefixIcon: Icon(Icons.lock),
+                            ),
+                            obscureText: true,
                           ),
-                          obscureText: true,
                         ),
-                      ),
-                      Container(
-                        width: 300, // Set the desired width here
-                        child: TextFormField(
-                          onChanged: (value) {
-                            if (value != password.text) {
-                              print("not comp");
-                            } else {
-                              print("comp");
+                        Container(
+                          width: 300, // Set the desired width here
+                          child: TextFormField(
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please confirm your password.';
+                              }
+
+                              if (value != password.text) {
+                                return 'Passwords do not match.';
+                              }
+
+                              return null;
+                            },
+                            controller: cpassword,
+                            decoration: InputDecoration(
+                              labelText: "Confirm Password",
+                              prefixIcon: Icon(Icons.lock),
+                            ),
+                            obscureText: true,
+                          ),
+                        ),
+                        RegisterButton(
+                          password: password.text,
+                          confirmPassword: cpassword.text,
+                          text: "Register",
+                          textColor: Colors.white,
+                          backgroundColor: Color(0xFF4163CD),
+                          function: () async {
+                            if (formKey.currentState!.validate()) {
+                              AuthenticationService().createAccount(
+                                  emailAddress: email.text,
+                                  password: password.text,
+                                  username: fullName.text,
+                                  context: context);
+
+                              AuthenticationService().checkUserStatus();
                             }
                           },
-                          controller: cpassword,
-                          decoration: InputDecoration(
-                            labelText: "Confirm Password",
-                            prefixIcon: Icon(Icons.lock),
-                          ),
-                          obscureText: true,
-                        ),
-                      ),
-                      RegisterButton(
-                        password: password.text,
-                        confirmPassword: cpassword.text,
-                        text: "Register",
-                        textColor: Colors.white,
-                        backgroundColor: Color(0xFF4163CD),
-                        function: () async {
-                          AuthenticationService().createAccount(
-                              emailAddress: email.text,
-                              password: password.text,
-                              username: fullName.text,
-                              context: context);
-
-                          AuthenticationService().checkUserStatus();
-                        },
-                      )
-                    ],
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),

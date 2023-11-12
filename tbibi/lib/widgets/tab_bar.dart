@@ -84,18 +84,14 @@ class _MyTabBarState extends State<MyTabBar> {
                   children: [
                     CircleAvatar(
                       radius: 45,
-                      backgroundImage: NetworkImage(!AuthenticationService()
-                              .userStatus()
-                          ? "${user?.photoURL}"
-                          : 'https://cdn-icons-png.flaticon.com/512/678/678521.png'),
+                      backgroundImage: NetworkImage(user?.photoURL ??
+                          'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/2048px-No_image_available.svg.png'),
                     ),
                     SizedBox(
                       height: 2,
                     ),
                     Text(
-                      !AuthenticationService().userStatus()
-                          ? "${user?.displayName}"
-                          : 'Not Connected',
+                      user?.displayName ?? 'Not Connected',
                       style: TextStyle(fontFamily: 'Poppins'),
                     ),
                     Text("${user?.email}",
@@ -116,7 +112,7 @@ class _MyTabBarState extends State<MyTabBar> {
                     style: TextStyle(fontFamily: 'Poppins', fontSize: 19))
               ]),
               onTap: () {
-                _navigateToLoginPage();
+                _navigateToDoctorsPage();
               },
             ),
             ListTile(
@@ -129,7 +125,7 @@ class _MyTabBarState extends State<MyTabBar> {
                     style: TextStyle(fontFamily: 'Poppins', fontSize: 19))
               ]),
               onTap: () {
-                _navigateToLoginPage();
+                _navigateToDoctorsPage();
               },
             ),
             ListTile(
@@ -142,7 +138,7 @@ class _MyTabBarState extends State<MyTabBar> {
                     style: TextStyle(fontFamily: 'Poppins', fontSize: 19))
               ]),
               onTap: () {
-                _navigateToLoginPage();
+                _navigateToPostsPage();
               },
             ),
             ListTile(
@@ -155,7 +151,7 @@ class _MyTabBarState extends State<MyTabBar> {
                     style: TextStyle(fontFamily: 'Poppins', fontSize: 19))
               ]),
               onTap: () {
-                _navigateToLoginPage();
+                _navigateToSettingsPage();
               },
             ),
             AuthenticationService().userStatus()
@@ -266,5 +262,17 @@ class _MyTabBarState extends State<MyTabBar> {
         builder: (context) => LoginPage(),
       ),
     );
+  }
+
+  void _navigateToPostsPage() {
+    Navigator.of(context).pushReplacementNamed('/home');
+  }
+
+  void _navigateToDoctorsPage() {
+    Navigator.of(context).pushReplacementNamed('/home');
+  }
+
+  void _navigateToSettingsPage() {
+    Navigator.of(context).pushReplacementNamed('/home');
   }
 }

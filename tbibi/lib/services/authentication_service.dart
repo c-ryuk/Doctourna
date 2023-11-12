@@ -31,7 +31,8 @@ class AuthenticationService {
       user!.updateDisplayName(username);
       await FirebaseFirestore.instance.collection('users').doc(user?.uid).set({
         'username': username,
-        // Add other user information if needed
+        'email': emailAddress,
+        'password': password,
       });
       Navigator.pushReplacementNamed(context, '/home');
     } on FirebaseAuthException catch (e) {
@@ -84,10 +85,11 @@ class AuthenticationService {
 
   logout() async {
     GoogleSignIn googleSignIn = GoogleSignIn();
-
-    await FirebaseAuth.instance.signOut();
-    if (googleSignIn != null) {
-      googleSignIn.disconnect();
+    if (googleSignIn.currentUser != null) {
+      await googleSignIn.disconnect();
+      await FirebaseAuth.instance.signOut();
+    } else {
+      await FirebaseAuth.instance.signOut();
     }
   }
 
