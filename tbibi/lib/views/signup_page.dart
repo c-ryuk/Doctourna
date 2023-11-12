@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tbibi/services/authentication_service.dart';
 import 'package:tbibi/views/gender_page.dart';
+import '../widgets/register_button.dart';
 import '../widgets/signbutton.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -16,6 +17,14 @@ class _SignUpPageState extends State<SignUpPage> {
   TextEditingController password = TextEditingController();
 
   TextEditingController cpassword = TextEditingController();
+
+  vrify() {
+    if (cpassword.text != password.text) {
+      return null;
+    }
+  }
+
+  bool isEuqal = false;
 
   @override
   Widget build(BuildContext context) {
@@ -80,6 +89,13 @@ class _SignUpPageState extends State<SignUpPage> {
                       Container(
                         width: 300, // Set the desired width here
                         child: TextFormField(
+                          onChanged: (value) {
+                            if (value != password.text) {
+                              print("not comp");
+                            } else {
+                              print("comp");
+                            }
+                          },
                           controller: cpassword,
                           decoration: InputDecoration(
                             labelText: "Confirm Password",
@@ -88,17 +104,18 @@ class _SignUpPageState extends State<SignUpPage> {
                           obscureText: true,
                         ),
                       ),
-                      SignButton(
+                      RegisterButton(
+                        password: password.text,
+                        confirmPassword: cpassword.text,
                         text: "Register",
                         textColor: Colors.white,
                         backgroundColor: Color(0xFF4163CD),
                         function: () async {
-                          setState(() {
-                            AuthenticationService().createAccount(
-                                emailAddress: email.text,
-                                password: password.text,
-                                context: context);
-                          });
+                          AuthenticationService().createAccount(
+                              emailAddress: email.text,
+                              password: password.text,
+                              username: fullName.text,
+                              context: context);
 
                           AuthenticationService().checkUserStatus();
                         },

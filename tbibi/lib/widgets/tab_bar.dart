@@ -1,5 +1,3 @@
-// ignore_for_file: library_private_types_in_public_api, prefer_const_constructors, sized_box_for_whitespace, sort_child_properties_last
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tbibi/services/authentication_service.dart';
@@ -23,28 +21,11 @@ class MyTabBar extends StatefulWidget {
 class _MyTabBarState extends State<MyTabBar> {
   int _currentIndex = 0;
   final PageController _pageController = PageController(initialPage: 0);
-  bool _isSidebarOpen = false;
 
   @override
   void dispose() {
     _pageController.dispose();
     super.dispose();
-  }
-
-  void _toggleSidebar() {
-    setState(() {
-      _isSidebarOpen = !_isSidebarOpen;
-    });
-  }
-
-  void _navigateToProfilePage() {
-    // Navigate to the ProfilePage when the user icon is pressed
-    // Navigator.of(context).push(
-    //   MaterialPageRoute(
-    //     builder: (context) => ProfilePage(
-    //         toggleTheme: widget.toggleTheme, isDarkMode: widget.isDarkMode),
-    //   ),
-    // );
   }
 
   void _navigateToLoginPage() {
@@ -64,6 +45,7 @@ class _MyTabBarState extends State<MyTabBar> {
           toggleTheme: widget.toggleTheme, isDarkMode: widget.isDarkMode),
       Settings(toggleTheme: widget.toggleTheme, isDarkMode: widget.isDarkMode),
     ];
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -76,71 +58,110 @@ class _MyTabBarState extends State<MyTabBar> {
         ),
         backgroundColor: widget.isDarkMode ? Colors.black : Colors.white12,
         elevation: 0,
-        leading: IconButton(
-          iconSize: 30,
-          icon: Icon(Icons.menu),
-          color: Color(0xFF4163CD),
-          onPressed: _toggleSidebar,
+        leading: Builder(
+          builder: (BuildContext context) {
+            return IconButton(
+              icon: Icon(Icons.menu),
+              color: Color(0xFF4163CD), // Replace with your custom icon
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
+            );
+          },
         ),
         systemOverlayStyle: SystemUiOverlayStyle(
           systemNavigationBarColor: Color(0xFF4163CD),
           statusBarColor: Color(0xFF4163CD),
         ),
       ),
-      body: GestureDetector(
-        onTap: () {
-          if (_isSidebarOpen) {
-            _toggleSidebar();
-          }
-        },
-        child: Stack(
+      drawer: Drawer(
+        child: ListView(
           children: [
-            PageView(
-              controller: _pageController,
-              children: _screens,
-              onPageChanged: (index) {
-                setState(() {
-                  _currentIndex = index;
-                });
-              },
-            ),
-            if (_isSidebarOpen)
-              Container(
-                color: Colors.black.withOpacity(0.5),
-              ),
-            if (_isSidebarOpen)
-              Container(
-                width: 200,
-                child: Drawer(
-                  child: ListView(
-                    children: [
-                      Container(
-                        child: Text("hello"),
-                        height: 150,
-                        color: Colors.amber,
-                      ),
-                      AuthenticationService().userStatus()
-                          ? ListTile(
-                              title: Text('Login'),
-                              onTap: () {
-                                _navigateToLoginPage();
-                              },
-                            )
-                          : ListTile(
-                              title: Text('Logout'),
-                              onTap: () {
-                                setState(() {
-                                  _isSidebarOpen = false;
-                                  AuthenticationService().logout();
-                                });
-                              },
-                            ),
-                    ],
+            DrawerHeader(
+              child: Column(
+                children: [
+                  CircleAvatar(
+                    radius: 45,
+                    backgroundImage: AssetImage('assets/hamza.png'),
                   ),
-                ),
+                  SizedBox(
+                    height: 2,
+                  ),
+                  Text(
+                    "Hamza REKIK",
+                    style: TextStyle(fontFamily: 'Poppins'),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("Status : Verified",
+                          style: TextStyle(fontFamily: 'Poppins')),
+                      Icon(Icons.verified)
+                    ],
+                  )
+                ],
               ),
+              decoration: BoxDecoration(
+                color: Color(0xFF4163CD),
+              ),
+            ),
+            AuthenticationService().userStatus()
+                ? ListTile(
+                    title: Row(children: [
+                      Icon(
+                        Icons.login,
+                        color: Colors.black,
+                      ),
+                      Text(' Login',
+                          style: TextStyle(fontFamily: 'Poppins', fontSize: 19))
+                    ]),
+                    onTap: () {
+                      _navigateToLoginPage();
+                    },
+                  )
+                : Padding(
+                    padding: const EdgeInsets.only(top: 550),
+                    child: Column(children: [
+                      Divider(
+                        indent: 20,
+                        endIndent: 20,
+                        height: 5,
+                      ),
+                      ListTile(
+                        title: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.logout,
+                                color: Colors.redAccent,
+                              ),
+                              Text(' Logout',
+                                  style: TextStyle(
+                                      fontFamily: 'Poppins',
+                                      color: Colors.redAccent,
+                                      fontSize: 19))
+                            ]),
+                        onTap: () {
+                          // Close the drawer
+                          setState(() {
+                            AuthenticationService().logout();
+                            Navigator.of(context).pop();
+                          });
+                        },
+                      ),
+                    ]),
+                  ),
           ],
         ),
+      ),
+      body: PageView(
+        controller: _pageController,
+        children: _screens,
+        onPageChanged: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -15,13 +16,22 @@ class AuthenticationService {
     });
   }
 
-  createAccount({required emailAddress, required password, context}) async {
+  createAccount(
+      {required emailAddress,
+      required password,
+      required username,
+      context}) async {
     try {
       final credential =
           await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: emailAddress,
         password: password,
       );
+      User? user = credential.user;
+      await FirebaseFirestore.instance.collection('users').doc(user?.uid).set({
+        'username': username,
+        // Add other user information if needed
+      });
       Navigator.pushReplacementNamed(context, '/home');
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
@@ -73,7 +83,9 @@ class AuthenticationService {
 
   logout() async {
     GoogleSignIn googleSignIn = GoogleSignIn();
-    googleSignIn.disconnect();
+    if (googleSignIn == null) {
+      googleSignIn.disconnect();
+    }
     await FirebaseAuth.instance.signOut();
   }
 
