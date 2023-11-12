@@ -8,20 +8,38 @@ import '../widgets/textinput.dart';
 
 class LoginPage extends StatelessWidget {
   TextEditingController email = TextEditingController();
-
   TextEditingController password = TextEditingController();
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text("Login",
+            style: TextStyle(
+                fontFamily: 'Poppins Medium',
+                color: Color(0xFF4163CD),
+                fontSize: 22)),
+        leading: Builder(
+          builder: (BuildContext context) {
+            return IconButton(
+              icon: Icon(Icons.arrow_back_ios),
+              color: Color(0xFF4163CD), // Replace with your custom icon
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            );
+          },
+        ),
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+      ),
       body: SingleChildScrollView(
         child: Container(
-          height: 800,
+          height: 725,
           child: Column(
             children: [
-              SizedBox(
-                height: 40,
-              ),
               Expanded(
                 flex: 2,
                 child: Image.asset(
@@ -35,80 +53,111 @@ class LoginPage extends StatelessWidget {
                 child: Container(
                   width: double.infinity,
                   padding: EdgeInsets.all(16.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      TextInput(
-                        label: "Email",
-                        icon: Icon(Icons.mail),
-                        ctrl: email,
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      TextInput(
-                        label: "Password",
-                        icon: Icon(Icons.password_rounded),
-                        ctrl: password,
-                        obscText: true,
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(left: 180),
-                        child: Text(
-                          "Forgot your password ?",
-                          style: TextStyle(
-                            color: Color(0xFF4163CD),
-                            fontFamily: 'Poppins',
-                            fontSize: 14,
+                  child: Form(
+                    key: formKey,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        TextInput(
+                          label: "Email",
+                          icon: Icon(Icons.mail),
+                          ctrl: email,
+                          validator: (value) {
+                            String pattern =
+                                r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$';
+                            RegExp regExp = RegExp(pattern);
+
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your email address.';
+                            }
+
+                            if (!regExp.hasMatch(value)) {
+                              return 'Invalid email address.';
+                            }
+
+                            return null;
+                          },
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        TextInput(
+                          label: "Password",
+                          icon: Icon(Icons.password_rounded),
+                          ctrl: password,
+                          obscText: true,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your password.';
+                            }
+                            return null;
+                          },
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(left: 180),
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(context, '/reset_password');
+                            },
+                            child: Text(
+                              "Forgot your password ?",
+                              style: TextStyle(
+                                color: Color(0xFF4163CD),
+                                fontFamily: 'Poppins',
+                                fontSize: 14,
+                              ),
+                            ),
                           ),
                         ),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      SignButton(
-                        text: "LOGIN",
-                        textColor: Colors.white,
-                        backgroundColor: Color(0xFF4163CD),
-                        function: () {
-                          AuthenticationService().login(
-                              emailAddress: email.text,
-                              password: password.text,
-                              context: context);
-                        },
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      const LoginWithGoogleButton(),
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "Don't have an account ?",
-                              style: TextStyle(fontFamily: 'Poppins'),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.of(context)
-                                    .push(MaterialPageRoute(builder: (context) {
-                                  return SignUpPage();
-                                }));
-                              },
-                              child: Text(
-                                " Register",
-                                style: TextStyle(
-                                    color: Color(0xFF4163CD),
-                                    fontWeight: FontWeight.w600,
-                                    fontFamily: 'Poppins'),
+                        SizedBox(
+                          height: 13,
+                        ),
+                        SignButton(
+                          text: "LOGIN",
+                          textColor: Colors.white,
+                          backgroundColor: Color(0xFF4163CD),
+                          function: () {
+                            if (formKey.currentState!.validate()) {
+                              AuthenticationService().login(
+                                  emailAddress: email.text,
+                                  password: password.text,
+                                  context: context);
+                            }
+                          },
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        const LoginWithGoogleButton(),
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Don't have an account ?",
+                                style: TextStyle(fontFamily: 'Poppins'),
                               ),
-                            )
-                          ])
-                    ],
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context).push(
+                                      MaterialPageRoute(builder: (context) {
+                                    return SignUpPage();
+                                  }));
+                                },
+                                child: Text(
+                                  " Register",
+                                  style: TextStyle(
+                                      color: Color(0xFF4163CD),
+                                      fontWeight: FontWeight.w600,
+                                      fontFamily: 'Poppins'),
+                                ),
+                              )
+                            ])
+                      ],
+                    ),
                   ),
                 ),
               ),

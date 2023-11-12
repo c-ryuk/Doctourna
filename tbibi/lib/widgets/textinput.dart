@@ -6,16 +6,19 @@ class TextInput extends StatelessWidget {
       required this.label,
       required this.icon,
       required this.ctrl,
-      this.obscText});
+      this.obscText,
+      required this.validator});
 
   final String label;
   final Icon icon;
   final TextEditingController ctrl;
   final bool? obscText;
+  final String? Function(String?) validator;
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
+        validator: validator,
         obscureText: obscText ?? false,
         controller: ctrl,
         decoration: InputDecoration(
