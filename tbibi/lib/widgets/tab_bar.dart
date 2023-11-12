@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tbibi/services/authentication_service.dart';
@@ -22,18 +23,18 @@ class _MyTabBarState extends State<MyTabBar> {
   int _currentIndex = 0;
   final PageController _pageController = PageController(initialPage: 0);
 
+  FirebaseAuth _auth = FirebaseAuth.instance;
+  User? user;
+  @override
+  void initState() {
+    super.initState();
+    user = _auth.currentUser;
+  }
+
   @override
   void dispose() {
     _pageController.dispose();
     super.dispose();
-  }
-
-  void _navigateToLoginPage() {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => LoginPage(),
-      ),
-    );
   }
 
   @override
@@ -77,50 +78,119 @@ class _MyTabBarState extends State<MyTabBar> {
       drawer: Drawer(
         child: ListView(
           children: [
-            DrawerHeader(
-              child: Column(
-                children: [
-                  CircleAvatar(
-                    radius: 45,
-                    backgroundImage: AssetImage('assets/hamza.png'),
-                  ),
-                  SizedBox(
-                    height: 2,
-                  ),
-                  Text(
-                    "Hamza REKIK",
-                    style: TextStyle(fontFamily: 'Poppins'),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text("Status : Verified",
-                          style: TextStyle(fontFamily: 'Poppins')),
-                      Icon(Icons.verified)
-                    ],
-                  )
-                ],
+            if (!AuthenticationService().userStatus())
+              DrawerHeader(
+                child: Column(
+                  children: [
+                    CircleAvatar(
+                      radius: 45,
+                      backgroundImage: NetworkImage(!AuthenticationService()
+                              .userStatus()
+                          ? "${user?.photoURL}"
+                          : 'https://cdn-icons-png.flaticon.com/512/678/678521.png'),
+                    ),
+                    SizedBox(
+                      height: 2,
+                    ),
+                    Text(
+                      !AuthenticationService().userStatus()
+                          ? "${user?.displayName}"
+                          : 'Not Connected',
+                      style: TextStyle(fontFamily: 'Poppins'),
+                    ),
+                    Text("${user?.email}",
+                        style: TextStyle(fontFamily: 'Poppins')),
+                  ],
+                ),
+                decoration: BoxDecoration(
+                  color: Color(0xFF4163CD),
+                ),
               ),
-              decoration: BoxDecoration(
-                color: Color(0xFF4163CD),
-              ),
+            ListTile(
+              title: Row(children: [
+                Icon(
+                  Icons.home,
+                  color: Colors.black,
+                ),
+                Text(' Home',
+                    style: TextStyle(fontFamily: 'Poppins', fontSize: 19))
+              ]),
+              onTap: () {
+                _navigateToLoginPage();
+              },
+            ),
+            ListTile(
+              title: Row(children: [
+                Icon(
+                  Icons.health_and_safety,
+                  color: Colors.black,
+                ),
+                Text(' Doctors',
+                    style: TextStyle(fontFamily: 'Poppins', fontSize: 19))
+              ]),
+              onTap: () {
+                _navigateToLoginPage();
+              },
+            ),
+            ListTile(
+              title: Row(children: [
+                Icon(
+                  Icons.article,
+                  color: Colors.black,
+                ),
+                Text(' Blogger',
+                    style: TextStyle(fontFamily: 'Poppins', fontSize: 19))
+              ]),
+              onTap: () {
+                _navigateToLoginPage();
+              },
+            ),
+            ListTile(
+              title: Row(children: [
+                Icon(
+                  Icons.settings,
+                  color: Colors.black,
+                ),
+                Text(' Settings',
+                    style: TextStyle(fontFamily: 'Poppins', fontSize: 19))
+              ]),
+              onTap: () {
+                _navigateToLoginPage();
+              },
             ),
             AuthenticationService().userStatus()
-                ? ListTile(
-                    title: Row(children: [
-                      Icon(
-                        Icons.login,
-                        color: Colors.black,
+                ? Padding(
+                    padding: const EdgeInsets.only(top: 500),
+                    child: Column(children: [
+                      Divider(
+                        indent: 20,
+                        endIndent: 20,
+                        height: 5,
                       ),
-                      Text(' Login',
-                          style: TextStyle(fontFamily: 'Poppins', fontSize: 19))
+                      ListTile(
+                        title: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.login,
+                                color: Color(0xFF4163CD),
+                              ),
+                              Text(' Login',
+                                  style: TextStyle(
+                                      color: Color(0xFF4163CD),
+                                      fontFamily: 'Poppins',
+                                      fontSize: 19))
+                            ]),
+                        onTap: () {
+                          setState(() {
+                            _navigateToLoginPage();
+                          });
+                        },
+                      ),
                     ]),
-                    onTap: () {
-                      _navigateToLoginPage();
-                    },
                   )
                 : Padding(
-                    padding: const EdgeInsets.only(top: 550),
+                    padding: const EdgeInsets.only(top: 330),
                     child: Column(children: [
                       Divider(
                         indent: 20,
@@ -186,6 +256,14 @@ class _MyTabBarState extends State<MyTabBar> {
             label: 'Settings',
           ),
         ],
+      ),
+    );
+  }
+
+  void _navigateToLoginPage() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => LoginPage(),
       ),
     );
   }

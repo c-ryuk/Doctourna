@@ -28,6 +28,7 @@ class AuthenticationService {
         password: password,
       );
       User? user = credential.user;
+      user!.updateDisplayName(username);
       await FirebaseFirestore.instance.collection('users').doc(user?.uid).set({
         'username': username,
         // Add other user information if needed
@@ -83,10 +84,11 @@ class AuthenticationService {
 
   logout() async {
     GoogleSignIn googleSignIn = GoogleSignIn();
-    if (googleSignIn == null) {
+
+    await FirebaseAuth.instance.signOut();
+    if (googleSignIn != null) {
       googleSignIn.disconnect();
     }
-    await FirebaseAuth.instance.signOut();
   }
 
   userStatus() {
