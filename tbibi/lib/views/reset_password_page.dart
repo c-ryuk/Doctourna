@@ -1,10 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:tbibi/services/authentication_service.dart';
-import 'package:tbibi/views/signup_page.dart';
 import 'package:tbibi/widgets/signbutton.dart';
-
-import '../widgets/login_google_button.dart';
 import '../widgets/textinput.dart';
 
 class ResetPasswordPage extends StatelessWidget {

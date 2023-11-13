@@ -1,11 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:tbibi/services/authentication_service.dart';
 import 'package:tbibi/views/blog_page.dart';
 import 'package:tbibi/views/home.dart';
-import 'package:tbibi/views/login_page.dart';
 import 'package:tbibi/views/settings.dart';
+import 'package:tbibi/widgets/drawer.dart';
 
 class MyTabBar extends StatefulWidget {
   final Function toggleTheme;
@@ -22,14 +21,6 @@ class MyTabBar extends StatefulWidget {
 class _MyTabBarState extends State<MyTabBar> {
   int _currentIndex = 0;
   final PageController _pageController = PageController(initialPage: 0);
-
-  FirebaseAuth _auth = FirebaseAuth.instance;
-  User? user;
-  @override
-  void initState() {
-    super.initState();
-    user = _auth.currentUser;
-  }
 
   @override
   void dispose() {
@@ -75,151 +66,7 @@ class _MyTabBarState extends State<MyTabBar> {
           statusBarColor: Color(0xFF4163CD),
         ),
       ),
-      drawer: Drawer(
-        child: ListView(
-          children: [
-            if (!AuthenticationService().userStatus())
-              DrawerHeader(
-                child: Column(
-                  children: [
-                    CircleAvatar(
-                      radius: 45,
-                      backgroundImage: NetworkImage(user?.photoURL ??
-                          'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/2048px-No_image_available.svg.png'),
-                    ),
-                    SizedBox(
-                      height: 2,
-                    ),
-                    Text(
-                      user?.displayName ?? 'Not Connected',
-                      style: TextStyle(fontFamily: 'Poppins'),
-                    ),
-                    Text("${user?.email}",
-                        style: TextStyle(fontFamily: 'Poppins')),
-                  ],
-                ),
-                decoration: BoxDecoration(
-                  color: Color(0xFF4163CD),
-                ),
-              ),
-            ListTile(
-              title: Row(children: [
-                Icon(
-                  Icons.home,
-                  color: Colors.black,
-                ),
-                Text(' Home',
-                    style: TextStyle(fontFamily: 'Poppins', fontSize: 19))
-              ]),
-              onTap: () {
-                _navigateToDoctorsPage();
-              },
-            ),
-            ListTile(
-              title: Row(children: [
-                Icon(
-                  Icons.health_and_safety,
-                  color: Colors.black,
-                ),
-                Text(' Doctors',
-                    style: TextStyle(fontFamily: 'Poppins', fontSize: 19))
-              ]),
-              onTap: () {
-                _navigateToDoctorsPage();
-              },
-            ),
-            ListTile(
-              title: Row(children: [
-                Icon(
-                  Icons.article,
-                  color: Colors.black,
-                ),
-                Text(' Blogger',
-                    style: TextStyle(fontFamily: 'Poppins', fontSize: 19))
-              ]),
-              onTap: () {
-                _navigateToPostsPage();
-              },
-            ),
-            ListTile(
-              title: Row(children: [
-                Icon(
-                  Icons.settings,
-                  color: Colors.black,
-                ),
-                Text(' Settings',
-                    style: TextStyle(fontFamily: 'Poppins', fontSize: 19))
-              ]),
-              onTap: () {
-                _navigateToSettingsPage();
-              },
-            ),
-            AuthenticationService().userStatus()
-                ? Padding(
-                    padding: const EdgeInsets.only(top: 500),
-                    child: Column(children: [
-                      Divider(
-                        indent: 20,
-                        endIndent: 20,
-                        height: 5,
-                      ),
-                      ListTile(
-                        title: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.login,
-                                color: Color(0xFF4163CD),
-                              ),
-                              Text(' Login',
-                                  style: TextStyle(
-                                      color: Color(0xFF4163CD),
-                                      fontFamily: 'Poppins',
-                                      fontSize: 19))
-                            ]),
-                        onTap: () {
-                          setState(() {
-                            _navigateToLoginPage();
-                          });
-                        },
-                      ),
-                    ]),
-                  )
-                : Padding(
-                    padding: const EdgeInsets.only(top: 330),
-                    child: Column(children: [
-                      Divider(
-                        indent: 20,
-                        endIndent: 20,
-                        height: 5,
-                      ),
-                      ListTile(
-                        title: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.logout,
-                                color: Colors.redAccent,
-                              ),
-                              Text(' Logout',
-                                  style: TextStyle(
-                                      fontFamily: 'Poppins',
-                                      color: Colors.redAccent,
-                                      fontSize: 19))
-                            ]),
-                        onTap: () {
-                          // Close the drawer
-                          setState(() {
-                            AuthenticationService().logout();
-                            Navigator.of(context).pop();
-                          });
-                        },
-                      ),
-                    ]),
-                  ),
-          ],
-        ),
-      ),
+      drawer: AppDrawer(),
       body: PageView(
         controller: _pageController,
         children: _screens,
@@ -254,25 +101,5 @@ class _MyTabBarState extends State<MyTabBar> {
         ],
       ),
     );
-  }
-
-  void _navigateToLoginPage() {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => LoginPage(),
-      ),
-    );
-  }
-
-  void _navigateToPostsPage() {
-    Navigator.of(context).pushReplacementNamed('/home');
-  }
-
-  void _navigateToDoctorsPage() {
-    Navigator.of(context).pushReplacementNamed('/home');
-  }
-
-  void _navigateToSettingsPage() {
-    Navigator.of(context).pushReplacementNamed('/home');
   }
 }

@@ -85,12 +85,12 @@ class AuthenticationService {
 
   logout() async {
     GoogleSignIn googleSignIn = GoogleSignIn();
-    if (googleSignIn.currentUser != null) {
-      await googleSignIn.disconnect();
-      await FirebaseAuth.instance.signOut();
-    } else {
-      await FirebaseAuth.instance.signOut();
+
+    if (googleSignIn != null) {
+      googleSignIn.disconnect();
     }
+
+    await FirebaseAuth.instance.signOut();
   }
 
   userStatus() {
