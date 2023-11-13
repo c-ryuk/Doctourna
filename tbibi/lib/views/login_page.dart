@@ -6,10 +6,19 @@ import 'package:tbibi/widgets/signbutton.dart';
 import '../widgets/login_google_button.dart';
 import '../widgets/textinput.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   TextEditingController email = TextEditingController();
+
   TextEditingController password = TextEditingController();
+
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  bool isTapped = false;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +46,7 @@ class LoginPage extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Container(
-          height: 725,
+          height: 730,
           child: Column(
             children: [
               Expanded(
@@ -80,7 +89,7 @@ class LoginPage extends StatelessWidget {
                           },
                         ),
                         SizedBox(
-                          height: 10,
+                          height: 4,
                         ),
                         TextInput(
                           label: "Password",
@@ -95,37 +104,53 @@ class LoginPage extends StatelessWidget {
                           },
                         ),
                         SizedBox(
-                          height: 10,
+                          height: 5,
                         ),
-                        Padding(
-                          padding: EdgeInsets.only(left: 180),
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.pushNamed(context, '/reset_password');
-                            },
-                            child: Text(
-                              "Forgot your password ?",
-                              style: TextStyle(
+                        isTapped
+                            ? CircularProgressIndicator(
+                                strokeWidth: 2,
                                 color: Color(0xFF4163CD),
-                                fontFamily: 'Poppins',
-                                fontSize: 14,
+                              )
+                            : Padding(
+                                padding: EdgeInsets.only(left: 180),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.pushNamed(
+                                        context, '/reset_password');
+                                  },
+                                  child: Text(
+                                    "Forgot your password ?",
+                                    style: TextStyle(
+                                      color: Color(0xFF4163CD),
+                                      fontFamily: 'Poppins',
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                        ),
                         SizedBox(
-                          height: 13,
+                          height: 7,
                         ),
                         SignButton(
                           text: "LOGIN",
                           textColor: Colors.white,
                           backgroundColor: Color(0xFF4163CD),
-                          function: () {
+                          function: () async {
                             if (formKey.currentState!.validate()) {
-                              AuthenticationService().login(
+                              setState(() {
+                                isTapped = true;
+                              });
+                              try {
+                                await AuthenticationService().login(
                                   emailAddress: email.text,
                                   password: password.text,
-                                  context: context);
+                                  context: context,
+                                );
+                              } finally {
+                                setState(() {
+                                  isTapped = false;
+                                });
+                              }
                             }
                           },
                         ),

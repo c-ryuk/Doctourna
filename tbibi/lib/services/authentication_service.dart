@@ -34,11 +34,35 @@ class AuthenticationService {
         'email': emailAddress,
         'password': username,
       });
-      Navigator.pushReplacementNamed(context, '/home');
+      await Future.delayed(Duration(seconds: 1), () {
+        return ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            backgroundColor: Color(0xFF4163CD),
+            content: Text(
+              'Your account has been created successfully !',
+              style: TextStyle(fontFamily: 'Poppins', color: Colors.white),
+            ),
+            behavior: SnackBarBehavior.floating,
+            duration: Duration(seconds: 2),
+          ),
+        );
+      });
+      Navigator.pop(context);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         print('The password provided is too weak.');
       } else if (e.code == 'email-already-in-use') {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            backgroundColor: Color(0xFF4163CD),
+            content: Text(
+              'The email you provided already used.',
+              style: TextStyle(fontFamily: 'Poppins', color: Colors.white),
+            ),
+            behavior: SnackBarBehavior.floating,
+            duration: Duration(seconds: 2),
+          ),
+        );
         print('The account already exists for that email.');
       }
     } catch (e) {
@@ -54,8 +78,12 @@ class AuthenticationService {
     } on FirebaseAuthException catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
+          backgroundColor: Color(0xFF4163CD),
           content: Text(
-              'Invalid login credentials. Please check your email and password.'),
+            'Invalid login credentials. Please check your email and password.',
+            style: TextStyle(fontFamily: 'Poppins', color: Colors.white),
+          ),
+          behavior: SnackBarBehavior.floating,
           duration: Duration(seconds: 2),
         ),
       );
@@ -99,5 +127,35 @@ class AuthenticationService {
       return true;
     else
       return false;
+  }
+
+  resetPassword({required email, context}) async {
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Color(0xFF4163CD),
+          behavior: SnackBarBehavior.floating,
+          content: Text(
+            'Password reset email sent successfully!',
+            style: TextStyle(fontFamily: 'Poppins', color: Colors.white),
+          ),
+          duration: Duration(seconds: 2),
+        ),
+      );
+    } on FirebaseAuthException catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Colors.red,
+          behavior: SnackBarBehavior.floating,
+          content: Text(
+            'Error sending password reset email. Please try again.',
+            style: TextStyle(fontFamily: 'Poppins', color: Colors.white),
+          ),
+          duration: Duration(seconds: 2),
+        ),
+      );
+      print(e);
+    }
   }
 }
