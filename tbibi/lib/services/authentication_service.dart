@@ -32,7 +32,7 @@ class AuthenticationService {
       await FirebaseFirestore.instance.collection('users').doc(user?.uid).set({
         'username': username,
         'email': emailAddress,
-        'password': password,
+        'password': username,
       });
       Navigator.pushReplacementNamed(context, '/home');
     } on FirebaseAuthException catch (e) {
@@ -52,11 +52,13 @@ class AuthenticationService {
           .signInWithEmailAndPassword(email: emailAddress, password: password);
       Navigator.pushReplacementNamed(context, '/home');
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        print('No user found for that email.');
-      } else if (e.code == 'wrong-password') {
-        print('Wrong password provided for that user.');
-      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+              'Invalid login credentials. Please check your email and password.'),
+          duration: Duration(seconds: 2),
+        ),
+      );
     }
   }
 
@@ -85,11 +87,9 @@ class AuthenticationService {
 
   logout() async {
     GoogleSignIn googleSignIn = GoogleSignIn();
-
-    if (googleSignIn != null) {
+    if (googleSignIn.currentUser != null) {
       googleSignIn.disconnect();
     }
-
     await FirebaseAuth.instance.signOut();
   }
 
