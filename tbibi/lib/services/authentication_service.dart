@@ -32,7 +32,6 @@ class AuthenticationService {
       await FirebaseFirestore.instance.collection('users').doc(user?.uid).set({
         'username': username,
         'email': emailAddress,
-        'password': username,
       });
       await Future.delayed(Duration(seconds: 1), () {
         return ScaffoldMessenger.of(context).showSnackBar(
@@ -47,7 +46,7 @@ class AuthenticationService {
           ),
         );
       });
-      Navigator.pop(context);
+      Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         print('The password provided is too weak.');
@@ -74,7 +73,7 @@ class AuthenticationService {
     try {
       final credential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: emailAddress, password: password);
-      Navigator.pushReplacementNamed(context, '/home');
+      Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
     } on FirebaseAuthException catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(

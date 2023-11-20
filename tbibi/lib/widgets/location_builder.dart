@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tbibi/models/location.dart';
-import 'package:tbibi/services/get_doctor_data.dart';
+import 'package:tbibi/services/collect_doctor_data.dart';
 import 'package:tbibi/services/location_service.dart';
 import 'package:tbibi/widgets/location_widget.dart';
 

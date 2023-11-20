@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tbibi/models/country.dart';
-import 'package:tbibi/services/get_doctor_data.dart';
+import 'package:tbibi/services/collect_doctor_data.dart';
 import 'package:tbibi/static_data/countries_list.dart';
+import 'package:tbibi/views/confirmation.dart';
 
 import 'package:tbibi/widgets/country_widget.dart';
 import 'package:tbibi/widgets/location_builder.dart';
@@ -183,8 +183,13 @@ class DoctorFormPage extends State<DoctorDataPage> {
                               fullName: fullName.text,
                               email: email.text,
                               phone: mobilePhone.text);
-                          var data = DocData().getData();
-                          print(data);
+                          DocData().getData();
+                          DocData().emptyData();
+                          Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ConfirmationScreen()),
+                              (route) => false);
                         }),
                     const SizedBox(
                       height: 30,

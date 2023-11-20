@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tbibi/services/get_doctor_data.dart';
+import 'package:tbibi/services/collect_doctor_data.dart';
 
 import '../static_data/governorate_list.dart';
 

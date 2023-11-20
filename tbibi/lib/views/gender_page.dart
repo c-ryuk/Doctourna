@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tbibi/services/get_doctor_data.dart';
+import 'package:tbibi/services/collect_doctor_data.dart';
 import 'package:tbibi/widgets/gender_widget.dart';
 import '../models/gender.dart';
 

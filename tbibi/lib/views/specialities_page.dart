@@ -3,7 +3,7 @@ import 'package:tbibi/models/speciality.dart';
 import 'package:tbibi/static_data/specialities_list.dart';
 import 'package:tbibi/widgets/speciality_widget.dart';
 
-import '../services/get_doctor_data.dart';
+import '../services/collect_doctor_data.dart';
 
 class SpecialitiesPage extends StatefulWidget {
   @override
