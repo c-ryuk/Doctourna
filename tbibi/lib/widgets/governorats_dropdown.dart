@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tbibi/services/get_doctor_data.dart';
 
 import '../static_data/governorate_list.dart';
 
@@ -30,6 +31,7 @@ class _GovernoratsDropdownState extends State<GovernoratsDropdown> {
           value: selectedGovernante,
           onChanged: (item) => setState(() {
             selectedGovernante = item;
+            DocData().setLocation(gouvernorat: selectedGovernante);
           }),
           items: governorates.map((String gouvernorat) {
             return DropdownMenuItem<String>(

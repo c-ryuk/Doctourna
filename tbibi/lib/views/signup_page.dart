@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tbibi/services/authentication_service.dart';
-import 'package:tbibi/views/gender_page.dart';
+
 import '../widgets/register_button.dart';
-import '../widgets/signbutton.dart';
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -193,10 +192,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       ),
                       ElevatedButton(
                         onPressed: () {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
-                            return GenderPage();
-                          }));
+                          Navigator.pushNamed(context, '/select_gender');
                         },
                         child: Text(
                           "Join Now",

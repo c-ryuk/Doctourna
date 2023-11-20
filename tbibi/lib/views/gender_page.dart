@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tbibi/views/specialities_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tbibi/services/get_doctor_data.dart';
 import 'package:tbibi/widgets/gender_widget.dart';
 import '../models/gender.dart';
 
@@ -8,12 +9,21 @@ class GenderPage extends StatefulWidget {
   GenderPageState createState() => GenderPageState();
 }
 
-@override
-void initState() {}
-
 class GenderPageState extends State<GenderPage> {
   bool isMaleVisible = true;
   bool isFemaleVisible = true;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  String gender() {
+    if (!isFemaleVisible && isMaleVisible)
+      return "Male";
+    else
+      return 'Female';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,10 +36,10 @@ class GenderPageState extends State<GenderPage> {
           Visibility(
             visible: !(isFemaleVisible == true && isMaleVisible == true),
             child: ElevatedButton(
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return SpecialitiesPage();
-                }));
+              onPressed: () async {
+                print(gender());
+                DocData().setGender(gender: gender());
+                Navigator.pushNamed(context, '/select_speciality');
               },
               child: Text(
                 "Next",
@@ -75,11 +85,9 @@ class GenderPageState extends State<GenderPage> {
                       child: Visibility(
                         visible: isMaleVisible,
                         child: GenderWidget(
-                          toHide: () {
+                          toHide: () async {
                             setState(() {
                               isFemaleVisible = !isFemaleVisible;
-                              print("fmale $isFemaleVisible");
-                              print("male $isMaleVisible");
                             });
                           },
                           gender: Gender(
@@ -99,11 +107,9 @@ class GenderPageState extends State<GenderPage> {
                       child: Visibility(
                         visible: isFemaleVisible,
                         child: GenderWidget(
-                          toHide: () {
+                          toHide: () async {
                             setState(() {
                               isMaleVisible = !isMaleVisible;
-                              print("fmale $isFemaleVisible");
-                              print("male $isMaleVisible");
                             });
                           },
                           gender: Gender(

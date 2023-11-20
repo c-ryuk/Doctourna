@@ -40,35 +40,34 @@ class PostDetail extends StatelessWidget {
                 ),
               ),
             ),
-            if (u != null) // Check if the user is not null
-              Row(
-                children: [
-                  SizedBox(width: 8),
-                  CircleAvatar(
-                    backgroundImage: Image.asset(u.imageUrl).image,
-                  ),
-                  SizedBox(width: 8),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '${u.fullName}',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
+            Row(
+              children: [
+                SizedBox(width: 8),
+                CircleAvatar(
+                  backgroundImage: Image.asset(u.imageUrl).image,
+                ),
+                SizedBox(width: 8),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '${u.fullName}',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
                       ),
-                      Text(
-                        u.specialty,
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Color(0xFF4163CD),
-                        ),
+                    ),
+                    Text(
+                      u.specialty,
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Color(0xFF4163CD),
                       ),
-                    ],
-                  ),
-                ],
-              ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
             SizedBox(height: 10),
             Hero(
               tag:

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tbibi/models/country.dart';
+import 'package:tbibi/services/get_doctor_data.dart';
 import 'package:tbibi/static_data/countries_list.dart';
 
 import 'package:tbibi/widgets/country_widget.dart';
@@ -16,6 +18,9 @@ class DoctorDataPage extends StatefulWidget {
 }
 
 class DoctorFormPage extends State<DoctorDataPage> {
+  TextEditingController fullName = TextEditingController();
+  TextEditingController email = TextEditingController();
+  TextEditingController mobilePhone = TextEditingController();
   bool checkBoxValue = false;
   int selectedIndex = -1;
   bool isSelected = false;
@@ -117,6 +122,7 @@ class DoctorFormPage extends State<DoctorDataPage> {
                     ),
                     const Divider(),
                     TextField(
+                      controller: fullName,
                       decoration: InputDecoration(
                         hintText: "Full Name",
                         hintStyle:
@@ -129,6 +135,7 @@ class DoctorFormPage extends State<DoctorDataPage> {
                       height: 15,
                     ),
                     TextField(
+                      controller: email,
                       decoration: const InputDecoration(
                         hintText: "Email",
                         hintStyle:
@@ -141,6 +148,7 @@ class DoctorFormPage extends State<DoctorDataPage> {
                       height: 15,
                     ),
                     TextField(
+                      controller: mobilePhone,
                       decoration: const InputDecoration(
                         hintText: "Mobile Phone",
                         hintStyle:
@@ -169,7 +177,15 @@ class DoctorFormPage extends State<DoctorDataPage> {
                         text: "Submit",
                         textColor: Colors.white,
                         backgroundColor: Color(0xFF4163CD),
-                        function: () {}),
+                        function: () async {
+                          DocData().setForm(
+                              country: selectedCountry,
+                              fullName: fullName.text,
+                              email: email.text,
+                              phone: mobilePhone.text);
+                          var data = DocData().getData();
+                          print(data);
+                        }),
                     const SizedBox(
                       height: 30,
                     ),

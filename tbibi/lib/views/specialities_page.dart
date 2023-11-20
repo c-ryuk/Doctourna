@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:tbibi/models/speciality.dart';
-
 import 'package:tbibi/static_data/specialities_list.dart';
-import 'package:tbibi/views/doctor_data_page.dart';
 import 'package:tbibi/widgets/speciality_widget.dart';
+
+import '../services/get_doctor_data.dart';
 
 class SpecialitiesPage extends StatefulWidget {
   @override
@@ -37,9 +37,8 @@ class SpecialitiesPageState extends State<SpecialitiesPage> {
               visible: isSelected,
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return DoctorDataPage();
-                  }));
+                  DocData().setSpeciality(speciality: selectedSpeciality);
+                  Navigator.pushNamed(context, '/fill_doctor_data');
                 },
                 child: Text(
                   "Next",
@@ -81,6 +80,7 @@ class SpecialitiesPageState extends State<SpecialitiesPage> {
               child: ListView(children: [
                 Wrap(
                     direction: Axis.horizontal,
+                    alignment: WrapAlignment.center,
                     children: spec
                         .asMap()
                         .entries
@@ -91,8 +91,7 @@ class SpecialitiesPageState extends State<SpecialitiesPage> {
                               isSelected: entries.key == selectedIndex,
                               speciality: entries.value,
                             ))
-                        .toList(),
-                    alignment: WrapAlignment.center),
+                        .toList()),
               ]),
             ),
           ],

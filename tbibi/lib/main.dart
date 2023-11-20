@@ -3,9 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:tbibi/services/authentication_service.dart';
 import 'package:tbibi/views/appoinment_page.dart';
 import 'package:tbibi/views/detail_screen.dart';
+import 'package:tbibi/views/doctor_data_page.dart';
+import 'package:tbibi/views/gender_page.dart';
 import 'package:tbibi/views/login_page.dart';
 import 'package:tbibi/views/blog_page.dart';
 import 'package:tbibi/views/reset_password_page.dart';
+import 'package:tbibi/views/specialities_page.dart';
 import 'package:tbibi/views/splash_screen.dart';
 import 'package:tbibi/widgets/tab_bar.dart';
 
@@ -62,7 +65,10 @@ class _DoctournaState extends State<Doctourna> {
             PostDetail(toggleTheme: toggleTheme, isDarkMode: _isDarkMode),
         '/appoinment-page': (context) => AppointmentBookingPage(
             toggleTheme: toggleTheme, isDarkMode: _isDarkMode),
-        '/reset_password': (context) => ResetPasswordPage()
+        '/reset_password': (context) => ResetPasswordPage(),
+        '/select_gender': (context) => GenderPage(),
+        '/select_speciality': (context) => SpecialitiesPage(),
+        '/fill_doctor_data': (context) => DoctorDataPage(),
 
         // '/profile-page': (context) =>
         //     ProfilePage(toggleTheme: toggleTheme, isDarkMode: _isDarkMode),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tbibi/models/location.dart';
+import 'package:tbibi/services/get_doctor_data.dart';
 import 'package:tbibi/services/location_service.dart';
 import 'package:tbibi/widgets/location_widget.dart';
 
@@ -26,6 +27,9 @@ class _LocationBuilderState extends State<LocationBuilder> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             LocationModel locationModel = snapshot.data as LocationModel;
+            DocData().setLocation(
+                gouvernorat:
+                    '${locationModel.governorat}, ${locationModel.locality}');
             return LocationWidget(location: locationModel);
           } else {
             return LocationLoader();
