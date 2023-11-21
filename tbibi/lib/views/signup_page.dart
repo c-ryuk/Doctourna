@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:tbibi/services/authentication_service.dart';
 
 import '../widgets/register_button.dart';
+import 'package:flutter/services.dart';
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -16,6 +18,11 @@ class _SignUpPageState extends State<SignUpPage> {
   TextEditingController password = TextEditingController();
 
   TextEditingController cpassword = TextEditingController();
+
+  TextEditingController phoneNumberController = TextEditingController();
+
+  TextEditingController locationController = TextEditingController();
+
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   bool isEuqal = false;
@@ -52,7 +59,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Container(
-                          width: 300, // Set the desired width here
+                          width: 300,
                           child: TextFormField(
                             validator: (value) {
                               if (value == null || value.isEmpty) {
@@ -68,7 +75,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           ),
                         ),
                         Container(
-                          width: 300, // Set the desired width here
+                          width: 300,
                           child: TextFormField(
                             validator: (value) {
                               String pattern =
@@ -92,7 +99,48 @@ class _SignUpPageState extends State<SignUpPage> {
                           ),
                         ),
                         Container(
-                          width: 300, // Set the desired width here
+                          width: 300,
+                          margin: EdgeInsets.symmetric(vertical: 10),
+                          child: TextFormField(
+                            controller: locationController,
+                            decoration: InputDecoration(
+                              hintText: 'Government,Locality',
+                              labelText: "Location",
+                              suffixIcon: IconButton(
+                                icon: Icon(Icons.location_searching),
+                                onPressed: () async {
+                                  final locationStatus =
+                                      await AuthenticationService()
+                                          .requestLocationPermission();
+                                  if (locationStatus.isGranted) {
+                                    AuthenticationService()
+                                        .getCurrentLocation(locationController);
+                                  } else {}
+                                },
+                              ),
+                              prefixIcon: Icon(Icons.location_on),
+                            ),
+                          ),
+                        ),
+                        Container(
+                          width: 300,
+                          margin: EdgeInsets.symmetric(vertical: 10),
+                          child: TextFormField(
+                            controller: phoneNumberController,
+                            decoration: InputDecoration(
+                              labelText: "Phone Number",
+                              prefixIcon: Icon(Icons.phone),
+                            ),
+                            keyboardType: TextInputType.phone,
+                            maxLength: 8,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.allow(
+                                  RegExp(r'[0-9]')),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          width: 300,
                           child: TextFormField(
                             validator: (value) {
                               String pattern =
@@ -118,7 +166,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           ),
                         ),
                         Container(
-                          width: 300, // Set the desired width here
+                          width: 300,
                           child: TextFormField(
                             validator: (value) {
                               if (value == null || value.isEmpty) {
@@ -151,6 +199,8 @@ class _SignUpPageState extends State<SignUpPage> {
                                   emailAddress: email.text,
                                   password: password.text,
                                   username: fullName.text,
+                                  phone: phoneNumberController.text,
+                                  location: locationController.text,
                                   context: context);
 
                               AuthenticationService().checkUserStatus();

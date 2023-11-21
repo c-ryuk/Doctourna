@@ -1,10 +1,16 @@
+import 'dart:html';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server/gmail.dart';
+
+import '../widgets/governorats_dropdown.dart';
 
 class AuthenticationService {
   AuthenticationService();
@@ -23,6 +29,8 @@ class AuthenticationService {
       {required emailAddress,
       required password,
       required username,
+      required phone,
+      required location,
       context}) async {
     try {
       final credential =
@@ -32,9 +40,20 @@ class AuthenticationService {
       );
       User? user = credential.user;
       user!.updateDisplayName(username);
-      await FirebaseFirestore.instance.collection('users').doc(user?.uid).set({
+      await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
         'username': username,
         'email': emailAddress,
+        'uid': user.uid,
+        'image': null,
+        'about': null,
+        'phoneNumber': phone,
+        'experience': 0,
+        'location': location,
+        'speciality': null,
+        'consultationPrice': 0,
+        'isDoctor': true,
+        'averageRating': 0,
+        'numberOfRatings': 0,
       });
       await Future.delayed(Duration(seconds: 1), () {
         return ScaffoldMessenger.of(context).showSnackBar(
@@ -65,6 +84,7 @@ class AuthenticationService {
             duration: Duration(seconds: 2),
           ),
         );
+
         print('The account already exists for that email.');
       }
     } catch (e) {
@@ -161,23 +181,34 @@ class AuthenticationService {
     }
   }
 
-  sendMail() async {
-    final email = 'djangotp1@gmail.com';
+  Future<PermissionStatus> requestLocationPermission() async {
+    final status = await Permission.location.request();
+    return status;
+  }
 
-    String password = '22073168';
-
-    final smtpServer = gmail(email, password);
-    final message = Message()
-      ..from = Address(email, 'djangotp1')
-      ..recipients = ['hamzarekik60@gmail.com']
-      ..subject = 'hello'
-      ..text = 'hello fltter doctourna';
-
+  Future<void> getCurrentLocation(
+      TextEditingController locationController) async {
     try {
-      await send(message, smtpServer);
-      print("successs");
-    } on MailerException catch (e) {
-      print(e);
+      Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.best,
+      );
+
+      List<Placemark> placemarks = await placemarkFromCoordinates(
+        position.latitude,
+        position.longitude,
+      );
+
+      if (placemarks.isNotEmpty) {
+        Placemark placemark = placemarks[0];
+        String government = placemark.administrativeArea ?? "N/A";
+        String locality = placemark.locality ?? "N/A";
+
+        locationController.text = '$government , $locality';
+      } else {
+        GovernoratsDropdown();
+      }
+    } catch (e) {
+      print('Error getting location: $e');
     }
   }
 }

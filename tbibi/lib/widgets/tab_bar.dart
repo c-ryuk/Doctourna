@@ -53,7 +53,7 @@ class _MyTabBarState extends State<MyTabBar> {
           builder: (BuildContext context) {
             return IconButton(
               icon: Icon(Icons.menu),
-              color: Color(0xFF4163CD), // Replace with your custom icon
+              color: Color(0xFF4163CD),
               onPressed: () {
                 Scaffold.of(context).openDrawer();
               },

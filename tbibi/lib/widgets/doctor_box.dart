@@ -1,46 +1,52 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:tbibi/models/user.dart';
-import 'package:tbibi/views/profile_page.dart';
+import 'package:tbibi/views/profile_page_normal.dart';
 
 class DoctorBox extends StatelessWidget {
-  final User doctor;
+  final Map<String, dynamic> doctor;
   final Function toggleTheme;
   final bool isDarkMode;
 
-  DoctorBox(
-      {required this.doctor,
-      required this.toggleTheme,
-      required this.isDarkMode});
-
-  void _navigateToProfilePage(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => ProfilePage(
-            doctor: doctor, toggleTheme: toggleTheme, isDarkMode: isDarkMode),
-      ),
-    );
-  }
+  DoctorBox({
+    required this.doctor,
+    required this.toggleTheme,
+    required this.isDarkMode,
+  });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        _navigateToProfilePage(context);
+        String uid = doctor['uid'];
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ProfilePageNormal(
+              userId: uid,
+              toggleTheme: toggleTheme,
+              isDarkMode: isDarkMode,
+              context: context,
+            ),
+          ),
+        );
       },
       child: Container(
         padding: EdgeInsets.all(8.0),
         child: Column(
           children: <Widget>[
-            Image.asset(
-              doctor.imageUrl,
+            Image(
+              image: doctor['image'] != null
+                  ? FileImage(File(doctor['image'])) as ImageProvider
+                  : AssetImage('assets/Doc_icon.jpg'),
               width: 120,
               height: 150,
               fit: BoxFit.cover,
             ),
             SizedBox(height: 8),
             Text(
-              doctor.fullName,
+              doctor['username'],
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
@@ -48,8 +54,7 @@ class DoctorBox extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
             Text(
-              doctor.specialty,
-              style: TextStyle(),
+              doctor['speciality'] ?? 'N/A',
             ),
             Row(
               mainAxisSize: MainAxisSize.min,
@@ -60,8 +65,7 @@ class DoctorBox extends StatelessWidget {
                   color: Colors.amber,
                 ),
                 Text(
-                  doctor.rating.toString(),
-                  style: TextStyle(),
+                  doctor['averageRating']?.toStringAsFixed(2) ?? '0.00',
                 ),
               ],
             ),

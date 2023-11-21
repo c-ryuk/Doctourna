@@ -5,25 +5,33 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:icons_flutter/icons_flutter.dart';
-import 'package:tbibi/views/edit_profile_page.dart';
+import 'package:tbibi/views/appoinment_page.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class ProfilePage extends StatefulWidget {
+class ProfilePageNormal extends StatefulWidget {
+  final String userId;
+  final BuildContext context;
   final Function toggleTheme;
   final bool isDarkMode;
 
-  const ProfilePage(
-      {super.key, required this.toggleTheme, required this.isDarkMode});
+  ProfilePageNormal({
+    Key? key,
+    required this.userId,
+    required this.context,
+    required this.toggleTheme,
+    required this.isDarkMode,
+  }) : super(key: key);
 
   @override
-  _ProfilePageState createState() => _ProfilePageState();
+  _ProfilePageNormalState createState() => _ProfilePageNormalState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+class _ProfilePageNormalState extends State<ProfilePageNormal> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   Map<String, dynamic> userData = {};
+  Map<String, dynamic> userRating = {};
 
   @override
   void initState() {
@@ -33,47 +41,175 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Future<void> _loadUserData() async {
     try {
-      User? user = _auth.currentUser;
+      DocumentSnapshot userSnapshot =
+          await _firestore.collection('users').doc(widget.userId).get();
 
-      if (user != null) {
-        DocumentSnapshot snapshot =
-            await _firestore.collection('users').doc(user.uid).get();
+      QuerySnapshot ratingSnapshot = await _firestore
+          .collection('ratings')
+          .where('userId', isEqualTo: widget.userId)
+          .get();
+      String raterId = FirebaseAuth.instance.currentUser?.uid ?? '';
 
-        if (snapshot.exists) {
-          userData = snapshot.data() as Map<String, dynamic>;
-          setState(() {});
-        }
+      QuerySnapshot rateSnapshot = await _firestore
+          .collection('ratings')
+          .where('raterId', isEqualTo: raterId)
+          .where('userId', isEqualTo: widget.userId)
+          .get();
+
+      if (userSnapshot.exists) {
+        setState(() {
+          userData = userSnapshot.data() as Map<String, dynamic>;
+
+          if (ratingSnapshot.docs.isNotEmpty) {
+            double totalRating = ratingSnapshot.docs
+                .map((doc) => doc['rating'] as double)
+                .reduce((value, element) => value + element);
+            double averageRating = totalRating / ratingSnapshot.docs.length;
+            userData['averageRating'] = averageRating;
+          }
+          if (rateSnapshot.docs.isNotEmpty) {
+            userRating = rateSnapshot.docs.first.data() as Map<String, dynamic>;
+          }
+        });
       }
     } catch (e) {
       print('Error loading user data: $e');
     }
   }
 
+  Future<void> _updateRating(double rating) async {
+    try {
+      String raterId = FirebaseAuth.instance.currentUser?.uid ?? '';
+
+      QuerySnapshot existingRatingQuery = await _firestore
+          .collection('ratings')
+          .where('raterId', isEqualTo: raterId)
+          .where('userId', isEqualTo: widget.userId)
+          .get();
+
+      if (existingRatingQuery.docs.isNotEmpty) {
+        DocumentSnapshot existingRatingDoc = existingRatingQuery.docs.first;
+        double existingRatingValue = existingRatingDoc['rating'];
+
+        double newAverageRating =
+            ((userData['averageRating'] ?? 0) + rating - existingRatingValue);
+        await existingRatingDoc.reference.update({
+          'rating': rating,
+        });
+
+        await _firestore.collection('users').doc(widget.userId).update({
+          'averageRating': newAverageRating,
+        });
+      } else {
+        await _firestore.collection('ratings').add({
+          'userId': widget.userId,
+          'raterId': raterId,
+          'rating': rating,
+        });
+
+        await _firestore.collection('users').doc(widget.userId).update({
+          'averageRating': ((userData['averageRating'] ?? 0) *
+                      (userData['numberOfRatings'] ?? 0) +
+                  rating) /
+              ((userData['numberOfRatings'] ?? 0) + 1),
+          'numberOfRatings': (userData['numberOfRatings'] ?? 0) + 1,
+        });
+      }
+
+      await _loadUserData();
+    } catch (e) {
+      print('Error updating rating: $e');
+    }
+  }
+
+  bool get userLoggedIn => FirebaseAuth.instance.currentUser != null;
+
   @override
   Widget build(BuildContext context) {
-    User? user = _auth.currentUser;
+    if (userData.isEmpty) {
+      return Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
 
     return Scaffold(
       body: Container(
         color: Colors.white,
         child: ListView(padding: EdgeInsets.zero, children: [
-          user != null ? buildTop() : buildLoginMessage(),
-          user != null ? buildContent() : buildLoginMessage(),
+          buildTop(),
+          buildContent(),
         ]),
       ),
-    );
-  }
-
-  Widget buildLoginMessage() {
-    return Container(
-      height: MediaQuery.of(context).size.height,
-      width: MediaQuery.of(context).size.width,
-      child: Center(
-        child: Text(
-          'LOG IN FIRST',
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-        ),
-      ),
+      bottomNavigationBar: userLoggedIn
+          ? Container(
+              padding: EdgeInsets.all(15),
+              height: 130,
+              decoration: BoxDecoration(
+                color: widget.isDarkMode
+                    ? Colors.black.withOpacity(0.3)
+                    : Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black12,
+                    blurRadius: 4,
+                    spreadRadius: 2,
+                  ),
+                ],
+              ),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Consultation price",
+                        style: TextStyle(
+                          fontSize: 20,
+                          color:
+                              widget.isDarkMode ? Colors.white : Colors.black,
+                        ),
+                      ),
+                      Text(
+                        '\$${userData['consultationPrice'] ?? '00'}',
+                        style: TextStyle(
+                          color:
+                              widget.isDarkMode ? Colors.white : Colors.black,
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 15),
+                  InkWell(
+                    onTap: () {
+                      _navigateToAppoinmentPage();
+                    },
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      padding: EdgeInsets.symmetric(vertical: 18),
+                      decoration: BoxDecoration(
+                        color: Color(0xFF4163CD).withOpacity(0.8),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Center(
+                        child: Text(
+                          "Book Appointment",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            )
+          : null,
     );
   }
 
@@ -115,6 +251,37 @@ class _ProfilePageState extends State<ProfilePage> {
               buildSocialIcon(FontAwesome.facebook),
               SizedBox(width: 12),
               buildSocialIcon(FontAwesome.location_arrow),
+            ],
+          ),
+          SizedBox(
+            height: 30,
+          ),
+          Column(
+            children: [
+              userLoggedIn
+                  ? RatingBar.builder(
+                      initialRating: userRating['rating']?.toDouble() ?? 0,
+                      minRating: 1,
+                      direction: Axis.horizontal,
+                      allowHalfRating: true,
+                      itemCount: 5,
+                      itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                      itemBuilder: (context, _) => Icon(
+                        Icons.star,
+                        color: Colors.amber,
+                      ),
+                      onRatingUpdate: (rating) {
+                        _updateRating(rating);
+                      },
+                    )
+                  : SizedBox(height: 8),
+              Text(
+                '(${userData['numberOfRatings'] ?? 0} raters)',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.grey,
+                ),
+              ),
             ],
           ),
           SizedBox(height: 36),
@@ -168,30 +335,6 @@ class _ProfilePageState extends State<ProfilePage> {
             alignment: Alignment.bottomLeft,
             children: [
               buildProfilImage(),
-              Positioned(
-                bottom: 0,
-                left: 0,
-                child: InkWell(
-                  onTap: () {
-                    _navigateToEditProfilePage();
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: widget.isDarkMode
-                          ? Color(0xFF4163CD)
-                          : Color(0xFF4163CD),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Icon(
-                        Icons.edit,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
             ],
           ),
         ),
@@ -287,9 +430,12 @@ class _ProfilePageState extends State<ProfilePage> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            count.toString(),
+            count.toStringAsFixed(2),
             style: TextStyle(
-                fontSize: 24, fontWeight: FontWeight.bold, color: Colors.black),
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
           ),
           SizedBox(height: 4),
           Text(
@@ -303,10 +449,13 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  void _navigateToEditProfilePage() {
+  void _navigateToAppoinmentPage() {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => EditProfilePage(userData: userData),
+        builder: (context) => AppointmentBookingPage(
+            userId: userData['uid'],
+            toggleTheme: widget.toggleTheme,
+            isDarkMode: widget.isDarkMode),
       ),
     );
   }
