@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:tbibi/models/country.dart';
 import 'package:tbibi/services/collect_doctor_data.dart';
 import 'package:tbibi/static_data/countries_list.dart';
-import 'package:tbibi/views/confirmation.dart';
+import 'package:tbibi/views/profile/confirmation.dart';
 
 import 'package:tbibi/widgets/country_widget.dart';
+import 'package:tbibi/widgets/governorats_dropdown.dart';
 import 'package:tbibi/widgets/location_builder.dart';
 import 'package:tbibi/widgets/signbutton.dart';
-
-import '../widgets/governorats_dropdown.dart';
 
 class DoctorDataPage extends StatefulWidget {
   @override

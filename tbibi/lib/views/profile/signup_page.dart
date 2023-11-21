@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:tbibi/services/authentication_service.dart';
 
-import '../widgets/register_button.dart';
 import 'package:flutter/services.dart';
+import 'package:tbibi/widgets/register_button.dart';
 
 class SignUpPage extends StatefulWidget {
   @override

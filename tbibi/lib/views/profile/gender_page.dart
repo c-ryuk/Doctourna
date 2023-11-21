@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:tbibi/models/gender.dart';
 import 'package:tbibi/services/collect_doctor_data.dart';
 import 'package:tbibi/widgets/gender_widget.dart';
-import '../models/gender.dart';
 
 class GenderPage extends StatefulWidget {
   @override

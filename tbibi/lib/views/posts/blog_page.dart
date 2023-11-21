@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:tbibi/static_data/posts_list.dart';
-import '../widgets/post_item.dart';
+import 'package:tbibi/widgets/post_item.dart';
 
 class PostScreen extends StatefulWidget {
   final Function toggleTheme;

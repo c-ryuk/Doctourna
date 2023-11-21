@@ -69,6 +69,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
           ),
         );
       });
+      Navigator.pop(context);
       Navigator.pushReplacementNamed(context, '/profile-page');
     } catch (error) {
       print('Error updating profile: $error');

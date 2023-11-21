@@ -1,16 +1,15 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:tbibi/services/authentication_service.dart';
-import 'package:tbibi/views/appoinment_page.dart';
-import 'package:tbibi/views/detail_screen.dart';
-import 'package:tbibi/views/doctor_data_page.dart';
-import 'package:tbibi/views/gender_page.dart';
-import 'package:tbibi/views/login_page.dart';
-import 'package:tbibi/views/blog_page.dart';
-import 'package:tbibi/views/profile_page.dart';
-import 'package:tbibi/views/reset_password_page.dart';
-import 'package:tbibi/views/specialities_page.dart';
-import 'package:tbibi/views/splash_screen.dart';
+import 'package:tbibi/views/other/splash_screen.dart';
+import 'package:tbibi/views/posts/blog_page.dart';
+import 'package:tbibi/views/posts/detail_screen.dart';
+import 'package:tbibi/views/profile/doctor_data_page.dart';
+import 'package:tbibi/views/profile/gender_page.dart';
+import 'package:tbibi/views/profile/login_page.dart';
+import 'package:tbibi/views/profile/profile_page.dart';
+import 'package:tbibi/views/profile/reset_password_page.dart';
+import 'package:tbibi/views/profile/specialities_page.dart';
 import 'package:tbibi/widgets/tab_bar.dart';
 
 void main() async {
@@ -64,8 +63,6 @@ class _DoctournaState extends State<Doctourna> {
             PostScreen(toggleTheme: toggleTheme, isDarkMode: _isDarkMode),
         '/post-detail': (context) =>
             PostDetail(toggleTheme: toggleTheme, isDarkMode: _isDarkMode),
-        '/appoinment-page': (context) => AppointmentBookingPage(
-            toggleTheme: toggleTheme, isDarkMode: _isDarkMode),
         '/reset_password': (context) => ResetPasswordPage(),
         '/select_gender': (context) => GenderPage(),
         '/select_speciality': (context) => SpecialitiesPage(),

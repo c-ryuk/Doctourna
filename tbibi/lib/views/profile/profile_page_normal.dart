@@ -7,7 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:icons_flutter/icons_flutter.dart';
-import 'package:tbibi/views/appoinment_page.dart';
+import 'package:tbibi/views/appoitments/appoinment_page.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ProfilePageNormal extends StatefulWidget {
@@ -209,7 +209,48 @@ class _ProfilePageNormalState extends State<ProfilePageNormal> {
                 ],
               ),
             )
-          : null,
+          : Container(
+              padding: EdgeInsets.all(15),
+              height: 130,
+              decoration: BoxDecoration(
+                color: widget.isDarkMode
+                    ? Colors.black.withOpacity(0.3)
+                    : Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black12,
+                    blurRadius: 4,
+                    spreadRadius: 2,
+                  ),
+                ],
+              ),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Consultation price",
+                        style: TextStyle(
+                          fontSize: 20,
+                          color:
+                              widget.isDarkMode ? Colors.white : Colors.black,
+                        ),
+                      ),
+                      Text(
+                        '\$${userData['consultationPrice'] ?? '00'}',
+                        style: TextStyle(
+                          color:
+                              widget.isDarkMode ? Colors.white : Colors.black,
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
     );
   }
 

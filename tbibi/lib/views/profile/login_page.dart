@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:tbibi/services/authentication_service.dart';
-import 'package:tbibi/views/signup_page.dart';
+import 'package:tbibi/views/profile/signup_page.dart';
+import 'package:tbibi/widgets/login_google_button.dart';
 import 'package:tbibi/widgets/signbutton.dart';
-
-import '../widgets/login_google_button.dart';
-import '../widgets/textinput.dart';
+import 'package:tbibi/widgets/textinput.dart';
 
 class LoginPage extends StatefulWidget {
   @override

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tbibi/services/authentication_service.dart';
 import 'package:tbibi/widgets/signbutton.dart';
-import '../widgets/textinput.dart';
+import 'package:tbibi/widgets/textinput.dart';
 
 class ResetPasswordPage extends StatelessWidget {
   TextEditingController email = TextEditingController();

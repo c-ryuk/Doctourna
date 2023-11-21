@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:tbibi/views/blog_page.dart';
 import 'package:tbibi/views/home.dart';
-import 'package:tbibi/views/settings.dart';
+import 'package:tbibi/views/other/settings.dart';
+import 'package:tbibi/views/posts/blog_page.dart';
 import 'package:tbibi/widgets/drawer.dart';
 
 class MyTabBar extends StatefulWidget {

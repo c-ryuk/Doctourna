@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tbibi/views/luncher_page.dart';
+import 'package:tbibi/views/other/luncher_page.dart';
 
 class SplashScreen extends StatefulWidget {
   @override

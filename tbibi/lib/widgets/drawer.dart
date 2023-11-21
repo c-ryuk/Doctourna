@@ -1,15 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-<<<<<<< HEAD
 import 'package:flutter_email_sender/flutter_email_sender.dart';
-=======
-import 'package:tbibi/views/appointments_list.dart';
-import 'package:tbibi/views/patients_appointments.dart';
->>>>>>> a08152e06062e944d844d6894fddd0d39c2bf660
+import 'package:tbibi/views/appoitments/appointments_list.dart';
+import 'package:tbibi/views/appoitments/patients_appointments.dart';
+import 'package:tbibi/views/profile/login_page.dart';
 
 import '../services/authentication_service.dart';
-import '../views/login_page.dart';
 
 class AppDrawer extends StatefulWidget {
   @override
@@ -102,7 +99,7 @@ class _AppDrawerState extends State<AppDrawer> {
                   style: TextStyle(fontFamily: 'Poppins', fontSize: 19))
             ]),
             onTap: () {
-              AuthenticationService().sendMail();
+              // AuthenticationService().sendMail();
               _navigateToDoctorsPage();
             },
           ),

@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:tbibi/views/profile_page_normal.dart';
+import 'package:tbibi/views/profile/profile_page_normal.dart';
 
 class DoctorBox extends StatelessWidget {
   final Map<String, dynamic> doctor;
