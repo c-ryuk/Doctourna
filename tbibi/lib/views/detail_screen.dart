@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tbibi/models/post.dart';
-import 'package:tbibi/models/user.dart'; // Import the User model
+import 'package:tbibi/models/user.dart';
 import 'package:tbibi/static_data/users_list.dart';
 
 class PostDetail extends StatelessWidget {
@@ -40,6 +40,7 @@ class PostDetail extends StatelessWidget {
                 ),
               ),
             ),
+<<<<<<< Updated upstream
             Row(
               children: [
                 SizedBox(width: 8),
@@ -55,6 +56,25 @@ class PostDetail extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
+=======
+            if (u != null)
+              Row(
+                children: [
+                  SizedBox(width: 8),
+                  CircleAvatar(
+                    backgroundImage: Image.asset(u.imageUrl).image,
+                  ),
+                  SizedBox(width: 8),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '${u.fullName}',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+>>>>>>> Stashed changes
                       ),
                     ),
                     Text(
@@ -70,8 +90,7 @@ class PostDetail extends StatelessWidget {
             ),
             SizedBox(height: 10),
             Hero(
-              tag:
-                  'post_image_${argument.id}', // Unique tag for the hero animation
+              tag: 'post_image_${argument.id}',
               child: FractionallySizedBox(
                 widthFactor: 1.0,
                 child: Image.network(

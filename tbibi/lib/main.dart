@@ -1,12 +1,12 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:tbibi/services/authentication_service.dart';
-import 'package:tbibi/views/appoinment_page.dart';
 import 'package:tbibi/views/detail_screen.dart';
 import 'package:tbibi/views/doctor_data_page.dart';
 import 'package:tbibi/views/gender_page.dart';
 import 'package:tbibi/views/login_page.dart';
 import 'package:tbibi/views/blog_page.dart';
+import 'package:tbibi/views/profile_page.dart';
 import 'package:tbibi/views/reset_password_page.dart';
 import 'package:tbibi/views/specialities_page.dart';
 import 'package:tbibi/views/splash_screen.dart';
@@ -63,6 +63,7 @@ class _DoctournaState extends State<Doctourna> {
             PostScreen(toggleTheme: toggleTheme, isDarkMode: _isDarkMode),
         '/post-detail': (context) =>
             PostDetail(toggleTheme: toggleTheme, isDarkMode: _isDarkMode),
+<<<<<<< Updated upstream
         '/appoinment-page': (context) => AppointmentBookingPage(
             toggleTheme: toggleTheme, isDarkMode: _isDarkMode),
         '/reset_password': (context) => ResetPasswordPage(),
@@ -72,6 +73,11 @@ class _DoctournaState extends State<Doctourna> {
 
         // '/profile-page': (context) =>
         //     ProfilePage(toggleTheme: toggleTheme, isDarkMode: _isDarkMode),
+=======
+        '/reset_password': (context) => ResetPasswordPage(),
+        '/profile-page': (context) =>
+            ProfilePage(toggleTheme: toggleTheme, isDarkMode: _isDarkMode),
+>>>>>>> Stashed changes
       },
     );
   }

@@ -1,6 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:tbibi/services/authentication_service.dart';
 import 'package:tbibi/views/about.dart';
 import 'package:tbibi/views/privacy.dart';
+import 'package:tbibi/views/profile_page.dart';
 
 class Settings extends StatefulWidget {
   final Function toggleTheme;
@@ -16,12 +19,12 @@ class Settings extends StatefulWidget {
 
 class _SettingsState extends State<Settings> {
   void _navigateToProfilePage() {
-    // Navigator.of(context).push(
-    //   MaterialPageRoute(
-    //     builder: (context) => ProfilePage(
-    //         toggleTheme: widget.toggleTheme, isDarkMode: widget.isDarkMode),
-    //   ),
-    // );
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => ProfilePage(
+            toggleTheme: widget.toggleTheme, isDarkMode: widget.isDarkMode),
+      ),
+    );
   }
 
   void _navigateToPrivacy() {
@@ -39,6 +42,8 @@ class _SettingsState extends State<Settings> {
       ),
     );
   }
+
+  bool get userLoggedIn => FirebaseAuth.instance.currentUser != null;
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +90,7 @@ class _SettingsState extends State<Settings> {
               SizedBox(height: 20),
               ListTile(
                 onTap: () {
-                  widget.toggleTheme(); // Toggle the theme
+                  widget.toggleTheme();
                 },
                 leading: Container(
                   padding: EdgeInsets.all(10),
@@ -163,28 +168,33 @@ class _SettingsState extends State<Settings> {
                 trailing: Icon(Icons.arrow_forward_ios_rounded),
               ),
               Divider(height: 40),
-              ListTile(
-                onTap: () {},
-                leading: Container(
-                  padding: EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: Colors.redAccent.shade100,
-                    shape: BoxShape.circle,
+              if (userLoggedIn)
+                ListTile(
+                  onTap: () {
+                    AuthenticationService().logout();
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                        '/home', (Route<dynamic> route) => false);
+                  },
+                  leading: Container(
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: Colors.redAccent.shade100,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      Icons.output_outlined,
+                      color: Colors.redAccent,
+                      size: 35,
+                    ),
                   ),
-                  child: Icon(
-                    Icons.output_outlined,
-                    color: Colors.redAccent,
-                    size: 35,
+                  title: Text(
+                    "Log Out",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 20,
+                    ),
                   ),
                 ),
-                title: Text(
-                  "Log Out",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 20,
-                  ),
-                ),
-              ),
             ],
           ),
         ),

@@ -16,7 +16,7 @@ class ResetPasswordPage extends StatelessWidget {
           builder: (BuildContext context) {
             return IconButton(
               icon: Icon(Icons.arrow_back_ios),
-              color: Color(0xFF4163CD), // Replace with your custom icon
+              color: Color(0xFF4163CD),
               onPressed: () {
                 Navigator.pop(context);
               },
@@ -39,8 +39,6 @@ class ResetPasswordPage extends StatelessWidget {
                 flex: 1,
                 child: Image.asset(
                   "assets/reset.png",
-                  // width: 340,
-                  // height: 340,
                 ),
               ),
               Container(

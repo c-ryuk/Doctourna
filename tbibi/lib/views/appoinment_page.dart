@@ -1,12 +1,19 @@
-// ignore_for_file: library_private_types_in_public_api, prefer_const_constructors, unnecessary_string_interpolations
-
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class AppointmentBookingPage extends StatefulWidget {
   final Function toggleTheme;
   final bool isDarkMode;
-  const AppointmentBookingPage(
-      {super.key, required this.toggleTheme, required this.isDarkMode});
+  String userId;
+
+  AppointmentBookingPage({
+    Key? key,
+    required this.toggleTheme,
+    required this.isDarkMode,
+    required this.userId,
+  }) : super(key: key);
 
   @override
   _AppointmentBookingPageState createState() => _AppointmentBookingPageState();
@@ -15,6 +22,23 @@ class AppointmentBookingPage extends StatefulWidget {
 class _AppointmentBookingPageState extends State<AppointmentBookingPage> {
   DateTime _selectedDate = DateTime.now();
   TimeOfDay _selectedTime = TimeOfDay.now();
+
+  TextEditingController additionalInfoController = TextEditingController();
+
+  User? _user;
+
+  @override
+  void initState() {
+    super.initState();
+    _getUser();
+  }
+
+  Future<void> _getUser() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    setState(() {
+      _user = user;
+    });
+  }
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -42,17 +66,68 @@ class _AppointmentBookingPageState extends State<AppointmentBookingPage> {
     }
   }
 
+  Future<void> _bookAppointment() async {
+    if (_user == null) {
+      print("User not logged in");
+      return;
+    }
+
+    DateTime selectedDateTime = DateTime(
+      _selectedDate.year,
+      _selectedDate.month,
+      _selectedDate.day,
+      _selectedTime.hour,
+      _selectedTime.minute,
+    );
+
+    try {
+      DocumentReference appointmentRef =
+          await FirebaseFirestore.instance.collection('appointments').add({
+        'doctorId': widget.userId,
+        'patientId': _user!.uid,
+        'dateTime': selectedDateTime,
+        'additionalInfo': additionalInfoController.text,
+        'status': 'in progress'
+      });
+
+      String appointmentId = appointmentRef.id;
+
+      await appointmentRef.update({'appointmentId': appointmentId});
+
+      await Future.delayed(Duration(seconds: 1), () {
+        return ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            backgroundColor: Color(0xFF4163CD),
+            content: Text(
+              'Your appointment has been created successfully!',
+              style: TextStyle(fontFamily: 'Poppins', color: Colors.white),
+            ),
+            behavior: SnackBarBehavior.floating,
+            duration: Duration(seconds: 2),
+          ),
+        );
+      });
+      Navigator.pushReplacementNamed(context, '/home');
+
+      print('Appointment booked with ID: $appointmentId');
+    } catch (e) {
+      print('Error booking appointment: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Book an Appointment'),
+        backgroundColor: Color(0xFF4163CD),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
+            if (_user != null) SizedBox(height: 16),
             Text(
               'Select Date and Time:',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -73,9 +148,15 @@ class _AppointmentBookingPageState extends State<AppointmentBookingPage> {
                         ),
                         borderRadius: BorderRadius.circular(8),
                       ),
-                      child: Text(
-                        "${_selectedDate.toLocal()}".split(' ')[0],
-                        style: TextStyle(fontSize: 18),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Icon(Icons.calendar_today),
+                          Text(
+                            "${_selectedDate.toLocal()}".split(' ')[0],
+                            style: TextStyle(fontSize: 18),
+                          ),
+                        ],
                       ),
                     ),
                   ),
@@ -94,9 +175,15 @@ class _AppointmentBookingPageState extends State<AppointmentBookingPage> {
                         ),
                         borderRadius: BorderRadius.circular(8),
                       ),
-                      child: Text(
-                        "${_selectedTime.format(context)}",
-                        style: TextStyle(fontSize: 18),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Icon(Icons.access_time),
+                          Text(
+                            "${_selectedTime.format(context)}",
+                            style: TextStyle(fontSize: 18),
+                          ),
+                        ],
                       ),
                     ),
                   ),
@@ -110,6 +197,7 @@ class _AppointmentBookingPageState extends State<AppointmentBookingPage> {
             ),
             SizedBox(height: 8),
             TextFormField(
+              controller: additionalInfoController,
               maxLines: 3,
               decoration: InputDecoration(
                 hintText: 'Enter any additional information here',
@@ -119,13 +207,16 @@ class _AppointmentBookingPageState extends State<AppointmentBookingPage> {
             SizedBox(height: 24),
             ElevatedButton(
               onPressed: () {
-                // Handle appointment booking
+                _bookAppointment();
               },
               style: ElevatedButton.styleFrom(
-                primary: widget.isDarkMode ? Colors.green : Colors.lightGreen,
+                primary:
+                    widget.isDarkMode ? Color(0xFF4163CD) : Color(0xFF4163CD),
                 onPrimary: Colors.white,
               ),
-              child: Text('Book Appointment'),
+              child: Text(
+                'Book Appointment',
+              ),
             ),
           ],
         ),
