@@ -1,7 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:mailer/mailer.dart';
+import 'package:mailer/smtp_server/gmail.dart';
 
 class AuthenticationService {
   AuthenticationService();
@@ -154,6 +157,26 @@ class AuthenticationService {
           duration: Duration(seconds: 2),
         ),
       );
+      print(e);
+    }
+  }
+
+  sendMail() async {
+    final email = 'djangotp1@gmail.com';
+
+    String password = '22073168';
+
+    final smtpServer = gmail(email, password);
+    final message = Message()
+      ..from = Address(email, 'djangotp1')
+      ..recipients = ['hamzarekik60@gmail.com']
+      ..subject = 'hello'
+      ..text = 'hello fltter doctourna';
+
+    try {
+      await send(message, smtpServer);
+      print("successs");
+    } on MailerException catch (e) {
       print(e);
     }
   }

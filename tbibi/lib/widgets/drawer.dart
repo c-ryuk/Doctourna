@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
 
 import '../services/authentication_service.dart';
 import '../views/login_page.dart';
@@ -70,6 +71,7 @@ class _AppDrawerState extends State<AppDrawer> {
                   style: TextStyle(fontFamily: 'Poppins', fontSize: 19))
             ]),
             onTap: () {
+              AuthenticationService().sendMail();
               _navigateToDoctorsPage();
             },
           ),

@@ -53,6 +53,12 @@ class DocData {
     return doctorData;
   }
 
+  getLocation() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String? location = prefs.getString('location');
+    return location;
+  }
+
   emptyData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.remove('gender');
