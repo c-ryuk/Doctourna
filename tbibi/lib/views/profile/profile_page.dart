@@ -85,25 +85,26 @@ class _ProfilePageState extends State<ProfilePage> {
             style: TextStyle(fontSize: 28),
           ),
           SizedBox(height: 8),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.healing_outlined,
-                color: widget.isDarkMode
-                    ? Color(0xFF4163CD).withOpacity(0.8)
-                    : Color(0xFF4163CD).withOpacity(0.8),
-                size: 25,
-              ),
-              SizedBox(width: 8),
-              Text(
-                userData['speciality'] ?? 'No speciality',
-                style: TextStyle(
-                    fontSize: 20,
-                    color: widget.isDarkMode ? Colors.white : Colors.black),
-              ),
-            ],
-          ),
+          if (userData['isDoctor'] == true && userData['isDoctor'] != null)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.healing_outlined,
+                  color: widget.isDarkMode
+                      ? Color(0xFF4163CD).withOpacity(0.8)
+                      : Color(0xFF4163CD).withOpacity(0.8),
+                  size: 25,
+                ),
+                SizedBox(width: 8),
+                Text(
+                  userData['speciality'] ?? 'No speciality',
+                  style: TextStyle(
+                      fontSize: 20,
+                      color: widget.isDarkMode ? Colors.white : Colors.black),
+                ),
+              ],
+            ),
           SizedBox(height: 36),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -118,14 +119,15 @@ class _ProfilePageState extends State<ProfilePage> {
             ],
           ),
           SizedBox(height: 36),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              buildCountWidget("Patients", userData['patients'] ?? 00),
-              buildCountWidget("Experience", userData['experience'] ?? 00),
-              buildCountWidget("Rating", userData['averageRating'] ?? 0),
-            ],
-          ),
+          if (userData['isDoctor'] == true && userData['isDoctor'] != null)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                buildCountWidget("Patients", userData['patients'] ?? 00),
+                buildCountWidget("Experience", userData['experience'] ?? 00),
+                buildCountWidget("Rating", userData['averageRating'] ?? 0),
+              ],
+            ),
           SizedBox(height: 36),
           Container(
             padding: EdgeInsets.all(16),
@@ -227,7 +229,7 @@ class _ProfilePageState extends State<ProfilePage> {
         backgroundColor: Colors.white,
         radius: 70,
         backgroundImage: userData['image'] != null
-            ? FileImage(File(userData['image'])) as ImageProvider
+            ? NetworkImage(userData['image']) as ImageProvider
             : AssetImage('assets/Doc_icon.jpg'),
       );
 
@@ -287,9 +289,12 @@ class _ProfilePageState extends State<ProfilePage> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            count.toString(),
+            count.toStringAsFixed(2),
             style: TextStyle(
-                fontSize: 24, fontWeight: FontWeight.bold, color: Colors.black),
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
           ),
           SizedBox(height: 4),
           Text(

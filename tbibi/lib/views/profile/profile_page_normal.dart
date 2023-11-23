@@ -143,70 +143,72 @@ class _ProfilePageNormalState extends State<ProfilePageNormal> {
         ]),
       ),
       bottomNavigationBar: userLoggedIn
-          ? Container(
-              padding: EdgeInsets.all(15),
-              height: 130,
-              decoration: BoxDecoration(
-                color: widget.isDarkMode
-                    ? Colors.black.withOpacity(0.3)
-                    : Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black12,
-                    blurRadius: 4,
-                    spreadRadius: 2,
-                  ),
-                ],
-              ),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Consultation price",
-                        style: TextStyle(
-                          fontSize: 20,
-                          color:
-                              widget.isDarkMode ? Colors.white : Colors.black,
-                        ),
-                      ),
-                      Text(
-                        '\$${userData['consultationPrice'] ?? '00'}',
-                        style: TextStyle(
-                          color:
-                              widget.isDarkMode ? Colors.white : Colors.black,
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 15),
-                  InkWell(
-                    onTap: () {
-                      _navigateToAppoinmentPage();
-                    },
-                    child: Container(
-                      width: MediaQuery.of(context).size.width,
-                      padding: EdgeInsets.symmetric(vertical: 18),
-                      decoration: BoxDecoration(
-                        color: Color(0xFF4163CD).withOpacity(0.8),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Center(
-                        child: Text(
-                          "Book Appointment",
+          ? SingleChildScrollView(
+              child: Container(
+                padding: EdgeInsets.all(15),
+                height: 150,
+                decoration: BoxDecoration(
+                  color: widget.isDarkMode
+                      ? Colors.black.withOpacity(0.3)
+                      : Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black12,
+                      blurRadius: 4,
+                      spreadRadius: 2,
+                    ),
+                  ],
+                ),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Consultation price",
                           style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w500,
+                            fontSize: 20,
+                            color:
+                                widget.isDarkMode ? Colors.white : Colors.black,
+                          ),
+                        ),
+                        Text(
+                          '\$${userData['consultationPrice'] ?? '00'}',
+                          style: TextStyle(
+                            color:
+                                widget.isDarkMode ? Colors.white : Colors.black,
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 15),
+                    InkWell(
+                      onTap: () {
+                        _navigateToAppoinmentPage();
+                      },
+                      child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        padding: EdgeInsets.symmetric(vertical: 18),
+                        decoration: BoxDecoration(
+                          color: Color(0xFF4163CD).withOpacity(0.8),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Center(
+                          child: Text(
+                            "Book Appointment",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             )
           : Container(
@@ -411,7 +413,7 @@ class _ProfilePageNormalState extends State<ProfilePageNormal> {
         backgroundColor: Colors.white,
         radius: 70,
         backgroundImage: userData['image'] != null
-            ? FileImage(File(userData['image'])) as ImageProvider
+            ? NetworkImage(userData['image']) as ImageProvider
             : AssetImage('assets/Doc_icon.jpg'),
       );
 

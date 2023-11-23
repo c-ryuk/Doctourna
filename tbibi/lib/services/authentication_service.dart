@@ -53,6 +53,7 @@ class AuthenticationService {
         'isDoctor': true,
         'averageRating': 0,
         'numberOfRatings': 0,
+        'patients': 0
       });
       await Future.delayed(Duration(seconds: 1), () {
         return ScaffoldMessenger.of(context).showSnackBar(

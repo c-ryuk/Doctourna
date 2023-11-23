@@ -94,6 +94,13 @@ class _AppointmentBookingPageState extends State<AppointmentBookingPage> {
 
       await appointmentRef.update({'appointmentId': appointmentId});
 
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(widget.userId)
+          .update({
+        'patients': FieldValue.increment(1),
+      });
+
       await Future.delayed(Duration(seconds: 1), () {
         return ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(

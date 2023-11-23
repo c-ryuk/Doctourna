@@ -36,13 +36,12 @@ class DoctorBox extends StatelessWidget {
         padding: EdgeInsets.all(8.0),
         child: Column(
           children: <Widget>[
-            Image(
-              image: doctor['image'] != null
-                  ? FileImage(File(doctor['image'])) as ImageProvider
+            CircleAvatar(
+              backgroundColor: Colors.white,
+              radius: 70,
+              backgroundImage: doctor['image'] != null
+                  ? NetworkImage(doctor['image']) as ImageProvider
                   : AssetImage('assets/Doc_icon.jpg'),
-              width: 120,
-              height: 150,
-              fit: BoxFit.cover,
             ),
             SizedBox(height: 8),
             Text(
