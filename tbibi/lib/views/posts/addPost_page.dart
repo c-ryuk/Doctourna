@@ -1,5 +1,3 @@
-// ignore_for_file: use_super_parameters, prefer_const_constructors
-
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -18,6 +16,7 @@ class _AddPostPageState extends State<AddPostPage> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   File? _pickedImage;
+  bool _uploading = false;
 
   Future<void> _pickImage() async {
     final ImagePicker _picker = ImagePicker();
@@ -52,10 +51,18 @@ class _AddPostPageState extends State<AddPostPage> {
 
       String userId = widget.userData['uid'];
       String userDocumentPath = 'blog';
-      String imageURL = ''; // Initialize imageURL with an empty string
+      String imageURL = '';
 
       if (_pickedImage != null) {
+        setState(() {
+          _uploading = true;
+        });
+
         imageURL = await _uploadImage();
+
+        setState(() {
+          _uploading = false;
+        });
       }
 
       Map<String, dynamic> updatedData = {
@@ -97,7 +104,7 @@ class _AddPostPageState extends State<AddPostPage> {
         );
       }
     } catch (error) {
-      print('Error updating profile: $error');
+      print('Error adding post: $error');
     }
   }
 
@@ -135,23 +142,21 @@ class _AddPostPageState extends State<AddPostPage> {
               radius: 70,
               backgroundImage: _pickedImage != null
                   ? FileImage(_pickedImage!)
-                  : AssetImage('assets/Doc_icon.jpg')
-                      as ImageProvider, // Cast en ImageProvider
+                  : AssetImage('assets/Doc_icon.jpg') as ImageProvider,
             ),
             SizedBox(height: 16),
             ElevatedButton(
-              onPressed: _pickImage,
+              onPressed: _uploading ? null : _pickImage,
               style: ElevatedButton.styleFrom(
                 foregroundColor: Colors.white,
                 backgroundColor: Color(0xFF4163CD),
               ),
-              child: Text('Pick Image'),
+              child:
+                  _uploading ? CircularProgressIndicator() : Text('Pick Image'),
             ),
             SizedBox(height: 32),
             ElevatedButton(
-              onPressed: () {
-                _addPostToFirebase();
-              },
+              onPressed: _uploading ? null : () => _addPostToFirebase(),
               child: Text('Add Post'),
             ),
           ],
