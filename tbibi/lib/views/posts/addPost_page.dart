@@ -48,8 +48,8 @@ class _AddPostPageState extends State<AddPostPage> {
   }
 
   Future<void> _addPostToFirebase() async {
-  try {
-    FirebaseFirestore _firestore = FirebaseFirestore.instance;
+    try {
+      FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
       String userId = widget.userData['uid'];
       String userDocumentPath = 'blog';
@@ -59,18 +59,26 @@ class _AddPostPageState extends State<AddPostPage> {
         imageURL = await _uploadImage();
       }
 
-    Map<String, dynamic> updatedData = {
-      'postId': postId, // Add the post ID to the data
-      'title': _titleController.text,
-      'description': _descriptionController.text,
-      'dateTime': DateTime.now().toString(),
-      'userId': userId,
-      'image': imageURL,
-    };
+      String postId = _firestore
+          .collection(userDocumentPath)
+          .doc()
+          .id; // Generate a unique ID
 
-    if (_titleController.text.isNotEmpty ||
-        _descriptionController.text.isNotEmpty) {
-      await _firestore.collection(userDocumentPath).doc(postId).set(updatedData); // Set document with the specific post ID
+      Map<String, dynamic> updatedData = {
+        'postId': postId, // Add the post ID to the data
+        'title': _titleController.text,
+        'description': _descriptionController.text,
+        'dateTime': DateTime.now().toString(),
+        'userId': userId,
+        'image': imageURL,
+      };
+
+      if (_titleController.text.isNotEmpty ||
+          _descriptionController.text.isNotEmpty) {
+        await _firestore
+            .collection(userDocumentPath)
+            .doc(postId)
+            .set(updatedData); // Set document with the specific post ID
 
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
