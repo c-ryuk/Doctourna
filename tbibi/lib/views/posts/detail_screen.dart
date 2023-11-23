@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tbibi/models/post.dart';
 import 'package:tbibi/models/user.dart';
 import 'package:tbibi/static_data/users_list.dart';
 
@@ -11,9 +10,11 @@ class PostDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final argument = ModalRoute.of(context)!.settings.arguments as Post;
+    final argument =
+        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
 
-    User? u = getUserById(argument.userId);
+    final Map<String, dynamic> post = argument['post'];
+    final Map<String, dynamic> userData = argument['userData'];
 
     return Scaffold(
       appBar: AppBar(
@@ -33,7 +34,7 @@ class PostDetail extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 30),
               child: Text(
-                argument.title,
+                post['title'],
                 style: TextStyle(
                   fontSize: 30,
                   fontWeight: FontWeight.bold,
@@ -44,21 +45,21 @@ class PostDetail extends StatelessWidget {
               children: [
                 SizedBox(width: 8),
                 CircleAvatar(
-                  backgroundImage: Image.asset(u.imageUrl).image,
+                  backgroundImage: Image.network(userData['image']).image,
                 ),
                 SizedBox(width: 8),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      '${u.fullName}',
+                      '${userData['username']}',
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     Text(
-                      u.specialty,
+                      userData['speciality'],
                       style: TextStyle(
                         fontSize: 14,
                         color: Color(0xFF4163CD),
@@ -70,11 +71,11 @@ class PostDetail extends StatelessWidget {
             ),
             SizedBox(height: 10),
             Hero(
-              tag: 'post_image_${argument.id}',
+              tag: 'post_image_${post['title']}',
               child: FractionallySizedBox(
                 widthFactor: 1.0,
                 child: Image.network(
-                  argument.imageUrl,
+                  post['image'],
                   fit: BoxFit.cover,
                 ),
               ),
@@ -90,7 +91,7 @@ class PostDetail extends StatelessWidget {
                       Row(
                         children: [
                           Text(
-                            "Date_Creation : ${argument.dateTime}",
+                            "Date_Creation : ${DateTime.parse(post['dateTime']).year}-${DateTime.parse(post['dateTime']).month.toString().padLeft(2, '0')}-${DateTime.parse(post['dateTime']).day.toString().padLeft(2, '0')}",
                             style: TextStyle(
                               fontSize: 20,
                             ),
@@ -120,7 +121,7 @@ class PostDetail extends StatelessWidget {
                           ),
                           SizedBox(height: 16),
                           Text(
-                            argument.description,
+                            post['description'],
                             style: TextStyle(
                               fontSize: 20,
                             ),

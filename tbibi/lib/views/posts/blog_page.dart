@@ -1,7 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:tbibi/static_data/posts_list.dart';
+import 'package:tbibi/views/posts/addPost_page.dart';
 import 'package:tbibi/widgets/post_item.dart';
 
 class PostScreen extends StatefulWidget {
@@ -16,6 +19,52 @@ class PostScreen extends StatefulWidget {
 }
 
 class _PostScreenState extends State<PostScreen> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  Map<String, dynamic> userData = {};
+  List<Map<String, dynamic>> posts = []; // List to store fetched posts
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+    _fetchPosts();
+  }
+
+  Future<void> _fetchPosts() async {
+    try {
+      QuerySnapshot querySnapshot = await _firestore.collection('blog').get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        setState(() {
+          posts = querySnapshot.docs
+              .map((doc) => doc.data() as Map<String, dynamic>)
+              .toList();
+        });
+      }
+    } catch (e) {
+      print('Error fetching posts: $e');
+    }
+  }
+
+  Future<void> _loadUserData() async {
+    try {
+      User? user = _auth.currentUser;
+
+      if (user != null) {
+        DocumentSnapshot snapshot =
+            await _firestore.collection('users').doc(user.uid).get();
+
+        if (snapshot.exists) {
+          userData = snapshot.data() as Map<String, dynamic>;
+          setState(() {});
+        }
+      }
+    } catch (e) {
+      print('Error loading user data: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +84,7 @@ class _PostScreenState extends State<PostScreen> {
                   maxCrossAxisExtent: 400,
                   childAspectRatio: 1.4,
                 ),
-                itemCount: Posts_data.length,
+                itemCount: posts.length,
                 itemBuilder: (context, index) {
                   return AnimationConfiguration.staggeredList(
                       position: index,
@@ -44,13 +93,29 @@ class _PostScreenState extends State<PostScreen> {
                         verticalOffset: 50.0,
                         child: FadeInAnimation(
                           child: PostBody(
-                              post: Posts_data[index],
+                              post: posts[index],
                               toggleTheme: widget.toggleTheme,
                               isDarkMode: widget.isDarkMode),
                         ),
                       ));
                 })),
       ),
+      floatingActionButton: userData['isDoctor']
+          ? FloatingActionButton(
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => AddPostPage(userData: userData),
+                  ),
+                );
+              },
+              backgroundColor: Colors.blue,
+              child: Icon(Icons.add),
+            )
+          : FloatingActionButton(
+              onPressed: () {},
+            ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }

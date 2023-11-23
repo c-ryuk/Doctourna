@@ -1,8 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:tbibi/models/post.dart';
 import 'package:tbibi/static_data/users_list.dart';
 
-class PostBody extends StatelessWidget {
+class PostBody extends StatefulWidget {
   final Function toggleTheme;
   final bool isDarkMode;
   const PostBody({
@@ -11,20 +12,53 @@ class PostBody extends StatelessWidget {
     required this.toggleTheme,
     required this.isDarkMode,
   });
-  final Post post;
+  final Map<String, dynamic> post;
+
+  @override
+  State<PostBody> createState() => _PostBodyState();
+}
+
+class _PostBodyState extends State<PostBody> {
+  Map<String, dynamic> userData = {};
+
+  @override
+  void initState() {
+    super.initState();
+    loadUserPost();
+  }
+
+  Future<void> loadUserPost() async {
+    try {
+      FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+      String userId = widget.post['userId'];
+      String userDocumentPath = 'users/$userId';
+
+      DocumentSnapshot snapshot = await firestore.doc(userDocumentPath).get();
+
+      if (snapshot.exists) {
+        userData = snapshot.data() as Map<String, dynamic>;
+        setState(() {});
+      }
+    } catch (error) {
+      print('Error updating profile: $error');
+    }
+  }
 
   void inSelect(BuildContext context) {
-    Navigator.of(context)
-        .pushNamed(
-      '/post-detail',
-      arguments: post,
-    )
-        .then((value) {
-      if (value != null) {
-        print(value);
-      }
-    });
-  }
+  Navigator.of(context).pushNamed(
+    '/post-detail',
+    arguments: {
+      'post': widget.post,
+      'userData': userData,
+    },
+  ).then((value) {
+    if (value != null) {
+      print(value);
+    }
+  });
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +68,7 @@ class PostBody extends StatelessWidget {
         margin: const EdgeInsets.all(8),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
-          color: isDarkMode ? Colors.black : Colors.white,
+          color: widget.isDarkMode ? Colors.black : Colors.white,
           boxShadow: const [
             BoxShadow(
               offset: Offset(0, 15),
@@ -52,7 +86,7 @@ class PostBody extends StatelessWidget {
                       topLeft: Radius.circular(15),
                       topRight: Radius.circular(15)),
                   image: DecorationImage(
-                    image: NetworkImage(post.imageUrl),
+                    image: NetworkImage(widget.post['image']),
                     fit: BoxFit.cover,
                     colorFilter: ColorFilter.mode(
                       Colors.black.withOpacity(0.5),
@@ -65,7 +99,7 @@ class PostBody extends StatelessWidget {
                   child: Align(
                     alignment: Alignment.bottomLeft,
                     child: Text(
-                      post.title,
+                      widget.post['title'],
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 20,
@@ -77,21 +111,19 @@ class PostBody extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 40),
+              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 25),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Row(
                     children: [
                       CircleAvatar(
-                        backgroundImage:
-                            Image.asset(getUserById(post.userId).imageUrl)
-                                .image,
+                        backgroundImage: Image.network(userData['image']).image,
                       ),
                       const SizedBox(
                         width: 5,
                       ),
-                      Text(getUserById(post.userId).fullName),
+                      Text(userData['username']),
                     ],
                   ),
                   Row(
@@ -103,7 +135,8 @@ class PostBody extends StatelessWidget {
                       const SizedBox(
                         width: 2,
                       ),
-                      Text(post.dateTime),
+                      Text(
+                          '${DateTime.parse(widget.post['dateTime']).year}-${DateTime.parse(widget.post['dateTime']).month.toString().padLeft(2, '0')}-${DateTime.parse(widget.post['dateTime']).day.toString().padLeft(2, '0')}'),
                     ],
                   ),
                 ],
