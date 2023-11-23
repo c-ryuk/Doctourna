@@ -130,9 +130,10 @@ class _PostBodyState extends State<PostBody> {
                           Row(
                             children: [
                               CircleAvatar(
-                                backgroundImage: NetworkImage(
-                                  userData['image'] ?? '',
-                                ),
+                                backgroundImage: userData['image'] != null
+                                    ? NetworkImage(userData['image'])
+                                        as ImageProvider
+                                    : AssetImage('assets/Doc_icon.jpg'),
                               ),
                               const SizedBox(
                                 width: 5,

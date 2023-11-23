@@ -41,8 +41,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
   Future<String> _uploadImage() async {
     try {
       FirebaseStorage storage = FirebaseStorage.instance;
-      String userId = widget.userData['uid'];
-      String imagePath = 'user_images/$userId.png';
+      String milliseconds = DateTime.now().millisecondsSinceEpoch.toString();
+      String imagePath = 'user_images/$milliseconds.png';
 
       await storage.ref(imagePath).putFile(_pickedImage!);
 

@@ -1,4 +1,4 @@
-// ignore_for_file: use_super_parameters, prefer_const_constructors, use_build_context_synchronously, avoid_print, no_leading_underscores_for_local_identifiers
+// ignore_for_file: use_super_parameters, prefer_const_constructors
 
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +18,7 @@ class _AddPostPageState extends State<AddPostPage> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   File? _pickedImage;
+  bool _uploading = false;
 
   Future<void> _pickImage() async {
     final ImagePicker _picker = ImagePicker();
@@ -50,15 +51,13 @@ class _AddPostPageState extends State<AddPostPage> {
   try {
     FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-    String userId = widget.userData['uid'];
-    String userDocumentPath = 'blog';
-    String imageURL = ''; // Initialize imageURL with an empty string
+      String userId = widget.userData['uid'];
+      String userDocumentPath = 'blog';
+      String imageURL = ''; // Initialize imageURL with an empty string
 
-    if (_pickedImage != null) {
-      imageURL = await _uploadImage();
-    }
-
-    String postId = _firestore.collection(userDocumentPath).doc().id; // Generate a unique ID
+      if (_pickedImage != null) {
+        imageURL = await _uploadImage();
+      }
 
     Map<String, dynamic> updatedData = {
       'postId': postId, // Add the post ID to the data
@@ -73,36 +72,36 @@ class _AddPostPageState extends State<AddPostPage> {
         _descriptionController.text.isNotEmpty) {
       await _firestore.collection(userDocumentPath).doc(postId).set(updatedData); // Set document with the specific post ID
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          backgroundColor: Color(0xFF4163CD),
-          content: Text(
-            'Post added successfully!',
-            style: TextStyle(fontFamily: 'Poppins', color: Colors.white),
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            backgroundColor: Color(0xFF4163CD),
+            content: Text(
+              'Post added successfully!',
+              style: TextStyle(fontFamily: 'Poppins', color: Colors.white),
+            ),
+            behavior: SnackBarBehavior.floating,
+            duration: Duration(seconds: 2),
           ),
-          behavior: SnackBarBehavior.floating,
-          duration: Duration(seconds: 2),
-        ),
-      );
-      Navigator.pop(context);
-      Navigator.pushReplacementNamed(context, '/home');
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          backgroundColor: Colors.red,
-          content: Text(
-            'Please fill all the fields!',
-            style: TextStyle(fontFamily: 'Poppins', color: Colors.white),
+        );
+        Navigator.pop(context);
+        Navigator.pushReplacementNamed(context, '/home');
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            backgroundColor: Colors.red,
+            content: Text(
+              'Please fill all the fields!',
+              style: TextStyle(fontFamily: 'Poppins', color: Colors.white),
+            ),
+            behavior: SnackBarBehavior.floating,
+            duration: Duration(seconds: 2),
           ),
-          behavior: SnackBarBehavior.floating,
-          duration: Duration(seconds: 2),
-        ),
-      );
+        );
+      }
+    } catch (error) {
+      print('Error updating profile: $error');
     }
-  } catch (error) {
-    print('Error updating profile: $error');
   }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -138,23 +137,21 @@ class _AddPostPageState extends State<AddPostPage> {
               radius: 70,
               backgroundImage: _pickedImage != null
                   ? FileImage(_pickedImage!)
-                  : AssetImage('assets/Doc_icon.jpg')
-                      as ImageProvider, // Cast en ImageProvider
+                  : AssetImage('assets/Doc_icon.jpg') as ImageProvider,
             ),
             SizedBox(height: 16),
             ElevatedButton(
-              onPressed: _pickImage,
+              onPressed: _uploading ? null : _pickImage,
               style: ElevatedButton.styleFrom(
                 foregroundColor: Colors.white,
                 backgroundColor: Color(0xFF4163CD),
               ),
-              child: Text('Pick Image'),
+              child:
+                  _uploading ? CircularProgressIndicator() : Text('Pick Image'),
             ),
             SizedBox(height: 32),
             ElevatedButton(
-              onPressed: () {
-                _addPostToFirebase();
-              },
+              onPressed: _uploading ? null : () => _addPostToFirebase(),
               child: Text('Add Post'),
             ),
           ],
