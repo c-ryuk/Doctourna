@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:tbibi/views/posts/editPost_page.dart';
 
@@ -199,9 +200,32 @@ class PostDetail extends StatelessWidget {
                 ),
                 const SizedBox(height: 10),
                 ElevatedButton(
-                  onPressed: () {
-                    // Add functionality for deleting the post here
-                    Navigator.pop(context); // Close the dialog
+                  onPressed: () async {
+                    try {
+                      // Get the document ID of the post
+                      String postId = post['postId'];
+                      FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+                      // Delete the document from Firestore
+                      await _firestore.collection('blog').doc(postId).delete();
+
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          backgroundColor: Color(0xFF4163CD),
+                          content: Text(
+                            'Post updated successfully!',
+                            style: TextStyle(
+                                fontFamily: 'Poppins', color: Colors.white),
+                          ),
+                          behavior: SnackBarBehavior.floating,
+                          duration: Duration(seconds: 2),
+                        ),
+                      );
+                      Navigator.pop(context);
+                      Navigator.pushReplacementNamed(context, '/home');
+                    } catch (error) {
+                      print('Error deleting post: $error');
+                    }
                   },
                   child: const Text('Delete Post'),
                 ),

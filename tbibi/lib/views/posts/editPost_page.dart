@@ -59,7 +59,7 @@ class _AddPostPageState extends State<EditPostPage> {
       String postId = widget.post['postId'];
 
       String userDocumentPath = 'blog/$postId';
-      String imageURL = ''; // Initialize imageURL with an empty string
+      String imageURL = widget.post['image'] ?? ''; // Initialize imageURL with an empty string
 
       if (_pickedImage != null) {
         imageURL = await _uploadImage();

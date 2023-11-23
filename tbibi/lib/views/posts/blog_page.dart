@@ -110,7 +110,8 @@ class _PostScreenState extends State<PostScreen> {
               ),
             );
           },
-          backgroundColor: Colors.blue,
+          foregroundColor: Colors.white,
+          backgroundColor: Color(0xFF4163CD),
           child: Icon(Icons.add),
         ),
       ),
