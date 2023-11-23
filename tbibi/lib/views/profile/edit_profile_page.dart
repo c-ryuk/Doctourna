@@ -210,7 +210,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     aboutController.text = widget.userData['about'] ?? '';
     experienceController.text = widget.userData['experience'].toString();
     consultationPriceController.text =
-        widget.userData['consultationPrice'].toString();
+    widget.userData['consultationPrice'].toString();
   }
 
   @override

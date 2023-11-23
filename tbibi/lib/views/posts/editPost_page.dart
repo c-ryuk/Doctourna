@@ -1,4 +1,4 @@
-// ignore_for_file: use_super_parameters, prefer_const_constructors, use_build_context_synchronously, avoid_print, no_leading_underscores_for_local_identifiers
+// ignore_for_file: use_super_parameters, prefer_const_constructors
 
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -6,18 +6,25 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
-class AddPostPage extends StatefulWidget {
-  final Map<String, dynamic> userData;
-  const AddPostPage({Key? key, required this.userData}) : super(key: key);
+class EditPostPage extends StatefulWidget {
+  final Map<String, dynamic> post;
+  const EditPostPage({Key? key, required this.post}) : super(key: key);
 
   @override
   _AddPostPageState createState() => _AddPostPageState();
 }
 
-class _AddPostPageState extends State<AddPostPage> {
+class _AddPostPageState extends State<EditPostPage> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   File? _pickedImage;
+
+  @override
+  void initState() {
+    super.initState();
+    _titleController.text = widget.post['title'] ?? '';
+    _descriptionController.text = widget.post['description'] ?? '';
+  }
 
   Future<void> _pickImage() async {
     final ImagePicker _picker = ImagePicker();
@@ -47,62 +54,57 @@ class _AddPostPageState extends State<AddPostPage> {
   }
 
   Future<void> _addPostToFirebase() async {
-  try {
-    FirebaseFirestore _firestore = FirebaseFirestore.instance;
+    try {
+      FirebaseFirestore _firestore = FirebaseFirestore.instance;
+      String postId = widget.post['postId'];
 
-    String userId = widget.userData['uid'];
-    String userDocumentPath = 'blog';
-    String imageURL = ''; // Initialize imageURL with an empty string
+      String userDocumentPath = 'blog/$postId';
+      String imageURL = ''; // Initialize imageURL with an empty string
 
-    if (_pickedImage != null) {
-      imageURL = await _uploadImage();
-    }
+      if (_pickedImage != null) {
+        imageURL = await _uploadImage();
+      }
 
-    String postId = _firestore.collection(userDocumentPath).doc().id; // Generate a unique ID
+      Map<String, dynamic> updatedData = {
+        'title': _titleController.text,
+        'description': _descriptionController.text,
+        'dateTime': DateTime.now().toString(),
+        'image': imageURL,
+      };
 
-    Map<String, dynamic> updatedData = {
-      'postId': postId, // Add the post ID to the data
-      'title': _titleController.text,
-      'description': _descriptionController.text,
-      'dateTime': DateTime.now().toString(),
-      'userId': userId,
-      'image': imageURL,
-    };
-
-    if (_titleController.text.isNotEmpty ||
-        _descriptionController.text.isNotEmpty) {
-      await _firestore.collection(userDocumentPath).doc(postId).set(updatedData); // Set document with the specific post ID
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          backgroundColor: Color(0xFF4163CD),
-          content: Text(
-            'Post added successfully!',
-            style: TextStyle(fontFamily: 'Poppins', color: Colors.white),
+      if (_titleController.text.isNotEmpty ||
+          _descriptionController.text.isNotEmpty) {
+        await _firestore.doc(userDocumentPath).update(updatedData);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            backgroundColor: Color(0xFF4163CD),
+            content: Text(
+              'Post updated successfully!',
+              style: TextStyle(fontFamily: 'Poppins', color: Colors.white),
+            ),
+            behavior: SnackBarBehavior.floating,
+            duration: Duration(seconds: 2),
           ),
-          behavior: SnackBarBehavior.floating,
-          duration: Duration(seconds: 2),
-        ),
-      );
-      Navigator.pop(context);
-      Navigator.pushReplacementNamed(context, '/home');
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          backgroundColor: Colors.red,
-          content: Text(
-            'Please fill all the fields!',
-            style: TextStyle(fontFamily: 'Poppins', color: Colors.white),
+        );
+        Navigator.pop(context);
+        Navigator.pushReplacementNamed(context, '/home');
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            backgroundColor: Colors.red,
+            content: Text(
+              'Please fill all the fields!',
+              style: TextStyle(fontFamily: 'Poppins', color: Colors.white),
+            ),
+            behavior: SnackBarBehavior.floating,
+            duration: Duration(seconds: 2),
           ),
-          behavior: SnackBarBehavior.floating,
-          duration: Duration(seconds: 2),
-        ),
-      );
+        );
+      }
+    } catch (error) {
+      print('Error updating post: $error');
     }
-  } catch (error) {
-    print('Error updating profile: $error');
   }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -138,7 +140,7 @@ class _AddPostPageState extends State<AddPostPage> {
               radius: 70,
               backgroundImage: _pickedImage != null
                   ? FileImage(_pickedImage!)
-                  : AssetImage('assets/Doc_icon.jpg')
+                  : NetworkImage(widget.post['image'])
                       as ImageProvider, // Cast en ImageProvider
             ),
             SizedBox(height: 16),
@@ -155,7 +157,7 @@ class _AddPostPageState extends State<AddPostPage> {
               onPressed: () {
                 _addPostToFirebase();
               },
-              child: Text('Add Post'),
+              child: Text('Update Post'),
             ),
           ],
         ),
