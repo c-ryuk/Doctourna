@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tbibi/views/posts/editPost_page.dart';
 
-class PostDetail extends StatelessWidget {
+class PostDetail extends StatefulWidget {
   final Function toggleTheme;
   final bool isDarkMode;
   const PostDetail({
@@ -10,6 +11,39 @@ class PostDetail extends StatelessWidget {
     required this.toggleTheme,
     required this.isDarkMode,
   });
+
+  @override
+  State<PostDetail> createState() => _PostDetailState();
+}
+
+class _PostDetailState extends State<PostDetail> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  Map<String, dynamic> userD = {};
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  Future<void> _loadUserData() async {
+    try {
+      User? user = _auth.currentUser;
+
+      if (user != null) {
+        DocumentSnapshot snapshot =
+            await _firestore.collection('users').doc(user.uid).get();
+
+        if (snapshot.exists) {
+          userD = snapshot.data() as Map<String, dynamic>;
+          setState(() {});
+        }
+      }
+    } catch (e) {
+      print('Error loading user data: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,18 +80,24 @@ class PostDetail extends StatelessWidget {
             appBar: AppBar(
               centerTitle: true,
               elevation: 0,
-              backgroundColor: isDarkMode ? Colors.black12 : Colors.white,
+              backgroundColor:
+                  widget.isDarkMode ? Colors.black12 : Colors.white,
               leading: IconButton(
                 icon: const Icon(Icons.arrow_back),
                 color: const Color(0xFF4163CD),
                 onPressed: () => Navigator.of(context).pop(),
               ),
             ),
-            floatingActionButton: FloatingActionButton(
-              onPressed: () {
-                _showOptionsDialog(context, post);
-              },
-              child: const Icon(Icons.more_vert),
+            floatingActionButton: Visibility(
+              visible: userData['uid'] == userD['uid'],
+              child: FloatingActionButton(
+                onPressed: () {
+                  _showOptionsDialog(context, post);
+                },
+                foregroundColor: Colors.white,
+                backgroundColor: Color(0xFF4163CD),
+                child: const Icon(Icons.more_vert),
+              ),
             ),
             body: SingleChildScrollView(
               child: Column(
@@ -213,7 +253,7 @@ class PostDetail extends StatelessWidget {
                         const SnackBar(
                           backgroundColor: Color(0xFF4163CD),
                           content: Text(
-                            'Post updated successfully!',
+                            'Post deleting successfully!',
                             style: TextStyle(
                                 fontFamily: 'Poppins', color: Colors.white),
                           ),
