@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:tbibi/services/authentication_service.dart';
+import 'package:tbibi/views/other/settings.dart';
 import 'package:tbibi/views/other/splash_screen.dart';
 import 'package:tbibi/views/posts/blog_page.dart';
 import 'package:tbibi/views/posts/detail_screen.dart';
@@ -56,6 +57,8 @@ class _DoctournaState extends State<Doctourna> {
       initialRoute: '/',
       routes: {
         '/': (context) => SplashScreen(),
+        '/setting': (context) =>
+            Settings(toggleTheme: toggleTheme, isDarkMode: _isDarkMode),
         '/home': (context) =>
             MyTabBar(toggleTheme: toggleTheme, isDarkMode: _isDarkMode),
         '/login': (context) => LoginPage(),

@@ -118,50 +118,80 @@ class _AddPostPageState extends State<AddPostPage> {
         title: Text('Add Post'),
         centerTitle: true,
       ),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             TextFormField(
               controller: _titleController,
+              style: TextStyle(fontSize: 18.0),
               decoration: InputDecoration(
                 labelText: 'Title',
+                labelStyle: TextStyle(fontSize: 18.0),
                 border: OutlineInputBorder(),
               ),
             ),
-            SizedBox(height: 16),
+            SizedBox(height: 24),
             TextFormField(
               controller: _descriptionController,
+              style: TextStyle(fontSize: 18.0),
               maxLines: 5,
               decoration: InputDecoration(
                 labelText: 'Description',
+                labelStyle: TextStyle(fontSize: 18.0),
                 border: OutlineInputBorder(),
               ),
             ),
-            SizedBox(height: 16),
-            CircleAvatar(
-              backgroundColor: Colors.transparent,
-              radius: 70,
-              backgroundImage: _pickedImage != null
-                  ? FileImage(_pickedImage!)
-                  : AssetImage('assets/Doc_icon.jpg') as ImageProvider,
-            ),
-            SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: _uploading ? null : _pickImage,
-              style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.white,
-                backgroundColor: Color(0xFF4163CD),
+            SizedBox(height: 24),
+            GestureDetector(
+              onTap: _uploading ? null : _pickImage,
+              child: Container(
+                height: 150,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  color: Colors.grey[200],
+                  image: _pickedImage != null
+                      ? DecorationImage(
+                          image: FileImage(_pickedImage!),
+                          fit: BoxFit.cover,
+                        )
+                      : null,
+                ),
+                child: _pickedImage == null
+                    ? Center(
+                        child: Icon(
+                          Icons.add_a_photo,
+                          size: 50,
+                          color: Colors.grey[500],
+                        ),
+                      )
+                    : null,
               ),
-              child:
-                  _uploading ? CircularProgressIndicator() : Text('Pick Image'),
             ),
-            SizedBox(height: 32),
+            SizedBox(height: 24),
             ElevatedButton(
               onPressed: _uploading ? null : () => _addPostToFirebase(),
-              child: Text('Add Post'),
+              style: ElevatedButton.styleFrom(
+                padding: EdgeInsets.symmetric(vertical: 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                primary: Color(0xFF4163CD),
+              ),
+              child: _uploading
+                  ? CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                    )
+                  : Text(
+                      'Add Post',
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Color.fromARGB(255, 254, 254, 254)),
+                    ),
             ),
+            SizedBox(height: 16),
           ],
         ),
       ),

@@ -168,7 +168,7 @@ class _AppointmentBookingPageState extends State<AppointmentBookingPage> {
                     ),
                   ),
                 ),
-                SizedBox(width: 16),
+                SizedBox(width: 7.5),
                 Expanded(
                   child: GestureDetector(
                     onTap: () {
