@@ -1,140 +1,279 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:tbibi/models/post.dart';
-import 'package:tbibi/models/user.dart';
-import 'package:tbibi/static_data/users_list.dart';
+import 'package:tbibi/views/posts/editPost_page.dart';
 
-class PostDetail extends StatelessWidget {
+class PostDetail extends StatefulWidget {
   final Function toggleTheme;
   final bool isDarkMode;
-  const PostDetail(
-      {super.key, required this.toggleTheme, required this.isDarkMode});
+  const PostDetail({
+    Key? key,
+    required this.toggleTheme,
+    required this.isDarkMode,
+  });
+
+  @override
+  State<PostDetail> createState() => _PostDetailState();
+}
+
+class _PostDetailState extends State<PostDetail> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  Map<String, dynamic> userD = {};
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  Future<void> _loadUserData() async {
+    try {
+      User? user = _auth.currentUser;
+
+      if (user != null) {
+        DocumentSnapshot snapshot =
+            await _firestore.collection('users').doc(user.uid).get();
+
+        if (snapshot.exists) {
+          userD = snapshot.data() as Map<String, dynamic>;
+          setState(() {});
+        }
+      }
+    } catch (e) {
+      print('Error loading user data: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    final argument = ModalRoute.of(context)!.settings.arguments as Post;
+    final argument =
+        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
 
-    User? u = getUserById(argument.userId);
+    final Map<String, dynamic> post = argument['post'];
+    Future<Map<String, dynamic>> userDataFuture = argument['userData'];
 
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        elevation: 0,
-        backgroundColor: isDarkMode ? Colors.black12 : Colors.white,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          color: Color(0xFF4163CD),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 30),
-              child: Text(
-                argument.title,
-                style: TextStyle(
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold,
-                ),
+    return FutureBuilder<Map<String, dynamic>>(
+      future: userDataFuture,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Scaffold(
+            appBar: AppBar(
+              title: const Text('Loading...'),
+            ),
+            body: const Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+        } else if (snapshot.hasError || !snapshot.hasData) {
+          return Scaffold(
+            appBar: AppBar(
+              title: const Text('Error'),
+            ),
+            body: const Center(
+              child: Text('Failed to load data'),
+            ),
+          );
+        } else {
+          Map<String, dynamic> userData = snapshot.data!;
+          return Scaffold(
+            appBar: AppBar(
+              centerTitle: true,
+              elevation: 0,
+              backgroundColor:
+                  widget.isDarkMode ? Colors.black12 : Colors.white,
+              leading: IconButton(
+                icon: const Icon(Icons.arrow_back),
+                color: const Color(0xFF4163CD),
+                onPressed: () => Navigator.of(context).pop(),
               ),
             ),
-            Row(
-              children: [
-                SizedBox(width: 8),
-                CircleAvatar(
-                  backgroundImage: Image.asset(u.imageUrl).image,
-                ),
-                SizedBox(width: 8),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '${u.fullName}',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Text(
-                      u.specialty,
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Color(0xFF4163CD),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            SizedBox(height: 10),
-            Hero(
-              tag: 'post_image_${argument.id}',
-              child: FractionallySizedBox(
-                widthFactor: 1.0,
-                child: Image.network(
-                  argument.imageUrl,
-                  fit: BoxFit.cover,
-                ),
+            floatingActionButton: Visibility(
+              visible: userData['uid'] == userD['uid'],
+              child: FloatingActionButton(
+                onPressed: () {
+                  _showOptionsDialog(context, post);
+                },
+                foregroundColor: Colors.white,
+                backgroundColor: Color(0xFF4163CD),
+                child: const Icon(Icons.more_vert),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
+            body: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 30,
+                    ),
+                    child: Text(
+                      post['title'],
+                      style: const TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Row(
+                      const SizedBox(width: 8),
+                      CircleAvatar(
+                        backgroundImage: NetworkImage(userData['image']),
+                      ),
+                      const SizedBox(width: 8),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Date_Creation : ${argument.dateTime}",
-                            style: TextStyle(
-                              fontSize: 20,
+                            '${userData['username']}',
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(width: 5),
-                          Icon(Icons.calendar_month, color: Color(0xFF4163CD)),
+                          Text(
+                            userData['speciality'],
+                            style: const TextStyle(
+                              fontSize: 14,
+                              color: Color(0xFF4163CD),
+                            ),
+                          ),
                         ],
                       ),
                     ],
                   ),
-                  SizedBox(height: 16),
-                  Card(
-                    elevation: 4,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Description :",
-                            style: TextStyle(
-                              fontSize: 25,
-                            ),
-                          ),
-                          SizedBox(height: 16),
-                          Text(
-                            argument.description,
-                            style: TextStyle(
-                              fontSize: 20,
-                            ),
-                          ),
-                        ],
+                  const SizedBox(height: 10),
+                  Hero(
+                    tag: 'post_image_${post['title']}',
+                    child: FractionallySizedBox(
+                      widthFactor: 1.0,
+                      child: Image.network(
+                        post['image'],
+                        fit: BoxFit.cover,
                       ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                Text(
+                                  "Date_Creation : ${DateTime.parse(post['dateTime']).year}-${DateTime.parse(post['dateTime']).month.toString().padLeft(2, '0')}-${DateTime.parse(post['dateTime']).day.toString().padLeft(2, '0')}",
+                                  style: const TextStyle(
+                                    fontSize: 20,
+                                  ),
+                                ),
+                                const SizedBox(width: 5),
+                                const Icon(Icons.calendar_month,
+                                    color: Color(0xFF4163CD)),
+                              ],
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 16),
+                        Card(
+                          elevation: 4,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  "Description :",
+                                  style: TextStyle(
+                                    fontSize: 25,
+                                  ),
+                                ),
+                                const SizedBox(height: 16),
+                                Text(
+                                  post['description'],
+                                  style: const TextStyle(
+                                    fontSize: 20,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
               ),
             ),
-          ],
-        ),
-      ),
+          );
+        }
+      },
+    );
+  }
+
+  void _showOptionsDialog(BuildContext context, Map<String, dynamic> post) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Post Options'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context); // Close the dialog
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => EditPostPage(post: post),
+                      ),
+                    );
+                  },
+                  child: const Text('Edit Post'),
+                ),
+                const SizedBox(height: 10),
+                ElevatedButton(
+                  onPressed: () async {
+                    try {
+                      // Get the document ID of the post
+                      String postId = post['postId'];
+                      FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+                      // Delete the document from Firestore
+                      await _firestore.collection('blog').doc(postId).delete();
+
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          backgroundColor: Color(0xFF4163CD),
+                          content: Text(
+                            'Post deleting successfully!',
+                            style: TextStyle(
+                                fontFamily: 'Poppins', color: Colors.white),
+                          ),
+                          behavior: SnackBarBehavior.floating,
+                          duration: Duration(seconds: 2),
+                        ),
+                      );
+                      Navigator.pop(context);
+                      Navigator.pushReplacementNamed(context, '/home');
+                    } catch (error) {
+                      print('Error deleting post: $error');
+                    }
+                  },
+                  child: const Text('Delete Post'),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

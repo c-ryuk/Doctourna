@@ -41,8 +41,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
   Future<String> _uploadImage() async {
     try {
       FirebaseStorage storage = FirebaseStorage.instance;
-      String userId = widget.userData['uid'];
-      String imagePath = 'user_images/$userId.png';
+      String milliseconds = DateTime.now().millisecondsSinceEpoch.toString();
+      String imagePath = 'user_images/$milliseconds.png';
 
       await storage.ref(imagePath).putFile(_pickedImage!);
 
@@ -210,7 +210,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     aboutController.text = widget.userData['about'] ?? '';
     experienceController.text = widget.userData['experience'].toString();
     consultationPriceController.text =
-        widget.userData['consultationPrice'].toString();
+    widget.userData['consultationPrice'].toString();
   }
 
   @override

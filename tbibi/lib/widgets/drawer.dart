@@ -14,32 +14,36 @@ class AppDrawer extends StatefulWidget {
 }
 
 class _AppDrawerState extends State<AppDrawer> {
-  FirebaseAuth _auth = FirebaseAuth.instance;
   User? user;
   bool isDoctor = true;
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  Map<String, dynamic> userData = {};
 
   @override
   void initState() {
     super.initState();
-    user = _auth.currentUser;
-    _loadIsCompanyAttribute();
+    _loadUserData();
   }
 
-  Future<void> _loadIsCompanyAttribute() async {
-    User? user = FirebaseAuth.instance.currentUser;
+  Future<void> _loadUserData() async {
+    try {
+      User? user = _auth.currentUser;
 
-    if (user != null) {
-      try {
-        DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
-            .collection('users')
-            .doc(user.uid)
-            .get();
-        setState(() {
-          isDoctor = userSnapshot.get('isDoctor');
-        });
-      } catch (e) {
-        print('Error loading isDoctor attribute: $e');
+      if (user != null) {
+        DocumentSnapshot snapshot =
+            await _firestore.collection('users').doc(user.uid).get();
+
+        if (snapshot.exists) {
+          userData = snapshot.data() as Map<String, dynamic>;
+          setState(() {
+            isDoctor = userData['isDoctor'];
+          });
+        }
       }
+    } catch (e) {
+      print('Error loading user data: $e');
     }
   }
 
@@ -54,30 +58,30 @@ class _AppDrawerState extends State<AppDrawer> {
         children: [
           if (!AuthenticationService().userStatus())
             DrawerHeader(
+              decoration: const BoxDecoration(
+                color: Color(0xFF4163CD),
+              ),
               child: Column(
                 children: [
                   CircleAvatar(
                     radius: 45,
-                    backgroundImage: NetworkImage(user?.photoURL ??
+                    backgroundImage: NetworkImage(userData['image'] ??
                         'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/2048px-No_image_available.svg.png'),
                   ),
-                  SizedBox(
-                    height: 2,
+                  const SizedBox(
+                    height: 10,
                   ),
                   Text(
-                    user?.displayName ?? 'Not Connected',
-                    style: TextStyle(fontFamily: 'Poppins'),
+                    userData['username'] ?? 'Not Connected',
+                    style: const TextStyle(
+                        fontFamily: 'Poppins',
+                        color: Color.fromARGB(255, 255, 255, 255)),
                   ),
-                  Text("${user?.email}",
-                      style: TextStyle(fontFamily: 'Poppins')),
                 ],
-              ),
-              decoration: BoxDecoration(
-                color: Color(0xFF4163CD),
               ),
             ),
           ListTile(
-            title: Row(children: [
+            title: const Row(children: [
               Icon(
                 Icons.home,
                 color: Colors.black,
@@ -90,7 +94,7 @@ class _AppDrawerState extends State<AppDrawer> {
             },
           ),
           ListTile(
-            title: Row(children: [
+            title: const Row(children: [
               Icon(
                 Icons.health_and_safety,
                 color: Colors.black,
@@ -104,7 +108,7 @@ class _AppDrawerState extends State<AppDrawer> {
             },
           ),
           ListTile(
-            title: Row(children: [
+            title: const Row(children: [
               Icon(
                 Icons.article,
                 color: Colors.black,
@@ -117,7 +121,7 @@ class _AppDrawerState extends State<AppDrawer> {
             },
           ),
           ListTile(
-            title: Row(children: [
+            title: const Row(children: [
               Icon(
                 Icons.settings,
                 color: Colors.black,
@@ -131,7 +135,7 @@ class _AppDrawerState extends State<AppDrawer> {
           ),
           if (doctorLoggedIn)
             ListTile(
-              title: Row(children: [
+              title: const Row(children: [
                 Icon(
                   Icons.list_alt,
                   color: Colors.black,
@@ -145,7 +149,7 @@ class _AppDrawerState extends State<AppDrawer> {
             ),
           if (patientLoggedIn)
             ListTile(
-              title: Row(children: [
+              title: const Row(children: [
                 Icon(
                   Icons.format_list_bulleted,
                   color: Colors.black,
@@ -161,13 +165,13 @@ class _AppDrawerState extends State<AppDrawer> {
               ? Padding(
                   padding: const EdgeInsets.only(top: 500),
                   child: Column(children: [
-                    Divider(
+                    const Divider(
                       indent: 20,
                       endIndent: 20,
                       height: 5,
                     ),
                     ListTile(
-                      title: Row(
+                      title: const Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Icon(
@@ -191,13 +195,13 @@ class _AppDrawerState extends State<AppDrawer> {
               : Padding(
                   padding: const EdgeInsets.only(top: 330),
                   child: Column(children: [
-                    Divider(
+                    const Divider(
                       indent: 20,
                       endIndent: 20,
                       height: 5,
                     ),
                     ListTile(
-                      title: Row(
+                      title: const Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Icon(
@@ -248,7 +252,7 @@ class _AppDrawerState extends State<AppDrawer> {
   }
 
   void _navigateToPostsPage() {
-    Navigator.of(context).pushReplacementNamed('/home');
+    Navigator.of(context).pushReplacementNamed('/post');
   }
 
   void _navigateToDoctorsPage() {
@@ -256,6 +260,6 @@ class _AppDrawerState extends State<AppDrawer> {
   }
 
   void _navigateToSettingsPage() {
-    Navigator.of(context).pushReplacementNamed('/home');
+    Navigator.of(context).pushReplacementNamed('/setting');
   }
 }
