@@ -148,12 +148,13 @@ class _PostDetailState extends State<PostDetail> {
                   Hero(
                     tag: 'post_image_${post['title']}',
                     child: FractionallySizedBox(
-                      widthFactor: 1.0,
-                      child: Image.network(
-                        post['image'],
-                        fit: BoxFit.cover,
-                      ),
-                    ),
+                        widthFactor: 1.0,
+                        child: Image.network(
+                          post['image'] != null
+                              ? post['image']
+                              : "https://th.bing.com/th/id/OIP.hV6MoBaE8NYeMCugmhd7_QHaEo?rs=1&pid=ImgDetMain",
+                          fit: BoxFit.cover,
+                        )),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(16.0),

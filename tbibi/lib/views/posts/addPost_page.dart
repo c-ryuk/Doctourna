@@ -53,7 +53,7 @@ class _AddPostPageState extends State<AddPostPage> {
 
       String userId = widget.userData['uid'];
       String userDocumentPath = 'blog';
-      String imageURL = ''; // Initialize imageURL with an empty string
+      var imageURL = null; // Initialize imageURL with an empty string
 
       if (_pickedImage != null) {
         imageURL = await _uploadImage();
