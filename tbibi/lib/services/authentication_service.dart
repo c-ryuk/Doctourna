@@ -50,10 +50,12 @@ class AuthenticationService {
         'location': location,
         'speciality': null,
         'consultationPrice': 0,
-        'isDoctor': true,
+        'isDoctor': false,
         'averageRating': 0,
         'numberOfRatings': 0,
-        'patients': 0
+        'patients': 0,
+        'isActivated': true,
+        'isAdmin': false,
       });
       await Future.delayed(Duration(seconds: 1), () {
         return ScaffoldMessenger.of(context).showSnackBar(
@@ -96,7 +98,30 @@ class AuthenticationService {
     try {
       final credential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: emailAddress, password: password);
-      Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
+
+      final userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(credential.user!.uid)
+          .get();
+
+      bool isActivated = userDoc['isActivated'] ?? false;
+
+      if (isActivated) {
+        Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
+      } else {
+        await FirebaseAuth.instance.signOut();
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            backgroundColor: Color(0xFF4163CD),
+            content: Text(
+              'Your account is not activated. Please contact support for assistance.',
+              style: TextStyle(fontFamily: 'Poppins', color: Colors.white),
+            ),
+            behavior: SnackBarBehavior.floating,
+            duration: Duration(seconds: 2),
+          ),
+        );
+      }
     } on FirebaseAuthException catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(

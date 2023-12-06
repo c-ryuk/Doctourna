@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:tbibi/views/appoitments/appointments_list.dart';
 import 'package:tbibi/views/appoitments/patients_appointments.dart';
+import 'package:tbibi/views/other/list.dart';
 import 'package:tbibi/views/profile/login_page.dart';
 
 import '../services/authentication_service.dart';
@@ -16,6 +17,7 @@ class AppDrawer extends StatefulWidget {
 class _AppDrawerState extends State<AppDrawer> {
   User? user;
   bool isDoctor = true;
+  bool isAdmin = true;
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -39,6 +41,7 @@ class _AppDrawerState extends State<AppDrawer> {
           userData = snapshot.data() as Map<String, dynamic>;
           setState(() {
             isDoctor = userData['isDoctor'];
+            isAdmin = userData['isAdmin'];
           });
         }
       }
@@ -47,10 +50,19 @@ class _AppDrawerState extends State<AppDrawer> {
     }
   }
 
+  void _navigateToConfirmation() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => ConfirmationListPage(),
+      ),
+    );
+  }
+
   bool get doctorLoggedIn =>
       FirebaseAuth.instance.currentUser != null && isDoctor;
   bool get patientLoggedIn => FirebaseAuth.instance.currentUser != null;
-
+  bool get adminLoggedIn =>
+      FirebaseAuth.instance.currentUser != null && isAdmin;
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -120,19 +132,20 @@ class _AppDrawerState extends State<AppDrawer> {
               _navigateToPostsPage();
             },
           ),
-          ListTile(
-            title: const Row(children: [
-              Icon(
-                Icons.settings,
-                color: Colors.black,
-              ),
-              Text(' Settings',
-                  style: TextStyle(fontFamily: 'Poppins', fontSize: 19))
-            ]),
-            onTap: () {
-              _navigateToSettingsPage();
-            },
-          ),
+          if (adminLoggedIn)
+            ListTile(
+              title: const Row(children: [
+                Icon(
+                  Icons.check,
+                  color: Colors.black,
+                ),
+                Text(' Confirmation',
+                    style: TextStyle(fontFamily: 'Poppins', fontSize: 19))
+              ]),
+              onTap: () {
+                _navigateToConfirmation();
+              },
+            ),
           if (doctorLoggedIn)
             ListTile(
               title: const Row(children: [

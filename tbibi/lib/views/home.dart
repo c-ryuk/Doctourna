@@ -142,6 +142,7 @@ class _DoctorsListPageState extends State<DoctorsListPage> {
       final experienceMatch = _checkExperience(user);
 
       return user['isDoctor'] == true &&
+          user['isActivated'] == true &&
           specialtyMatch &&
           nameMatch &&
           governmentMatch &&
