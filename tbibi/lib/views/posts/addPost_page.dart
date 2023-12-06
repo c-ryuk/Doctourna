@@ -53,19 +53,16 @@ class _AddPostPageState extends State<AddPostPage> {
 
       String userId = widget.userData['uid'];
       String userDocumentPath = 'blog';
-      var imageURL = null; // Initialize imageURL with an empty string
+      var imageURL = null;
 
       if (_pickedImage != null) {
         imageURL = await _uploadImage();
       }
 
-      String postId = _firestore
-          .collection(userDocumentPath)
-          .doc()
-          .id; // Generate a unique ID
+      String postId = _firestore.collection(userDocumentPath).doc().id;
 
       Map<String, dynamic> updatedData = {
-        'postId': postId, // Add the post ID to the data
+        'postId': postId,
         'title': _titleController.text,
         'description': _descriptionController.text,
         'dateTime': DateTime.now().toString(),
@@ -78,7 +75,7 @@ class _AddPostPageState extends State<AddPostPage> {
         await _firestore
             .collection(userDocumentPath)
             .doc(postId)
-            .set(updatedData); // Set document with the specific post ID
+            .set(updatedData);
 
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(

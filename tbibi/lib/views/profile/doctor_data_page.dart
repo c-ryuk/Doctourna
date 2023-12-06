@@ -273,18 +273,16 @@ class DoctorFormPage extends State<DoctorDataPage> {
                               DocData().getLocation() != null &&
                               isSelected) {
                             try {
-                              // Sign up the user
                               UserCredential userCredential = await FirebaseAuth
                                   .instance
                                   .createUserWithEmailAndPassword(
                                 email: email.text,
-                                password: password.text, // Empty password
+                                password: password.text,
                               );
 
                               Map<String, String?> userData =
                                   await DocData().getData();
 
-                              // Store user data in Firestore
                               await FirebaseFirestore.instance
                                   .collection('users')
                                   .doc(userCredential.user!.uid)

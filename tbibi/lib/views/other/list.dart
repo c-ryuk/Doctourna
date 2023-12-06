@@ -44,16 +44,13 @@ class _ConfirmationListPageState extends State<ConfirmationListPage> {
                       : IconButton(
                           icon: Icon(Icons.edit),
                           onPressed: () async {
-                            // Update isActivated to true
                             await FirebaseFirestore.instance
                                 .collection('users')
                                 .doc(doctor.id)
                                 .update({'isActivated': true});
 
-                            // Send confirmation email
                             await _sendConfirmationEmail(doctor['email'] ?? '');
 
-                            // Check if the widget is still mounted before showing SnackBar
                             if (mounted) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(

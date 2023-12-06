@@ -53,13 +53,13 @@ class _AddPostPageState extends State<EditPostPage> {
     }
   }
 
-  Future<void> _addPostToFirebase() async {
+  Future<void> _updatePostToFirebase() async {
     try {
       FirebaseFirestore _firestore = FirebaseFirestore.instance;
       String postId = widget.post['postId'];
 
       String userDocumentPath = 'blog/$postId';
-      String imageURL = widget.post['image'] ?? ''; // Initialize imageURL with an empty string
+      String imageURL = widget.post['image'];
 
       if (_pickedImage != null) {
         imageURL = await _uploadImage();
@@ -110,56 +110,57 @@ class _AddPostPageState extends State<EditPostPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Post'),
+        title: Text('Edit Post'),
         centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            TextFormField(
-              controller: _titleController,
-              decoration: InputDecoration(
-                labelText: 'Title',
-                border: OutlineInputBorder(),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              TextFormField(
+                controller: _titleController,
+                decoration: InputDecoration(
+                  labelText: 'Title',
+                  border: OutlineInputBorder(),
+                ),
               ),
-            ),
-            SizedBox(height: 16),
-            TextFormField(
-              controller: _descriptionController,
-              maxLines: 5,
-              decoration: InputDecoration(
-                labelText: 'Description',
-                border: OutlineInputBorder(),
+              SizedBox(height: 16),
+              TextFormField(
+                controller: _descriptionController,
+                maxLines: 5,
+                decoration: InputDecoration(
+                  labelText: 'Description',
+                  border: OutlineInputBorder(),
+                ),
               ),
-            ),
-            SizedBox(height: 16),
-            CircleAvatar(
-              backgroundColor: Colors.transparent,
-              radius: 70,
-              backgroundImage: _pickedImage != null
-                  ? FileImage(_pickedImage!)
-                  : NetworkImage(widget.post['image'])
-                      as ImageProvider, // Cast en ImageProvider
-            ),
-            SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: _pickImage,
-              style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.white,
-                backgroundColor: Color(0xFF4163CD),
+              SizedBox(height: 16),
+              CircleAvatar(
+                backgroundColor: Colors.transparent,
+                radius: 70,
+                backgroundImage: _pickedImage != null
+                    ? FileImage(_pickedImage!)
+                    : NetworkImage(widget.post['image']) as ImageProvider,
               ),
-              child: Text('Pick Image'),
-            ),
-            SizedBox(height: 32),
-            ElevatedButton(
-              onPressed: () {
-                _addPostToFirebase();
-              },
-              child: Text('Update Post'),
-            ),
-          ],
+              SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: _pickImage,
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  backgroundColor: Color(0xFF4163CD),
+                ),
+                child: Text('Pick Image'),
+              ),
+              SizedBox(height: 32),
+              ElevatedButton(
+                onPressed: () {
+                  _updatePostToFirebase();
+                },
+                child: Text('Update Post'),
+              ),
+            ],
+          ),
         ),
       ),
     );

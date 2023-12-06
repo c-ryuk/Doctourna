@@ -47,10 +47,13 @@ class _AppointmentBookingPageState extends State<AppointmentBookingPage> {
       firstDate: DateTime.now(),
       lastDate: DateTime(2101),
     );
+
     if (picked != null && picked != _selectedDate) {
       setState(() {
         _selectedDate = picked;
       });
+
+      _selectTime(context);
     }
   }
 
@@ -59,6 +62,7 @@ class _AppointmentBookingPageState extends State<AppointmentBookingPage> {
       context: context,
       initialTime: _selectedTime,
     );
+
     if (picked != null && picked != _selectedTime) {
       setState(() {
         _selectedTime = picked;
@@ -156,38 +160,11 @@ class _AppointmentBookingPageState extends State<AppointmentBookingPage> {
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(Icons.calendar_today),
                           Text(
                             "${_selectedDate.toLocal()}".split(' ')[0],
-                            style: TextStyle(fontSize: 18),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(width: 7.5),
-                Expanded(
-                  child: GestureDetector(
-                    onTap: () {
-                      _selectTime(context);
-                    },
-                    child: Container(
-                      padding: EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Colors.grey,
-                        ),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Icon(Icons.access_time),
-                          Text(
-                            "${_selectedTime.format(context)}",
                             style: TextStyle(fontSize: 18),
                           ),
                         ],
