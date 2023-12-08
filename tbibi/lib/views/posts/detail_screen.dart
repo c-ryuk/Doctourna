@@ -120,7 +120,9 @@ class _PostDetailState extends State<PostDetail> {
                     children: [
                       const SizedBox(width: 8),
                       CircleAvatar(
-                        backgroundImage: NetworkImage(userData['image']),
+                        backgroundImage: userData['image'] != null
+                            ? NetworkImage(userData['image']) as ImageProvider
+                            : AssetImage('assets/Doc_icon.jpg'),
                       ),
                       const SizedBox(width: 8),
                       Column(
@@ -148,12 +150,13 @@ class _PostDetailState extends State<PostDetail> {
                   Hero(
                     tag: 'post_image_${post['title']}',
                     child: FractionallySizedBox(
-                      widthFactor: 1.0,
-                      child: Image.network(
-                        post['image'],
-                        fit: BoxFit.cover,
-                      ),
-                    ),
+                        widthFactor: 1.0,
+                        child: Image.network(
+                          post['image'] != null
+                              ? post['image']
+                              : "https://th.bing.com/th/id/OIP.hV6MoBaE8NYeMCugmhd7_QHaEo?rs=1&pid=ImgDetMain",
+                          fit: BoxFit.cover,
+                        )),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(16.0),
@@ -229,7 +232,7 @@ class _PostDetailState extends State<PostDetail> {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.pop(context); // Close the dialog
+                    Navigator.pop(context);
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) => EditPostPage(post: post),
@@ -242,11 +245,9 @@ class _PostDetailState extends State<PostDetail> {
                 ElevatedButton(
                   onPressed: () async {
                     try {
-                      // Get the document ID of the post
                       String postId = post['postId'];
                       FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-                      // Delete the document from Firestore
                       await _firestore.collection('blog').doc(postId).delete();
 
                       ScaffoldMessenger.of(context).showSnackBar(

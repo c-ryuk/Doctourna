@@ -95,7 +95,9 @@ class _PostBodyState extends State<PostBody> {
                             topRight: Radius.circular(15),
                           ),
                           image: DecorationImage(
-                            image: NetworkImage(widget.post['image']),
+                            image: NetworkImage(widget.post['image'] != null
+                                ? widget.post['image']
+                                : "https://th.bing.com/th/id/OIP.hV6MoBaE8NYeMCugmhd7_QHaEo?rs=1&pid=ImgDetMain"),
                             fit: BoxFit.cover,
                             colorFilter: ColorFilter.mode(
                               Colors.black.withOpacity(0.5),

@@ -1,4 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:mailer/mailer.dart';
+import 'package:mailer/smtp_server/gmail.dart';
 import 'package:tbibi/models/country.dart';
 import 'package:tbibi/services/collect_doctor_data.dart';
 import 'package:tbibi/static_data/countries_list.dart';
@@ -20,6 +24,8 @@ class DoctorFormPage extends State<DoctorDataPage> {
   TextEditingController fullName = TextEditingController();
   TextEditingController email = TextEditingController();
   TextEditingController mobilePhone = TextEditingController();
+  TextEditingController password = TextEditingController();
+
   bool checkBoxValue = false;
   int selectedIndex = -1;
   bool isSelected = false;
@@ -42,6 +48,26 @@ class DoctorFormPage extends State<DoctorDataPage> {
   }
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  Future<void> _sendEmail(
+    String from,
+    String to,
+    String subject,
+    String body,
+  ) async {
+    final smtpServer = gmail("djangotp1@gmail.com", "zgxmpxojgsbezyoy");
+
+    final message = Message()
+      ..from = Address(from)
+      ..recipients.add(to)
+      ..subject = subject
+      ..text = body;
+
+    try {
+      await send(message, smtpServer);
+    } catch (e) {
+      print('Error sending email: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -199,6 +225,24 @@ class DoctorFormPage extends State<DoctorDataPage> {
                           prefixIcon: Icon(Icons.phone),
                         ),
                       ),
+                      const Divider(),
+                      TextFormField(
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Password should not be empty.';
+                          }
+                          return null;
+                        },
+                        obscureText: true,
+                        controller: password,
+                        decoration: InputDecoration(
+                          hintText: "Password",
+                          hintStyle:
+                              TextStyle(fontSize: 18, fontFamily: 'Poppins'),
+                          border: OutlineInputBorder(),
+                          prefixIcon: Icon(Icons.lock),
+                        ),
+                      ),
                       CheckboxListTile(
                         activeColor: Color(0xFF4163CD),
                         value: checkBoxValue,
@@ -221,42 +265,81 @@ class DoctorFormPage extends State<DoctorDataPage> {
                         height: 30,
                       ),
                       SignButton(
-                          text: "Submit",
-                          textColor: Colors.white,
-                          backgroundColor: Color(0xFF4163CD),
-                          function: () async {
-                            if (_formKey.currentState!.validate() &&
-                                DocData().getLocation() != null &&
-                                isSelected) {
-                              DocData().setForm(
-                                  country: selectedCountry,
-                                  fullName: fullName.text,
-                                  email: email.text,
-                                  phone: mobilePhone.text);
-                              DocData().getData();
+                        text: "Submit",
+                        textColor: Colors.white,
+                        backgroundColor: Color(0xFF4163CD),
+                        function: () async {
+                          if (_formKey.currentState!.validate() &&
+                              DocData().getLocation() != null &&
+                              isSelected) {
+                            try {
+                              UserCredential userCredential = await FirebaseAuth
+                                  .instance
+                                  .createUserWithEmailAndPassword(
+                                email: email.text,
+                                password: password.text,
+                              );
+
+                              Map<String, String?> userData =
+                                  await DocData().getData();
+
+                              await FirebaseFirestore.instance
+                                  .collection('users')
+                                  .doc(userCredential.user!.uid)
+                                  .set({
+                                'username': fullName.text,
+                                'email': email.text,
+                                'phoneNumber': mobilePhone.text,
+                                'country': selectedCountry,
+                                'gender': userData['Gender'],
+                                'speciality': userData['Speciality'],
+                                'location': userData['location'],
+                                'consultationPrice': 0,
+                                'isDoctor': true,
+                                'averageRating': 0,
+                                'numberOfRatings': 0,
+                                'patients': 0,
+                                'experience': 0,
+                                'uid': userCredential.user!.uid,
+                                'image': null,
+                                'about': null,
+                                'isActivated': false,
+                                'isAdmin': false,
+                              });
+                              await _sendEmail(
+                                "djangotp1@gmail.com",
+                                email.text,
+                                "Your Request Has Been Sent",
+                                "We will confirm it in less than 24h.",
+                              );
+
                               DocData().emptyData();
                               Navigator.pushAndRemoveUntil(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          ConfirmationScreen()),
-                                  (route) => false);
-                            } else {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  backgroundColor: Color(0xFF4163CD),
-                                  content: Text(
-                                    'Please fill your location data.',
-                                    style: TextStyle(
-                                        fontFamily: 'Poppins',
-                                        color: Colors.white),
-                                  ),
-                                  behavior: SnackBarBehavior.floating,
-                                  duration: Duration(seconds: 2),
-                                ),
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ConfirmationScreen()),
+                                (route) => false,
                               );
+                            } catch (e) {
+                              print("Error signing up: $e");
                             }
-                          }),
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                backgroundColor: Color(0xFF4163CD),
+                                content: Text(
+                                  'Please fill your location data.',
+                                  style: TextStyle(
+                                      fontFamily: 'Poppins',
+                                      color: Colors.white),
+                                ),
+                                behavior: SnackBarBehavior.floating,
+                                duration: Duration(seconds: 2),
+                              ),
+                            );
+                          }
+                        },
+                      ),
                       const SizedBox(
                         height: 30,
                       ),

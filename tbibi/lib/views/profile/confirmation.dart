@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tbibi/services/authentication_service.dart';
 import 'package:tbibi/widgets/signbutton.dart';
 
 class ConfirmationScreen extends StatelessWidget {
@@ -39,6 +40,7 @@ class ConfirmationScreen extends StatelessWidget {
                   textColor: Colors.white,
                   backgroundColor: Color(0xFF4163CD),
                   function: () {
+                    AuthenticationService().logout();
                     Navigator.pushReplacementNamed(context, '/home');
                   })
             ],

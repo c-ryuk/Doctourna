@@ -24,7 +24,7 @@ class _PostScreenState extends State<PostScreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   Map<String, dynamic> userData = {};
-  List<Map<String, dynamic>> posts = []; // List to store fetched posts
+  List<Map<String, dynamic>> posts = [];
 
   @override
   void initState() {
