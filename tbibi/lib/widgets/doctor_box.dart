@@ -66,6 +66,10 @@ class DoctorBox extends StatelessWidget {
                 Text(
                   doctor['averageRating']?.toStringAsFixed(2) ?? '0.00',
                 ),
+                Text(
+                  " (${doctor['numberOfRatings']})",
+                  style: TextStyle(color: Colors.grey),
+                ),
               ],
             ),
           ],

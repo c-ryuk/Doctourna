@@ -321,72 +321,6 @@ class _DoctorsListPageState extends State<DoctorsListPage> {
               ),
             ),
           ),
-          SliverToBoxAdapter(child: SizedBox(height: 30)),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.only(left: 15),
-              child: Text(
-                "What did you want?",
-                style: TextStyle(
-                  fontSize: 23,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ),
-          ),
-          SliverToBoxAdapter(child: SizedBox(height: 25)),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Container(
-                height: 50,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: specialties.length,
-                  itemBuilder: (context, index) {
-                    final specialty = specialties[index];
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: GestureDetector(
-                        onTap: () {
-                          _filterDoctorsBySpecialty(specialty);
-                        },
-                        child: Container(
-                          padding: EdgeInsets.symmetric(horizontal: 20),
-                          decoration: BoxDecoration(
-                            color: specialty == selectedSpecialty
-                                ? Color(0xFF4163CD)
-                                : Colors.grey,
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                          child: Center(
-                            child: Text(
-                              specialty,
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 20),
-                            ),
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ),
-          ),
-          SliverToBoxAdapter(child: SizedBox(height: 35)),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.only(left: 15),
-              child: Text(
-                "Filter and Display Options",
-                style: TextStyle(
-                  fontSize: 23,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ),
-          ),
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.all(16.0),
@@ -395,6 +329,13 @@ class _DoctorsListPageState extends State<DoctorsListPage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
+                    _buildButton(
+                      onPressed: () {
+                        specialityPopUp(context);
+                      },
+                      label: selectedSpecialty,
+                    ),
+                    SizedBox(width: 16.0),
                     _buildButton(
                       onPressed: () {
                         _sortDoctorsByConsultationPrice();
@@ -429,7 +370,7 @@ class _DoctorsListPageState extends State<DoctorsListPage> {
               ),
             ),
           ),
-          SliverToBoxAdapter(child: SizedBox(height: 35)),
+          SliverToBoxAdapter(child: SizedBox(height: 5)),
           SliverToBoxAdapter(
             child: Align(
               alignment: Alignment.centerLeft,
@@ -486,6 +427,36 @@ class _DoctorsListPageState extends State<DoctorsListPage> {
             ),
         ],
       ),
+    );
+  }
+
+  void specialityPopUp(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Select Speciality'),
+          content: Container(
+            constraints: BoxConstraints(
+              maxHeight: MediaQuery.of(context).size.height * 0.6,
+            ),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: specialties.map((gov) {
+                  return ListTile(
+                    title: Text(gov),
+                    onTap: () {
+                      Navigator.pop(context);
+                      _filterDoctorsBySpecialty(gov);
+                    },
+                  );
+                }).toList(),
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 
